@@ -1,0 +1,114 @@
+@import "../mixin/responsive";
+
+.Index {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-size: 12px;
+  font-family: $font-family, Tahoma, "DejaVu Sans", helvetica, arial, freesans, sans-serif;
+  direction: rtl;
+  padding: 0;
+  margin: 0;
+}
+
+.Index {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: $color-background;
+}
+
+.Index * {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  &:focus {
+    outline: 0 none;
+  }
+}
+
+.Index__Aside {
+  flex: 0 0 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.Index__AsideLeft {
+  flex: 0 0 100%;
+  display: none;
+}
+
+.Index__Aside * {
+  user-select: none;
+}
+
+.Index__Main {
+  flex: 0 0 100%;
+  position: relative;
+}
+
+.Index--isThreadShow {
+  .Index__Aside {
+    display: none;
+  }
+
+  .Index__Main {
+    display: block;
+  }
+}
+
+.Index--isAsideLeftShow {
+  .Index__Aside {
+    display: none;
+  }
+
+  .Index__Main {
+    display: none;
+  }
+
+  .Index__AsideLeft {
+    display: block;
+  }
+}
+
+@include grid("md") {
+  :not(.Index--small).Index--isThreadShow {
+    .Index__Aside,
+    .Index__Main {
+      display: block;
+    }
+  }
+
+  :not(.Index--small) > .Index__Aside {
+    flex: 0 0 30%;
+    position: relative;
+  }
+
+  :not(.Index--small) > .Index__Main {
+    flex: 0 0 70%;
+    position: relative;
+  }
+
+  :not(.Index--small).Index--isAsideLeftShow {
+    .Index__Main {
+      flex: 0 0 40%;
+      display: block;
+    }
+    .Index__Aside {
+      display: block;
+    }
+    .Index__AsideLeft {
+      flex: 0 0 30%;
+      display: block;
+    }
+  }
+}
+
+.Index__MediaTrigger {
+  display: block;
+}
+
+.Index__MediaTriggerLink {
+  display: block;
+}

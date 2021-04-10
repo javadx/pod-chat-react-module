@@ -1,0 +1,85 @@
+@import "../mixin/responsive";
+
+.ModalThreadInfoMessageTypes {
+
+}
+
+.ModalThreadInfoMessageTypes__Tab {
+  display: flex;
+  margin-bottom: 5px;
+  border-bottom: 1px solid $color-gray-light;
+  overflow-x: auto;
+
+}
+
+.ModalThreadInfoMessageTypes__TabItem {
+  flex-grow: 1;
+  text-align: center;
+  cursor: pointer;
+  min-width: 70px;
+
+  &.ModalThreadInfoMessageTypes__TabItem--mobileVersion {
+
+  }
+}
+
+@include grid("md") {
+  .ModalThreadInfoMessageTypes__TabItem {
+    min-width: 0;
+  }
+}
+
+
+.ModalThreadInfoMessageTypes__TabItem--active {
+  border-bottom: 2px solid $color-accent;
+}
+
+.ModalThreadInfoMessageTypes__Content {
+  min-height: 100px;
+}
+
+.ModalThreadInfoMessageTypes__ContentItem {
+  display: none;
+  min-height: 100px;
+}
+
+.ModalThreadInfoMessageTypes__ContentItem--active {
+  display: block;
+}
+
+.ModalThreadInfoMessageTypes__MessageContainer {
+  display: flex;
+}
+
+.ModalThreadInfoMessageTypes__MessageContainer--picture {
+  flex-wrap: wrap;
+}
+
+.ModalThreadInfoMessageTypes__MessageContainer--file,
+.ModalThreadInfoMessageTypes__MessageContainer--sound,
+.ModalThreadInfoMessageTypes__MessageContainer--voice,
+.ModalThreadInfoMessageTypes__MessageContainer--video {
+  flex-direction: column;
+}
+
+.ModalThreadInfoMessageTypes__ImageContainer {
+  position: relative;
+  flex-basis: calc(33.33333% - 2px);
+  margin: 1px;
+
+  &:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.ModalThreadInfoMessageTypes__Image {
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}

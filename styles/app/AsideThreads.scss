@@ -1,0 +1,71 @@
+@import "scope";
+@import "../mixin/responsive";
+
+.AsideThreads {
+  background-color: $color-primary;
+  height: 100%;
+  overflow-y: auto;
+  z-index: $z-index-1;
+}
+
+.AsideThreads--autoZIndex {
+  z-index: auto;
+}
+
+.AsideThreads--hiddenOverflow {
+  overflow: hidden;
+}
+
+.AsideThreads__Overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.AsideThreads__GroupsHead {
+  justify-content: center;
+  display: flex;
+}
+
+.AsideThreads__GroupsHeadTextContainer {
+  border-radius: 5px;
+  padding: 0 10px;
+  background-color: rgba($color-accent-dark, .2);
+}
+
+.AsideThreads__Scroller {
+  height: 100%;
+}
+
+.AsideThreads__Scroller:not(.AsideThreads__Scroller--mobileVersion) {
+
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: #d4d4d4;
+    visibility: hidden;
+    position: relative;
+    z-index: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #9c9c9c;
+    border-radius: 2px;
+    cursor: pointer;
+    visibility: hidden;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #808080;
+  }
+  &:hover {
+    &::-webkit-scrollbar {
+      visibility: visible;
+    }
+    &::-webkit-scrollbar-thumb {
+      visibility: visible;
+    }
+  }
+}
