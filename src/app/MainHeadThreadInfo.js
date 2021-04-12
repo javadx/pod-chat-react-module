@@ -60,7 +60,7 @@ class MainHeadThreadInfo extends Component {
   render() {
     const {thread, smallVersion, chatState, participants, user} = this.props;
     const {isDisconnected, isConnected} = socketStatus(chatState);
-    const participant = getParticipant(participants, user);
+    const participant = thread.onTheFly ? thread.participant : getParticipant(participants, user);
     if (!thread.id) {
       return null;
     }

@@ -2,3 +2,23 @@
   margin: 5px;
   border-bottom: 2px solid $color-gray;
 }
+
+.ModalThreadInfoGroupSettingsAdminAdd__AdminTextContainer {
+  padding: 0 10px;
+  border: 1px solid $color-accent;
+  margin-left: 15px;
+  margin-top: -5px;
+  text-align: center;
+  width: 42px;
+  border-radius: 4px;
+}
+
+.ModalThreadInfoGroupSettingsAdminAdd__AdminDisable {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: calc(100% + 19px);
+  height: calc(100% + 19px);
+  background-color: rgba($color-white, .6);
+  z-index: 1;
+}

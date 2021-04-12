@@ -128,6 +128,7 @@ export default class ModalThreadInfoGroupSettingsAdminAdd extends Component {
       internalStep: constants.ADD_ADMIN_PRIVILEGE,
       selectedParticipant: null
     });
+    dispatch(threadParticipantList(thread.id, 0, constants.count));
   }
 
   onPrevious() {
@@ -168,6 +169,19 @@ export default class ModalThreadInfoGroupSettingsAdminAdd extends Component {
         <ContactList invert
                      selection
                      onSelect={this.onAddAdmin}
+                     AvatarNameFragment={
+                       ({contact}) => {
+                         return contact.admin ? <Container className={style.ModalThreadInfoGroupSettingsAdminAdd__AdminDisable} onMouseDown={e=>e.stopPropagation()}>
+                         </Container> : ""
+                       }
+                     }
+                     LeftActionFragment={
+                       ({contact}) => {
+                         return contact.admin ? <Container className={style.ModalThreadInfoGroupSettingsAdminAdd__AdminTextContainer}>
+                           <Text size="sm" color="accent">{strings.admin}</Text>
+                         </Container> : ""
+                       }
+                     }
                      contacts={participants}/>
         {participantsPartialFetching && <PartialLoadingFragment/>}
       </Container>
@@ -182,7 +196,8 @@ export default class ModalThreadInfoGroupSettingsAdminAdd extends Component {
           <AvatarName maxWidth="150px">
             {getName(selectedParticipant)}
             <AvatarText>
-              <Text size="sm" color="gray" dark>{strings.lastSeen(date.prettifySince(selectedParticipant ? selectedParticipant.notSeenDuration : ""))}</Text>
+              <Text size="sm" color="gray"
+                    dark>{strings.lastSeen(date.prettifySince(selectedParticipant ? selectedParticipant.notSeenDuration : ""))}</Text>
             </AvatarText>
           </AvatarName>
         </Avatar>
