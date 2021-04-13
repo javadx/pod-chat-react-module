@@ -48,6 +48,7 @@ export default class SupportModule extends Component {
       <Container className={classNames}
                  style={{
                    opacity: chatSupportModuleBadgeShowing ? 0 : 1,
+                   transform: chatSupportModuleBadgeShowing ? "translateY(20px)" : "",
                    zIndex: chatSupportModuleBadgeShowing ? -99999999999 : 0
                  }}>
         {children && children}

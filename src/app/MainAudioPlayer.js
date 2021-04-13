@@ -69,7 +69,7 @@ export default class MainAudioPlayer extends Component {
         </Container>
         <Container className={style.MainAudioPlayer__MessageDetails}>
           <Text isHTML>
-            {metaData.name}
+            {metaData.file.originalName}
           </Text>
         </Container>
       </Container>

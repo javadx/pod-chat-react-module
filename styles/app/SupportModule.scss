@@ -1,3 +1,17 @@
+@mixin max {
+  width: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+}
+
+@mixin medium {
+  width: 360px;
+  height: 600px;
+}
+
 .SupportModule {
   width: 400px;
   height: 680px;
@@ -7,5 +21,29 @@
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0 24px $color-gray;
-  transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+}
+
+@media only screen and (max-width: 600px) {
+  .SupportModule {
+    @include medium;
+  }
+}
+
+@media only screen and (max-height: 700px) {
+  .SupportModule {
+    @include medium;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .SupportModule {
+    @include max;
+  }
+}
+
+@media only screen and (max-height: 620px) {
+  .SupportModule {
+    @include max;
+  }
 }
