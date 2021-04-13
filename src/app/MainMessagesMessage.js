@@ -64,14 +64,14 @@ export class MainMessagesMessage extends Component {
     const {messageControlShow, messageTriggerShow} = nextState;
     const {message, highLightMessage, showName, lastSeenMessageTime} = nextProps;
     const {messageControlShow: currentMessageControlShow, messageTriggerShow: currentMessageTriggerShow} = this.state;
-    const {message: currentMessage, highLightMessage: currentHighLightMessage, showName: currentShowName, isGroup, isChannel} = this.props;
+    const {message: currentMessage, highLightMessage: currentHighLightMessage, showName: currentShowName, isGroup, isChannel, supportMode} = this.props;
     if (currentMessageControlShow === messageControlShow) {
       if (currentMessageTriggerShow === messageTriggerShow) {
         if (currentMessage.message === message.message) {
           if (currentMessage.progress === message.progress) {
             if (currentHighLightMessage === highLightMessage) {
               if (currentShowName === showName) {
-                if(isChannel || isGroup) {
+                if((isChannel || isGroup) && !supportMode) {
                   return false;
                 } else {
                   if (currentMessage.seen === message.seen) {
@@ -210,7 +210,8 @@ export class MainMessagesMessage extends Component {
       isChannel,
       thread,
       message,
-      highLightMessage
+      highLightMessage,
+      supportMode
     };
 
     return (

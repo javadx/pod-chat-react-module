@@ -139,7 +139,7 @@ module.exports = (e, argv) => {
   //IF MODE IS PRODUCTION
   if (mode === "production") {
 
-/*    base.externals = [
+    base.externals = [
       // nodeExternals(),
       {
         react: {
@@ -155,7 +155,7 @@ module.exports = (e, argv) => {
           amd: 'react-dom'
         }
       }
-    ];*/
+    ];
     base.output = {
       path: __dirname + "/dist",
       filename: "index.js",

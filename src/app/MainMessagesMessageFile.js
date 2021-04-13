@@ -279,6 +279,7 @@ class MainMessagesMessageFile extends Component {
       chatAudioPlayer,
       smallVersion,
       leftAsideShowing,
+      supportMode,
       dispatch
     } = this.props;
     let {
@@ -342,7 +343,7 @@ class MainMessagesMessageFile extends Component {
                     <MdMic size={styleVar.iconSizeSm} color={styleVar.colorAccent}/>
                     :
                     <Text wordWrap="breakWord" bold>
-                      {metaData.name || metaData.file.originalName}
+                      {(metaData.file && metaData.file.originalName) || metaData.name}
                     </Text>
                   }
 
@@ -384,6 +385,7 @@ class MainMessagesMessageFile extends Component {
                                         onMessageControlHide={onMessageControlHide}
                                         messageControlShow={messageControlShow} messageTriggerShow={messageTriggerShow}>
             <MainMessagesMessageBoxSeen isMessageByMe={isMessageByMe} message={message} thread={thread}
+                                        supportMode={supportMode}
                                         forceSeen={forceSeen}
                                         onMessageSeenListClick={onMessageSeenListClick} onRetry={this.onRetry}
                                         onCancel={this.onCancel}/>

@@ -233,6 +233,7 @@ class Index extends Component {
                         lang="fa"
                         i18n={{fa: strings.modalMedia}}
                         backFocus={false}/>
+            <ModalImageCaption smallVersion={small} ref={this.modalImageCaptionRef}/>
           </Fragment>
         :
 

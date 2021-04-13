@@ -95,6 +95,7 @@ export default class MainMessagesMessageText extends Component {
       forceSeen,
       isChannel,
       isGroup,
+      supportMode,
       ref
     } = this.props;
     return (
@@ -115,6 +116,7 @@ export default class MainMessagesMessageText extends Component {
                                         isMessageByMe={isMessageByMe}
                                         messageControlShow={messageControlShow} messageTriggerShow={messageTriggerShow}>
             <MainMessagesMessageBoxSeen isMessageByMe={isMessageByMe} message={message} thread={thread}
+                                        supportMode={supportMode}
                                         forceSeen={forceSeen}
                                         onMessageSeenListClick={onMessageSeenListClick}
                                         onRetry={this.onRetry.bind(this, message)}

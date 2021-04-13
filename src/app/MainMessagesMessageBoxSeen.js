@@ -15,7 +15,7 @@ import style from "../../styles/app/MainMessagesMessageBoxSeen.scss";
 import styleVar from "../../styles/variables.scss";
 
 
-export default function ({isMessageByMe, message, thread, onMessageSeenListClick, onRetry, onCancel, forceSeen}) {
+export default function ({isMessageByMe, message, thread, onMessageSeenListClick, onRetry, onCancel, forceSeen, supportMode}) {
   if (!isMessageByMe) {
     return null;
   }
@@ -46,15 +46,15 @@ export default function ({isMessageByMe, message, thread, onMessageSeenListClick
     return <MdSchedule size={messageStatusIconSpecs.size} style={messageStatusIconSpecs.style}
                        color={messageStatusIconSpecs.color}/>
   }
-  if (!isGroup) {
+  if (!isGroup || supportMode) {
     if (message.seen || forceSeen) {
       return <MdDoneAll size={messageStatusIconSpecs.size} style={messageStatusIconSpecs.style}
                         color={messageStatusIconSpecs.color}/>
     }
   }
-  return <MdDone className={isGroup ? style.MainMessagesMessageBoxSeen__SentIcon : ""}
+  return <MdDone className={isGroup && !supportMode ? style.MainMessagesMessageBoxSeen__SentIcon : ""}
                  size={messageStatusIconSpecs.size}
                  color={messageStatusIconSpecs.color}
                  style={{margin: "0 5px", cursor: isGroup ? "pointer" : "default"}}
-                 onClick={isGroup ? onMessageSeenListClick : null}/>
+                 onClick={isGroup && !supportMode ? onMessageSeenListClick : null}/>
 }
