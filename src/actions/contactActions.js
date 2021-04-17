@@ -149,7 +149,6 @@ export const contactAdd = (addby, firstName, lastName, editMode, canceled) => {
           name: `${e.firstName}${e.lastName ? ` ${e.lastName}` : ''}`
         };
         dispatch(threadCreateOnTheFly(e.linkedUser.coreUserId, user));
-        dispatch(threadShowing(true));
       }
     }, e => {
       dispatch({

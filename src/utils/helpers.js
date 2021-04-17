@@ -229,7 +229,7 @@ export function isImageFile(file) {
 }
 
 export function isVideoFile(file) {
-  return file.type.match(/mp4|ogg|3gp|ogv/);
+  return file.type.match(/mp4|ogg|3gp|ogv|webm/);
 }
 
 export function isAudioFile(file) {

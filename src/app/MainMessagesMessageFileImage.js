@@ -120,7 +120,7 @@ export default function ({isUploading, showCancelIcon, message, metaData, smallV
 
   if (isLocationMap && isUploading) {
     imageSizeLink.imageLink = mapFake;
-    imageSizeLink.width = 300;
+    imageSizeLink.width = smallVersion || window.innerWidth <= 700 ? 190 : 300;
     imageSizeLink.height = 225;
   }
 

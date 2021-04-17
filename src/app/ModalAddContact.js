@@ -22,10 +22,9 @@ import {Button} from "../../../pod-chat-ui-kit/src/button";
 import {Heading} from "../../../pod-chat-ui-kit/src/typography";
 import Message from "../../../pod-chat-ui-kit/src/message";
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {chatRouterLess} from "../actions/chatActions";
-
 
 //styling
+import style from "../../styles/app/ModalAddContact.scss";
 
 @connect(store => {
   return {
@@ -100,10 +99,11 @@ class ModalAddContact extends Component {
   }
 
   onSubmit(e) {
-    if(e) {
+    if (e) {
       e.preventDefault();
     }
     const {addBy, firstName, lastName} = this.state;
+    const {chatRouterLess, history} = this.props;
     if (!addBy) {
       return this.setState({
         notEnteredMobilePhone: true
@@ -128,7 +128,7 @@ class ModalAddContact extends Component {
       notEnteredMobilePhone: false,
       sameUserMobilePhone: false
     });
-    if(contactEdit) {
+    if (contactEdit) {
       this.setState({
         sameUserMobilePhone: false,
         notEnteredFirstOrFamilyName: false,
@@ -138,6 +138,9 @@ class ModalAddContact extends Component {
         lastName: ""
       });
       dispatch(contactAdd(null, null, null, false, true));
+    }
+    if (!chatRouterLess) {
+      history.push("/");
     }
   }
 
@@ -158,7 +161,7 @@ class ModalAddContact extends Component {
   }
 
   onFieldChange(field, event) {
-    if(field === "addBy") {
+    if (field === "addBy") {
       this.setState({
         sameUserMobilePhone: false
       });
@@ -178,13 +181,15 @@ class ModalAddContact extends Component {
              userSelect="none">
 
         <ModalHeader>
-          <Heading h3>{contactEdit && !contactEdit.isAdd ? strings.editContact(contactEdit) : strings.addContact}</Heading>
+          <Heading
+            h3>{contactEdit && !contactEdit.isAdd ? strings.editContact(contactEdit) : strings.addContact}</Heading>
         </ModalHeader>
 
         <ModalBody>
           <form onSubmit={this.onSubmit}>
             {!contactEdit &&
             <InputText max={40} onChange={this.onFieldChange.bind(this, "addBy")}
+                       inputClassName={style.ModalAddContact__Input}
                        dir="ltr"
                        value={addBy}
                        placeholder={`${strings.mobilePhoneOrUsername} ( ${strings.required} )`}/>

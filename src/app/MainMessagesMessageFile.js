@@ -152,7 +152,7 @@ class MainMessagesMessageFile extends Component {
       const {metaData} = this.state;
       const isPlayable = this.isPlayable;
       downloadRef.href = result;
-      downloadRef.download = metaData.name;
+      downloadRef.download = (metaData.file && metaData.file.originalName) || metaData.name;
       this.isPlayable = null;
       if (isPlayable) {
         this.playAfterDownloadTrigger(result);

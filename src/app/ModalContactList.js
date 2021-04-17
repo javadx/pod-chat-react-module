@@ -32,7 +32,7 @@ import {avatarUrlGenerator} from "../utils/helpers";
 
 
 export const statics = {
-  count: 10,
+  count: 50,
   userType: {
     ALL: "ALL",
     HAS_POD_USER: "HAS_POD_USER",
