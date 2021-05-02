@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {statics as modalContactListStatics} from "./ModalContactList";
+import validator from 'validator';
 
 //strings
 import strings from "../constants/localization";
@@ -110,7 +111,12 @@ class ModalAddContact extends Component {
       });
     }
     if (!firstName || !firstName.trim()) {
-      if (!lastName || !lastName.trim()) {
+      return this.setState({
+        notEnteredFirstOrFamilyName: true
+      });
+    }
+    if (!lastName || !lastName.trim()) {
+      if (!firstName || !firstName.trim()) {
         return this.setState({
           notEnteredFirstOrFamilyName: true
         });
@@ -138,9 +144,9 @@ class ModalAddContact extends Component {
         lastName: ""
       });
       dispatch(contactAdd(null, null, null, false, true));
-    }
-    if (!chatRouterLess) {
-      history.push("/");
+      if (!chatRouterLess) {
+        history.push("/");
+      }
     }
   }
 
@@ -172,6 +178,18 @@ class ModalAddContact extends Component {
     });
   }
 
+  addByValidator(text) {
+
+  }
+
+  firstNameValidator(text) {
+
+  }
+
+  lastNameValidator(text) {
+
+  }
+
   render() {
     const {isShowing, contactAdd, contactAddPending, smallVersion, contactEdit, contactAddError} = this.props;
     const {addBy, firstName, lastName, notEnteredFirstOrFamilyName, notEnteredMobilePhone, sameUserMobilePhone} = this.state;
@@ -189,15 +207,18 @@ class ModalAddContact extends Component {
           <form onSubmit={this.onSubmit}>
             {!contactEdit &&
             <InputText max={40} onChange={this.onFieldChange.bind(this, "addBy")}
+                       validator={this.addByValidator}
                        inputClassName={style.ModalAddContact__Input}
                        dir="ltr"
                        value={addBy}
                        placeholder={`${strings.mobilePhoneOrUsername} ( ${strings.required} )`}/>
             }
             <InputText max={15} onChange={this.onFieldChange.bind(this, "firstName")}
+                       validator={this.firstNameValidator}
                        placeholder={`${strings.firstName} ( ${strings.required} )`}
                        value={firstName}/>
             <InputText max={15} onChange={this.onFieldChange.bind(this, "lastName")} placeholder={strings.lastName}
+                       validator={this.lastNameValidator}
                        value={lastName}/>
             <input type="submit" style={{display: "none"}}/>
           </form>

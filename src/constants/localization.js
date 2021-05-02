@@ -85,7 +85,7 @@ let strings = new LocalizedStrings({
     contacts: "مخاطب‌ها",
     imageText: "متن تصویر",
     send: "بفرست",
-    firstOrFamilyNameIsRequired: "نام یا نام خانوادگی اجباری است",
+    firstOrFamilyNameIsRequired: "نام اجباری است",
     mobilePhoneIsRequired: "شماره موبایل یا نام کاربری اجباری است",
     youCannotAddYourself: "نمیتوانید شماره موبایل خودتان را وارد نمایید",
     copyText: "کپی",

@@ -4,7 +4,7 @@ import classnames from "classnames";
 import {IndexModalMediaFragment} from "./index";
 import {getFileDownloading, getImage as getImageFromHashMap} from "../utils/hashmap";
 import {
-  getImage
+  getImage, mobileCheck
 } from "../utils/helpers";
 
 
@@ -120,7 +120,7 @@ export default function ({isUploading, showCancelIcon, message, metaData, smallV
 
   if (isLocationMap && isUploading) {
     imageSizeLink.imageLink = mapFake;
-    imageSizeLink.width = smallVersion || window.innerWidth <= 700 ? 190 : 300;
+    imageSizeLink.width = smallVersion || mobileCheck() || window.innerWidth <= 700 ? 190 : 300;
     imageSizeLink.height = 225;
   }
 

@@ -225,7 +225,7 @@ export function getNow() {
 }
 
 export function isImageFile(file) {
-  return file.type.match(/image\/jpeg|image\/png/gm);
+  return file.type.match(/image\/jpeg|image\/png|image\/bmp/gm);
 }
 
 export function isVideoFile(file) {
