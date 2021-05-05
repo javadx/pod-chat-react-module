@@ -43,6 +43,7 @@ export default class ChatSDK {
     this.onThreadEvents = props.onThreadEvents;
     this.onMessageEvents = props.onMessageEvents;
     this.onContactsEvents = props.onContactsEvents;
+    this.onCallEvents = props.onCallEvents;
     this.onFileUploadEvents = props.onFileUploadEvents;
     this.onSystemEvents = props.onSystemEvents;
     this.onChatReady = props.onChatReady;
@@ -50,6 +51,7 @@ export default class ChatSDK {
     this.onChatError = props.onChatError;
     window.sdk = this;
     this._onMessageEvents();
+    this._onCallEvents();
     this._onThreadEvents();
     this._onContactsEvents();
     this._onFileUploadEvents();
@@ -84,6 +86,12 @@ export default class ChatSDK {
   _onMessageEvents() {
     this.chatAgent.on("messageEvents", (msg) => {
       this.onMessageEvents(msg.result.message, msg.type);
+    });
+  }
+
+  _onCallEvents() {
+    this.chatAgent.on("callEvents", (event) => {
+      this.onCallEvents(event.result, event.type);
     });
   }
 
@@ -924,6 +932,37 @@ export default class ChatSDK {
       if (!this._onError(result, reject)) {
         return resolve(participantIds);
       }
+    });
+  }
+
+
+  @promiseDecorator
+  startCall(resolve, reject, threadId, type) {
+    const callType = {
+      threadId,
+      type
+    };
+    this.chatAgent.startCall(callType, function (res) {
+      console.log(e)
+      resolve(res)
+    });
+  }
+
+  @promiseDecorator
+  acceptCall(resolve, reject, callId) {
+    this.chatAgent.acceptCall({
+      callId
+    }, function (res) {
+      resolve(res)
+    });
+  }
+
+  @promiseDecorator
+  rejectCall(resolve, reject, callId) {
+    this.chatAgent.rejectCall({
+      callId
+    }, function (res) {
+      resolve(res)
     });
   }
 };

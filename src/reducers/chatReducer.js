@@ -10,9 +10,16 @@ import {
   CHAT_NOTIFICATION_CLICK_HOOK,
   CHAT_RETRY_HOOK,
   CHAT_SIGN_OUT_HOOK
-  , CHAT_AUDIO_PLAYER, CHAT_AUDIO_RECORDER, CHAT_SUPPORT_MODE, CHAT_SUPPORT_MODULE_BADGE_SHOWING
+  ,
+  CHAT_AUDIO_PLAYER,
+  CHAT_AUDIO_RECORDER,
+  CHAT_SUPPORT_MODE,
+  CHAT_SUPPORT_MODULE_BADGE_SHOWING,
+  CHAT_CALL_BOX_SHOWING,
+  CHAT_CALL_STATUS
 } from "../constants/actionTypes";
 import {listUpdateStrategyMethods, stateGenerator, stateGeneratorState, updateStore} from "../utils/storeHelper";
+import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
 
 const {SUCCESS} = stateGeneratorState;
 
@@ -55,6 +62,24 @@ export const chatSupportModeReducer = (state = false, action) => {
 export const chatSupportModuleBadgeShowingReducer = (state = true, action) => {
   switch (action.type) {
     case CHAT_SUPPORT_MODULE_BADGE_SHOWING:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallBoxShowingReducer = (state = {showing: false, thread: null , contact: null}, action) => {
+  switch (action.type) {
+    case CHAT_CALL_BOX_SHOWING:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallStatusReducer = (state = {status: null, call: null}, action) => {
+  switch (action.type) {
+    case CHAT_CALL_STATUS:
       return action.payload;
     default:
       return state;

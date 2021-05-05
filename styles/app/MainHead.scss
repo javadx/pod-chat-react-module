@@ -23,7 +23,9 @@
 }
 
 .MainHead__BackContainer,
-.MainHead__SearchContainer {
+.MainHead__SearchContainer,
+.MainHead__VoiceCallContainer
+{
   padding: 18px 9px;
 }
 
@@ -35,7 +37,9 @@
       display: none;
     }
     .MainHead__BackContainer,
-    .MainHead__SearchContainer {
+    .MainHead__SearchContainer,
+    .MainHead__VoiceCallContainer
+    {
       padding: 18px;
     }
   }

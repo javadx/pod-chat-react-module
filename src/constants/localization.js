@@ -265,6 +265,12 @@ let strings = new LocalizedStrings({
       video: "ویدیوها",
       sound: "صداها",
       voice: "ضبط شده‌ها"
+    },
+    calling: "درحال برقراری ارتباط",
+    ringing: "در حال تماس",
+    callStarted: "در حال گفتگو",
+    missedCallAt: date => {
+      return `تماس از دست رفته در ${date}`
     }
   },
   it: {}

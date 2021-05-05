@@ -21,21 +21,26 @@ import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
-import {MdChevronLeft, MdSearch, MdCheck, MdClose} from "react-icons/md";
+import {MdChevronLeft, MdSearch, MdCheck, MdClose, MdPhone} from "react-icons/md";
 import MainHeadThreadInfo from "./MainHeadThreadInfo";
 import MainHeadBatchActions from "./MainHeadBatchActions";
 
 //styling
 import style from "../../styles/app/MainHead.scss";
 import styleVar from "../../styles/variables.scss";
-import {chatSupportModuleBadgeShowing} from "../actions/chatActions";
+import {chatCallBoxShowing, chatStartCall, chatSupportModuleBadgeShowing} from "../actions/chatActions";
+import {isGroup} from "../utils/helpers";
+import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL} from "../constants/callModes";
+import {getParticipant} from "./ModalThreadInfoPerson";
 
 @connect(store => {
   return {
     smallVersion: store.chatSmallVersion,
     supportMode: store.chatSupportMode,
     threadSelectMessageShowing: store.threadSelectMessageShowing,
-    threadCheckedMessageList: store.threadCheckedMessageList
+    threadCheckedMessageList: store.threadCheckedMessageList,
+    participants: store.threadParticipantList.participants,
+    user: store.user.user
   };
 })
 class MainHead extends Component {
@@ -48,6 +53,7 @@ class MainHead extends Component {
     this.onSelectMessagesHide = this.onSelectMessagesHide.bind(this);
     this.onSelectMessagesShow = this.onSelectMessagesShow.bind(this);
     this.closeSupportModule = this.closeSupportModule.bind(this);
+    this.onVoiceCallClick = this.onVoiceCallClick.bind(this);
   }
 
   onShowInfoClick() {
@@ -82,6 +88,12 @@ class MainHead extends Component {
     const {dispatch} = this.props;
     dispatch(threadSelectMessageShowing(false));
     dispatch(threadCheckedMessageList(null, null, true));
+  }
+
+  onVoiceCallClick(){
+    const {participants, thread, user, dispatch} = this.props;
+    dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread, getParticipant(participants, user)));
+    dispatch(chatStartCall(thread.id, "voice"));
   }
 
   render() {
@@ -126,6 +138,12 @@ class MainHead extends Component {
                 {
                   !threadSelectMessageShowing &&
                   <Container>
+                    {
+                      !isGroup(thread) &&
+                      <Container className={style.MainHead__VoiceCallContainer} inline onClick={this.onVoiceCallClick}>
+                        <MdPhone size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                      </Container>
+                    }
                     {
                       thread.lastMessageVO && !supportMode &&
                       <Container className={style.MainHead__SearchContainer} inline onClick={this.onSelectMessagesShow}>

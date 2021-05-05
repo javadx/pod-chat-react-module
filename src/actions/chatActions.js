@@ -40,15 +40,21 @@ import {
   MESSAGE_SEND,
   CHAT_DESTROY,
   THREAD_THUMBNAIL_UPDATE,
-  CHAT_FILE_HASH_CODE_UPDATE,
   CHAT_AUDIO_PLAYER,
-  CHAT_FILE_HASH_CODE_REMOVE,
   CHAT_AUDIO_RECORDER,
   CHAT_SUPPORT_MODE,
-  CHAT_SUPPORT_MODULE_BADGE_SHOWING
+  CHAT_SUPPORT_MODULE_BADGE_SHOWING,
+  CHAT_CALL_BOX_SHOWING,
+  CHAT_CALL_STATUS
 } from "../constants/actionTypes";
 import {messageInfo} from "./messageActions";
 import {THREAD_HISTORY_LIMIT_PER_REQUEST} from "../constants/historyFetchLimits";
+import {
+  CHAT_CALL_BOX_NORMAL,
+  CHAT_CALL_STATUS_INCOMING,
+  CHAT_CALL_STATUS_OUTGOING,
+  CHAT_CALL_STATUS_STARTED
+} from "../constants/callModes";
 
 
 let firstReadyPassed = false;
@@ -152,6 +158,22 @@ export const chatSetInstance = config => {
           type: type,
           payload: message
         });
+      },
+      onCallEvents: (call, type) => {
+        switch (type) {
+          case "RECEIVE_CALL":
+            dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, null, call.creatorVO));
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_INCOMING, call));
+          case "CALL_STARTED":
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {call}));
+          case "CALL_ENDED":
+            dispatch(chatCallBoxShowing(false));
+            return dispatch(chatCallStatus(null, null));
+          case "CALL_DIVS":
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {call}));
+          default:
+            break;
+        }
       },
       onContactsEvents: (contacts, type) => {
         dispatch({
@@ -362,6 +384,53 @@ export const chatSupportModuleBadgeShowing = showing => {
       type: CHAT_SUPPORT_MODULE_BADGE_SHOWING,
       payload: showing
     });
+  }
+};
+
+export const chatCallBoxShowing = (showing, thread, contact) => {
+  return dispatch => {
+    return dispatch({
+      type: CHAT_CALL_BOX_SHOWING,
+      payload: {showing, thread, contact}
+    });
+  }
+};
+
+export const chatCallStatus = (status, call) => {
+  return dispatch => {
+    return dispatch({
+      type: CHAT_CALL_STATUS,
+      payload: {status, call}
+    });
+  }
+};
+
+export const chatAcceptCall = (call) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.acceptCall(call.callId);
+    dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, call));
+  }
+};
+
+export const chatRejectCall = (call) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    if(call) {
+      chatSDK.rejectCall(call.callId);
+    }
+    dispatch(chatCallStatus(null, null));
+    dispatch(chatCallBoxShowing(false, null, null));
+  }
+};
+
+export const chatStartCall = (threadId, type) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.startCall(threadId, type);
   }
 };
 

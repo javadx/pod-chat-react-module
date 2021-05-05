@@ -1,0 +1,71 @@
+.MainCallBox {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 76px;
+  width: 300px;
+  height: 220px;
+  left: 13px;
+  background: linear-gradient(
+                  -45deg, #e3ffb9, #ffd5b1, #e6f1da, #ecdb5e);
+  animation: gradient 5s ease infinite;
+  background-size: 600%;
+  border-radius: 15px;
+  box-shadow: 0 1px 1px rgba(#000, .15), 0 2px 2px rgba(#000, .15), 0 4px 4px rgba(#000, .15), 0 8px 8px rgba(#000, .15);
+  border: 3px solid $color-accent-light;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);;
+  z-index: -$z-index-10;
+}
+
+.MainCallBox--showing {
+  z-index: $z-index-5;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+.MainCallBox--calling {
+  height: 400px;
+  background: $color-white;
+  animation: none;
+  background-size: auto;
+}
+
+.MainCallBox--calling:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  z-index: 1;
+  background: linear-gradient(to bottom right, transparent 0%, #fff 50%, #f9f9f9 50%, #ffffff 100%);
+}
+
+
+.MainCallBox__Head {
+
+}
+
+.MainCallBox__Scene {
+  flex: 1 1 0;
+}
+
+.MainCallBox__ControlSet {
+  order: 3;
+}

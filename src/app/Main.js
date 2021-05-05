@@ -20,11 +20,13 @@ import MainFooter from "./MainFooter";
 import MainPinMessage from "./MainPinMessage";
 import MainIntro from "./MainIntro";
 import MainAudioPlayer from "./MainAudioPlayer";
+import MainCallBox from "./MainCallBox";
+import MainCallBoxCompacted from "./MainCallBoxCompacted";
 
 //styling
 import style from "../../styles/app/Main.scss";
 import coverImage from "../../styles/images/Main/cover.jpg";
-
+import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL} from "../constants/callModes";
 
 
 @connect(store => {
@@ -32,7 +34,8 @@ import coverImage from "../../styles/images/Main/cover.jpg";
     thread: store.thread.thread,
     threadFetching: store.thread.fetching,
     chatRouterLess: store.chatRouterLess,
-    chatAudioPlayer: store.chatAudioPlayer
+    chatAudioPlayer: store.chatAudioPlayer,
+    chatCallBoxShowing: store.chatCallBoxShowing
   };
 })
 class Main extends Component {
@@ -54,8 +57,9 @@ class Main extends Component {
   }
 
   render() {
-    const {thread, chatRouterLess, threadFetching, chatAudioPlayer, history} = this.props;
+    const {thread, chatRouterLess, threadFetching, chatAudioPlayer, history, chatCallBoxShowing} = this.props;
     const {id, pinMessageVO} = thread;
+    const {showing: callBoxShowingType} = chatCallBoxShowing;
 
     if (!id && !threadFetching) {
       return (
@@ -64,6 +68,12 @@ class Main extends Component {
             backgroundImage: `url("${coverImage}")`
           }}/>
           <MainIntro chatRouterLess={chatRouterLess} history={history}/>
+          {
+            callBoxShowingType &&
+            callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
+            <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing}/>
+          }
+          <MainCallBox chatCallBoxShowing={chatCallBoxShowing}/>
         </Container>
       )
     }
@@ -77,7 +87,11 @@ class Main extends Component {
                      backgroundImage: `url("${coverImage}")`
                    }}/>
                    <MainHead thread={thread} chatRouterLess={chatRouterLess} history={history}/>
-
+                   {
+                     callBoxShowingType &&
+                     callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
+                     <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing}/>
+                   }
                    {
                      chatAudioPlayer &&
                      <MainAudioPlayer thread={thread} chatAudioPlayer={chatAudioPlayer}/>
@@ -89,6 +103,8 @@ class Main extends Component {
 
                    <MainMessages thread={thread} ref={this.mainMessagesRef}/>
                    <MainFooter/>
+                   <MainCallBox chatCallBoxShowing={chatCallBoxShowing}/>
+
                  </Container>
                )
              }}>

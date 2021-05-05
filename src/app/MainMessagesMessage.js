@@ -7,7 +7,7 @@ import {
   isMessageIsFile,
   isMessageIsNewFile,
   mobileCheck,
-  messageDatePetrification
+  messageDatePetrification, isSystemMessage
 } from "../utils/helpers";
 
 //strings
@@ -32,6 +32,7 @@ import MainMessagesMessageShare from "./MainMessagesMessageShare";
 
 //styling
 import style from "../../styles/app/MainMessagesMessage.scss";
+import MainMessagesMessageSystem from "./MainMessagesMessageSystem";
 
 @connect(store => {
   return {
@@ -45,6 +46,7 @@ export class MainMessagesMessage extends Component {
 
   constructor(props) {
     super(props);
+    this.isMessageIsSystemMessage = isSystemMessage(props.message);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.onMessageControlHide = this.onMessageControlHide.bind(this);
@@ -71,7 +73,7 @@ export class MainMessagesMessage extends Component {
           if (currentMessage.progress === message.progress) {
             if (currentHighLightMessage === highLightMessage) {
               if (currentShowName === showName) {
-                if((isChannel || isGroup) && !supportMode) {
+                if ((isChannel || isGroup) && !supportMode) {
                   return false;
                 } else {
                   if (currentMessage.seen === message.seen) {
@@ -102,7 +104,7 @@ export class MainMessagesMessage extends Component {
   }
 
   onMouseOver() {
-    if (mobileCheck()) {
+    if (mobileCheck() || this.isMessageIsSystemMessage) {
       return;
     }
     if (this.state.messageTriggerShow) {
@@ -114,7 +116,7 @@ export class MainMessagesMessage extends Component {
   }
 
   onMouseLeave() {
-    if (!this.state.messageTriggerShow) {
+    if (!this.state.messageTriggerShow || this.isMessageIsSystemMessage) {
       return;
     }
     this.setState({
@@ -137,6 +139,9 @@ export class MainMessagesMessage extends Component {
   }
 
   onMessageControlShow(e) {
+    if (this.isMessageIsSystemMessage) {
+      return;
+    }
     if (!this.state.messageControlShow) {
       this.setState({
         messageControlShow: true
@@ -146,6 +151,9 @@ export class MainMessagesMessage extends Component {
   }
 
   onThreadTouchStart(message, e) {
+    if (this.isMessageIsSystemMessage) {
+      return;
+    }
     e.stopPropagation();
     const touchPosition = this.touchPosition;
     clearTimeout(this.showMenuTimeOutId);
@@ -159,10 +167,16 @@ export class MainMessagesMessage extends Component {
   }
 
   onThreadTouchMove(message, e) {
+    if (this.isMessageIsSystemMessage) {
+      return;
+    }
     this.touchPosition = `${e.touches[0].pageX}${e.touches[0].pageY}`;
   }
 
   onThreadTouchEnd(message, e) {
+    if (this.isMessageIsSystemMessage) {
+      return;
+    }
     if (this.showMenuTimeOutId) {
       clearTimeout(this.showMenuTimeOutId);
     } else {
@@ -222,11 +236,11 @@ export class MainMessagesMessage extends Component {
                  className={style.MainMessagesMessage__Container}
                  style={{
                    maxWidth: mobileCheck() || supportMode ? "70%" : threadLeftAsideShowing && window.innerWidth < 1100 ? "60%" : "50%",
-                   marginRight: isGroup ? null : isMessageByMe ? "5px" : null,
-                   marginLeft: isGroup ? null : isMessageByMe ? null : "5px"
+                   marginRight: this.isMessageIsSystemMessage || isGroup ? null : isMessageByMe ? "5px" : null,
+                   marginLeft: this.isMessageIsSystemMessage || isGroup ? null : isMessageByMe ? null : "5px"
                  }}
                  ref={this.containerRef}
-                 onDoubleClick={message.id && this.onReply}
+                 onDoubleClick={message.id && !this.isMessageIsSystemMessage && this.onReply}
                  onClick={this.onMessageControlShow.bind(this, true)}
                  onTouchStart={this.onThreadTouchStart.bind(this, message)}
                  onTouchMove={this.onThreadTouchMove.bind(this, message)}
@@ -234,7 +248,7 @@ export class MainMessagesMessage extends Component {
                  onMouseOver={this.onMouseOver}
                  onMouseLeave={this.onMouseLeave}>
 
-        <ContextTrigger id={message.id ? "messages-context-menu" : Math.random()} holdToDisplay={-1}
+        <ContextTrigger id={message.id && !this.isMessageIsSystemMessage ? "messages-context-menu" : Math.random()} holdToDisplay={-1}
                         contextTriggerRef={this.contextTriggerRef} collect={() => this}>
           {isMessageIsFile(message) ?
             isMessageIsNewFile(message) || !message.id ?
@@ -242,7 +256,10 @@ export class MainMessagesMessage extends Component {
               :
               <MainMessagesMessageFileFallback {...args}/>
             :
-            <MainMessagesMessageText {...args}/>
+            isSystemMessage(message) ?
+              <MainMessagesMessageSystem {...args}/>
+              :
+              <MainMessagesMessageText {...args}/>
           }
         </ContextTrigger>
       </Container>

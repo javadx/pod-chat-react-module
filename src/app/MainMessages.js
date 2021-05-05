@@ -578,9 +578,10 @@ export default class MainMessages extends Component {
     } = this.props;
     const {highLightMessage, bottomButtonShowing, unreadBar, newMessageUnreadCount} = this.state;
     const {messages, fetching, hasPrevious, hasNext} = threadMessages;
-    const MainMessagesMessageContainerClassNames = isMessageByMe => classnames({
+    const MainMessagesMessageContainerClassNames = (isMessageByMe, messageType) => classnames({
       [style.MainMessages__MessageContainer]: true,
-      [style["MainMessages__MessageContainer--left"]]: !isMessageByMe
+      [style["MainMessages__MessageContainer--left"]]: !isMessageByMe,
+      [style["MainMessages__MessageContainer--center"]]: messageType === 13
     });
 
     if (!thread.id || fetching || threadGetMessageListByMessageIdFetching) {
@@ -624,7 +625,7 @@ export default class MainMessages extends Component {
                                    active={threadSelectMessageShowing && messageSelectedCondition(message, threadCheckedMessageList)}
                                    activeColor="gray"
                                    noPadding>
-                    <Container className={MainMessagesMessageContainerClassNames(isMessageByMeResult)}
+                    <Container className={MainMessagesMessageContainerClassNames(isMessageByMeResult, message.messageType)}
                                id={`message-${message.time}`}
                                relative>
                       {

@@ -31,6 +31,10 @@
   flex-direction: row-reverse;
 }
 
+.MainMessages__MessageContainer--center {
+  justify-content: center;
+}
+
 .MainMessages__UnreadCountBar {
   background-color: $color-background-light;
   padding: 7px 0;

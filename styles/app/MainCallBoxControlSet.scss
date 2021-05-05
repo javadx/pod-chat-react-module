@@ -1,0 +1,23 @@
+.MainCallBoxControlSet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.MainCallBoxControlSet__Button {
+  box-shadow: none;
+  position: relative;
+}
+
+.MainCallBoxControlSet__DropCall {
+  transform: rotate(135deg);
+  background-color: $color-red;
+}
+
+.MainCallBoxControlSet__AcceptCall {
+  background-color: $color-green-dark;
+}
+
+.MainCallBoxControlSet__Speaker,
+.MainCallBoxControlSet__Mic {
+}

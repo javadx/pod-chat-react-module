@@ -251,6 +251,10 @@ export function isMessageIsFile(message) {
   }
 }
 
+export function isSystemMessage(message) {
+  return message.messageType === 13;
+}
+
 export function isMessageIsNewFile(message) {
   const {fileHash} = getMessageMetaData(message);
   if (fileHash) {
