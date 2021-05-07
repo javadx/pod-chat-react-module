@@ -51,17 +51,17 @@ export default class MainCallBoxControlSet extends Component {
   onDropCallClick(e) {
     e.stopPropagation();
     const {stopRingtone, dispatch, chatCallStatus} = this.props;
-    const {call} = chatCallStatus;
+    const {call, status} = chatCallStatus;
     dispatch(chatRejectCall(call));
-    stopRingtone();
+    stopRingtone(status);
   }
 
   onAcceptCallClick(e) {
     e.stopPropagation();
     const {dispatch, chatCallStatus, stopRingtone} = this.props;
-    const {call} = chatCallStatus;
+    const {call, status} = chatCallStatus;
     dispatch(chatAcceptCall(call));
-    stopRingtone();
+    stopRingtone(status);
   }
 
   onVolumeClick(e) {

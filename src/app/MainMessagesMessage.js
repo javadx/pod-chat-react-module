@@ -206,6 +206,7 @@ export class MainMessagesMessage extends Component {
       supportMode
     } = this.props;
     const {messageControlShow, messageTriggerShow} = this.state;
+    const isSystemMessageBool = isSystemMessage(message);
     const args = {
       onMessageControlShow: this.onMessageControlShow,
       onMessageSeenListClick: this.onMessageSeenListClick,
@@ -235,12 +236,12 @@ export class MainMessagesMessage extends Component {
                  relative
                  className={style.MainMessagesMessage__Container}
                  style={{
-                   maxWidth: mobileCheck() || supportMode ? "70%" : threadLeftAsideShowing && window.innerWidth < 1100 ? "60%" : "50%",
+                   maxWidth: isSystemMessageBool ? "90%" : mobileCheck() || supportMode ? "70%" : threadLeftAsideShowing && window.innerWidth < 1100 ? "60%" : "50%",
                    marginRight: this.isMessageIsSystemMessage || isGroup ? null : isMessageByMe ? "5px" : null,
                    marginLeft: this.isMessageIsSystemMessage || isGroup ? null : isMessageByMe ? null : "5px"
                  }}
                  ref={this.containerRef}
-                 onDoubleClick={message.id && !this.isMessageIsSystemMessage && this.onReply}
+                 onDoubleClick={message.id && !this.isMessageIsSystemMessage ? this.onReply : undefined}
                  onClick={this.onMessageControlShow.bind(this, true)}
                  onTouchStart={this.onThreadTouchStart.bind(this, message)}
                  onTouchMove={this.onThreadTouchMove.bind(this, message)}
@@ -248,7 +249,8 @@ export class MainMessagesMessage extends Component {
                  onMouseOver={this.onMouseOver}
                  onMouseLeave={this.onMouseLeave}>
 
-        <ContextTrigger id={message.id && !this.isMessageIsSystemMessage ? "messages-context-menu" : Math.random()} holdToDisplay={-1}
+        <ContextTrigger id={message.id && !this.isMessageIsSystemMessage ? "messages-context-menu" : Math.random()}
+                        holdToDisplay={-1}
                         contextTriggerRef={this.contextTriggerRef} collect={() => this}>
           {isMessageIsFile(message) ?
             isMessageIsNewFile(message) || !message.id ?
@@ -256,8 +258,8 @@ export class MainMessagesMessage extends Component {
               :
               <MainMessagesMessageFileFallback {...args}/>
             :
-            isSystemMessage(message) ?
-              <MainMessagesMessageSystem {...args}/>
+            isSystemMessageBool ?
+              <MainMessagesMessageSystem {...args} user={user}/>
               :
               <MainMessagesMessageText {...args}/>
           }

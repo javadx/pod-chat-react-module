@@ -43,6 +43,7 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.mainMessagesRef = React.createRef();
+    this.mainCallBoxRef = React.createRef();
   }
 
   componentDidUpdate({location: oldLocation}) {
@@ -71,9 +72,9 @@ class Main extends Component {
           {
             callBoxShowingType &&
             callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
-            <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing}/>
+            <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing} mainCallBoxRef={this.mainCallBoxRef}/>
           }
-          <MainCallBox chatCallBoxShowing={chatCallBoxShowing}/>
+          <MainCallBox chatCallBoxShowing={chatCallBoxShowing}  ref={this.mainCallBoxRef}/>
         </Container>
       )
     }
@@ -90,7 +91,7 @@ class Main extends Component {
                    {
                      callBoxShowingType &&
                      callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
-                     <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing}/>
+                     <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing} mainCallBoxRef={this.mainCallBoxRef}/>
                    }
                    {
                      chatAudioPlayer &&
@@ -103,7 +104,7 @@ class Main extends Component {
 
                    <MainMessages thread={thread} ref={this.mainMessagesRef}/>
                    <MainFooter/>
-                   <MainCallBox chatCallBoxShowing={chatCallBoxShowing}/>
+                   <MainCallBox chatCallBoxShowing={chatCallBoxShowing}  ref={this.mainCallBoxRef}/>
 
                  </Container>
                )

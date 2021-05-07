@@ -30,7 +30,7 @@ import style from "../../styles/app/MainHead.scss";
 import styleVar from "../../styles/variables.scss";
 import {chatCallBoxShowing, chatStartCall, chatSupportModuleBadgeShowing} from "../actions/chatActions";
 import {isGroup} from "../utils/helpers";
-import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL} from "../constants/callModes";
+import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
 
 @connect(store => {
@@ -40,6 +40,7 @@ import {getParticipant} from "./ModalThreadInfoPerson";
     threadSelectMessageShowing: store.threadSelectMessageShowing,
     threadCheckedMessageList: store.threadCheckedMessageList,
     participants: store.threadParticipantList.participants,
+    chatCallStatus: store.chatCallStatus,
     user: store.user.user
   };
 })
@@ -109,7 +110,7 @@ class MainHead extends Component {
   }
 
   render() {
-    const {thread, smallVersion, threadSelectMessageShowing, threadCheckedMessageList, supportMode} = this.props;
+    const {thread, smallVersion, threadSelectMessageShowing, threadCheckedMessageList, supportMode, chatCallStatus} = this.props;
     const showLoading = !thread.id;
     const classNames = classnames({
       [style.MainHead]: true,
@@ -152,9 +153,11 @@ class MainHead extends Component {
                   !threadSelectMessageShowing &&
                   <Container>
                     {
-                      !isGroup(thread) &&
-                      <Container className={style.MainHead__VoiceCallContainer} inline onClick={this.onVoiceCallClick}>
-                        <MdPhone size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                      !isGroup(thread) && !supportMode &&
+                      <Container className={style.MainHead__VoiceCallContainer} inline
+                                 onClick={chatCallStatus.status ? e => {} : this.onVoiceCallClick}>
+                        <MdPhone size={styleVar.iconSizeMd}
+                                 color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
                       </Container>
                     }
                     {

@@ -23,6 +23,8 @@ import {getImage, getName} from "./_component/contactList";
 import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_STARTED, MOCK_CONTACT} from "../constants/callModes";
 import strings from "../constants/localization";
 import date from "../utils/date";
+import ReactStopwatch from "react-stopwatch";
+import Gap from "raduikit/src/gap";
 
 
 @connect()
@@ -47,7 +49,22 @@ export default class MainCallBoxCompacted extends Component {
           {getName(contact)}
           <AvatarText>
             <Text size="xs"
-                  color="accent">{incomingCondition ? strings.ringing : callStarted ? strings.callStarted : strings.calling}</Text>
+                  color="accent"
+                  inline>{incomingCondition ? strings.ringing : callStarted ? strings.callStarted : strings.calling}</Text>
+            {callStarted &&
+            <Gap x={5}>
+              <ReactStopwatch
+                seconds={window.calltimerSec}
+                minutes={window.calltimerMins}
+                render={({formatted, hours, minutes, seconds}) => {
+                  return (
+                    <Text size="xs" color="accent" bold inline>
+                      {minutes > 10 ? minutes : `0${minutes}`}:{seconds > 10 ? seconds : `0${seconds}`}
+                    </Text>
+                  );
+                }}/>
+            </Gap>
+            }
           </AvatarText>
         </AvatarName>
       </Avatar>;

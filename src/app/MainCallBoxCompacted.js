@@ -43,7 +43,7 @@ export default class MainCallBoxCompacted extends Component {
   }
 
   render() {
-    const {chatCallBoxShowing, chatCallStatus} = this.props;
+    const {chatCallBoxShowing, chatCallStatus, mainCallBoxRef} = this.props;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const className = classnames({
@@ -55,7 +55,7 @@ export default class MainCallBoxCompacted extends Component {
         <MainCallBoxCompactedPerson chatCallBoxShowing={chatCallBoxShowing} chatCallStatus={chatCallStatus}/>
       </Container>
       <Container className={style.MainCallBoxCompacted__ControlSet}>
-        <MainCallBoxControlSet buttonSize="sm"/>
+        <MainCallBoxControlSet stopRingtone={mainCallBoxRef.current && mainCallBoxRef.current.stopRingtone} buttonSize="sm"/>
       </Container>
     </Container>
   }

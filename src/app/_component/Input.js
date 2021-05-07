@@ -160,6 +160,7 @@ export default class MainFooterInput extends Component {
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
+    this.onDrop = this.onDrop.bind(this);
     this.onPaste = this.onPaste.bind(this);
     this.typingTimeOut = null;
     this.typingSet = false;
@@ -238,10 +239,21 @@ export default class MainFooterInput extends Component {
     }
   }
 
+  onDrop(evt) {
+    if (evt.dataTransfer) {
+      const text = evt.dataTransfer.getData('text/plain');
+      if (text) {
+        if (text.indexOf("blob") > -1) {
+          return evt.preventDefault();
+        }
+      }
+    }
+  }
+
   onKeyDown(evt) {
     const {onKeyDown, sendByEnter} = this.props;
     onKeyDown && onKeyDown(evt);
-    if(!sendByEnter) {
+    if (!sendByEnter) {
       if (event.key === "Enter") {
         document.execCommand("insertLineBreak");
         event.preventDefault()
@@ -295,6 +307,7 @@ export default class MainFooterInput extends Component {
             onKeyPress={this.onKeyPress}
             onKeyDown={this.onKeyDown}
             onKeyUp={this.onKeyUp}
+            onDrop={this.onDrop}
             value={value}/>
         </Container>
         <Container centerLeft>

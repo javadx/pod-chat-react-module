@@ -26,49 +26,70 @@ import {
   CHAT_CALL_BOX_COMPACTED,
   CHAT_CALL_BOX_NORMAL,
   CHAT_CALL_STATUS_INCOMING,
-  CHAT_CALL_STATUS_OUTGOING
+  CHAT_CALL_STATUS_OUTGOING, DROPPING_INCOMING_TIME_OUT, DROPPING_OUTGOING_TIME_OUT
 } from "../constants/callModes";
 import {chatCallBoxShowingReducer} from "../reducers/chatReducer";
 import MainCallBoxHead from "./MainCallBoxHead";
 import ringtoneSound from "../constants/ringtone.mp3";
+import callingTone from "../constants/callingTone.mp3";
 
 
 @connect(store => {
   return {
     chatCallStatus: store.chatCallStatus
   }
-})
+}, null, null, {forwardRef: true})
 export default class MainCallBox extends Component {
 
   constructor(props) {
     super(props);
     this.onCallBoxClick = this.onCallBoxClick.bind(this);
     //create notification audio tag
-    this.playMusic = this.playMusic.bind(this);
+    this.playRingtone = this.playRingtone.bind(this);
     this.stopRingtone = this.stopRingtone.bind(this);
+    this.interValId = null;
     this.ringtone = new Audio(ringtoneSound);
     this.ringtone.loop = true;
-    this.muted = true;
+    this.ringtone.muted = true;
+
+    this.callingTone = new Audio(callingTone);
+    this.callingTone.loop = true;
+    this.callingTone.muted = true;
+  }
+
+  setTimeoutForDropping(type, timeout) {
+    const {dispatch} = this.props;
+    if (!this.interValId) {
+      this.interValId = setTimeout(e => {
+        const {chatCallStatus} = this.props;
+        if (chatCallStatus.status === type) {
+          dispatch(chatRejectCall(chatCallStatus.call));
+          this.stopRingtone(type);
+          this.interValId = window.clearInterval(this.interValId);
+        }
+      }, timeout);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const {chatCallStatus, dispatch} = this.props;
+    const {chatCallStatus} = this.props;
     const {chatCallStatus: oldChatCallStatus} = prevProps;
     const {status: oldStatus} = oldChatCallStatus;
     const {status} = chatCallStatus;
     if (oldStatus !== status) {
+      this.interValId = window.clearInterval(this.interValId);
       if (status === CHAT_CALL_STATUS_INCOMING) {
-        this.interValId = setInterval(e => {
-          const {chatCallStatus} = this.props;
-          if (chatCallStatus.status === CHAT_CALL_STATUS_INCOMING) {
-            dispatch(chatRejectCall(chatCallStatus.call));
-            this.stopRingtone();
-            window.clearInterval(this.interValId);
-          }
-        }, 15000);
-        this.playMusic();
+        this.setTimeoutForDropping(CHAT_CALL_STATUS_INCOMING, DROPPING_INCOMING_TIME_OUT);
+        this.playRingtone(CHAT_CALL_STATUS_INCOMING);
       } else {
-        window.clearInterval(this.interValId);
+        if (status === CHAT_CALL_STATUS_OUTGOING) {
+          this.setTimeoutForDropping(CHAT_CALL_STATUS_OUTGOING, DROPPING_OUTGOING_TIME_OUT);
+          this.playRingtone(CHAT_CALL_STATUS_OUTGOING);
+        }
+        if (!status) {
+          this.stopRingtone(CHAT_CALL_STATUS_OUTGOING);
+          this.stopRingtone(CHAT_CALL_STATUS_INCOMING);
+        }
       }
     }
   }
@@ -79,16 +100,28 @@ export default class MainCallBox extends Component {
     dispatch(chatCallBoxShowingAction(CHAT_CALL_BOX_COMPACTED, thread, contact));
   }
 
-  playMusic() {
-    this.ringtone.currentTime = 0;
-    this.ringtone.muted = false;
-    this.ringtone.play();
+  playRingtone(type) {
+    if (type === CHAT_CALL_STATUS_INCOMING) {
+      this.ringtone.currentTime = 0;
+      this.ringtone.muted = false;
+      this.ringtone.play();
+    } else if (type === CHAT_CALL_STATUS_OUTGOING) {
+      this.callingTone.currentTime = 0;
+      this.callingTone.muted = false;
+      this.callingTone.play();
+    }
   }
 
-  stopRingtone() {
-    this.ringtone.muted = true;
-    this.ringtone.pause();
-    this.ringtone.currentTime = 0;
+  stopRingtone(type) {
+    if (type === CHAT_CALL_STATUS_INCOMING) {
+      this.ringtone.muted = true;
+      this.ringtone.pause();
+      this.ringtone.currentTime = 0;
+    } else if (type === CHAT_CALL_STATUS_OUTGOING) {
+      this.callingTone.muted = true;
+      this.callingTone.pause();
+      this.callingTone.currentTime = 0;
+    }
   }
 
   render() {
@@ -104,12 +137,12 @@ export default class MainCallBox extends Component {
 
     return <Container className={classNames}>
 
+
+      <Container className={style.MainCallBox__Head} onClick={this.onCallBoxClick}>
+        <MainCallBoxHead chatCallStatus={chatCallStatus}/>
+      </Container>
       {callBoxShowingType === CHAT_CALL_BOX_NORMAL &&
       <Fragment>
-        <Container className={style.MainCallBox__Head} onClick={this.onCallBoxClick}>
-          <MainCallBoxHead chatCallStatus={chatCallStatus}/>
-        </Container>
-
         <Container className={style.MainCallBox__Scene}>
           <MainCallBoxScene chatCallStatus={chatCallStatus} chatCallBoxShowing={chatCallBoxShowing}/>
         </Container>
@@ -118,6 +151,7 @@ export default class MainCallBox extends Component {
         </Container>
       </Fragment>
       }
+
 
     </Container>
   }

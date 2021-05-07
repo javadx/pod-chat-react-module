@@ -12,13 +12,14 @@ export default function(props) {
   const args = {
     isGroup: isGroup(thread),
     isChannel: isChannel(thread),
-    isMessageByMe: isMessageByMe(lastMessageVO, user),
+    isMessageByMe: isMessageByMe(lastMessageVO, user, thread),
     lastMessageVO,
     lastMessage,
     draftMessage,
     inviter,
     time,
-    isTyping
+    isTyping,
+    thread
   };
   return (
     <Container>

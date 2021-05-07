@@ -32,6 +32,7 @@ import style from "../../styles/app/MainMessagesText.scss";
 import systemStyle from "../../styles/app/MainMessagesMessageSystem.scss";
 import styleVar from "../../styles/variables.scss";
 import {getName} from "./_component/contactList";
+import {getParticipant} from "./ModalThreadInfoPerson";
 
 
 @connect()
@@ -49,7 +50,9 @@ export default class MainMessagesMessageText extends Component {
       highLightMessage,
       isChannel,
       isGroup,
-      ref
+      ref,
+      user,
+      thread
     } = this.props;
     return (
       <Container className={style.MainMessagesText} ref={ref}>
@@ -58,9 +61,9 @@ export default class MainMessagesMessageText extends Component {
                                 isFirstMessage={isFirstMessage} isMessageByMe={isMessageByMe}>
           <MainMessagesMessageBoxHighLighter message={message} highLightMessage={highLightMessage}/>
           <Container userSelect="none" className={systemStyle.MainMessagesMessageSystem__TextContainer}>
-            {isMessageByMe ? <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/> :  <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>}
+            {isMessageByMe ? <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/> : <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>}
             <Text isHTML wordWrap="breakWord" whiteSpace="preWrap" color="text" dark size="sm">
-             {isMessageByMe ? strings.missedCallAt(messageDatePetrification(message.time)) : strings.participantRejectYourCall(getName(message.participant), messageDatePetrification(message.time))}
+             {!isMessageByMe ? strings.missedCallAt(messageDatePetrification(message.time)) : strings.participantRejectYourCall(thread.title, messageDatePetrification(message.time))}
             </Text>
           </Container>
         </MainMessagesMessageBox>

@@ -418,7 +418,7 @@ export const chatRejectCall = (call) => {
   return (dispatch, getState) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
-    if(call) {
+    if (call) {
       chatSDK.rejectCall(call.callId);
     }
     dispatch(chatCallStatus(null, null));
@@ -431,6 +431,7 @@ export const chatStartCall = (threadId, type, params) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
     chatSDK.startCall(threadId, type, params);
+    dispatch(chatCallStatus(CHAT_CALL_STATUS_OUTGOING, null));
   }
 };
 
