@@ -426,11 +426,11 @@ export const chatRejectCall = (call) => {
   }
 };
 
-export const chatStartCall = (threadId, type) => {
+export const chatStartCall = (threadId, type, params) => {
   return (dispatch, getState) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
-    chatSDK.startCall(threadId, type);
+    chatSDK.startCall(threadId, type, params);
   }
 };
 

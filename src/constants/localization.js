@@ -1,4 +1,5 @@
 import LocalizedStrings from "react-localization";
+import date from "../utils/date";
 
 let strings = new LocalizedStrings({
   fa: {
@@ -271,6 +272,9 @@ let strings = new LocalizedStrings({
     callStarted: "در حال گفتگو",
     missedCallAt: date => {
       return `تماس از دست رفته در ${date}`
+    },
+    participantRejectYourCall: (name,date)=>{
+      return `رد تماس توسط ${name} در ${date}`
     }
   },
   it: {}

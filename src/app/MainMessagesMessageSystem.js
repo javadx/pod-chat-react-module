@@ -23,17 +23,15 @@ import {messageCancel, messageEditing, messageSend} from "../actions/messageActi
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {ContextItem} from "../../../pod-chat-ui-kit/src/menu/Context";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {MdEdit, MdCallMissed} from "react-icons/md";
+import {MdEdit, MdCallMissed, MdCallEnd} from "react-icons/md";
 import MainMessagesMessageBox from "./MainMessagesMessageBox";
 import MainMessagesMessageBoxHighLighter from "./MainMessagesMessageBoxHighLighter";
-import MainMessagesMessageBoxSeen from "./MainMessagesMessageBoxSeen";
-import MainMessagesMessageBoxEdit from "./MainMessagesMessageBoxEdit";
-import MainMessagesMessageBoxFooter from "./MainMessagesMessageBoxFooter";
 
 //styling
 import style from "../../styles/app/MainMessagesText.scss";
 import systemStyle from "../../styles/app/MainMessagesMessageSystem.scss";
 import styleVar from "../../styles/variables.scss";
+import {getName} from "./_component/contactList";
 
 
 @connect()
@@ -47,19 +45,10 @@ export default class MainMessagesMessageText extends Component {
     const {
       isMessageByMe,
       isFirstMessage,
-      thread,
-      messageControlShow,
-      messageTriggerShow,
       message,
       highLightMessage,
-      onMessageControlShow,
-      onRepliedMessageClicked,
-      onMessageSeenListClick,
-      onMessageControlHide,
-      forceSeen,
       isChannel,
       isGroup,
-      supportMode,
       ref
     } = this.props;
     return (
@@ -69,9 +58,9 @@ export default class MainMessagesMessageText extends Component {
                                 isFirstMessage={isFirstMessage} isMessageByMe={isMessageByMe}>
           <MainMessagesMessageBoxHighLighter message={message} highLightMessage={highLightMessage}/>
           <Container userSelect="none" className={systemStyle.MainMessagesMessageSystem__TextContainer}>
-            <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>
+            {isMessageByMe ? <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/> :  <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>}
             <Text isHTML wordWrap="breakWord" whiteSpace="preWrap" color="text" dark size="sm">
-             {strings.missedCallAt(messageDatePetrification(message.time))}
+             {isMessageByMe ? strings.missedCallAt(messageDatePetrification(message.time)) : strings.participantRejectYourCall(getName(message.participant), messageDatePetrification(message.time))}
             </Text>
           </Container>
         </MainMessagesMessageBox>

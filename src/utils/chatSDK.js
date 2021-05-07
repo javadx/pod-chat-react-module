@@ -937,13 +937,14 @@ export default class ChatSDK {
 
 
   @promiseDecorator
-  startCall(resolve, reject, threadId, type) {
+  startCall(resolve, reject, threadId, type, params = {}) {
     const callType = {
       threadId,
-      type
+      type,
+      ...params
     };
     this.chatAgent.startCall(callType, function (res) {
-      console.log(e)
+      console.log(e);
       resolve(res)
     });
   }

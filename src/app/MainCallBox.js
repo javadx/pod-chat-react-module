@@ -67,6 +67,8 @@ export default class MainCallBox extends Component {
           }
         }, 15000);
         this.playMusic();
+      } else {
+        window.clearInterval(this.interValId);
       }
     }
   }

@@ -90,9 +90,21 @@ class MainHead extends Component {
     dispatch(threadCheckedMessageList(null, null, true));
   }
 
-  onVoiceCallClick(){
+  onVoiceCallClick() {
     const {participants, thread, user, dispatch} = this.props;
-    dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread, getParticipant(participants, user)));
+    const contact = thread.onTheFly ? thread.participant : getParticipant(participants, user);
+    dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread, contact));
+    if (thread.onTheFly) {
+      const id = contact.isMyContact ? contact.contactId : contact.id;
+      const type = contact.isMyContact ? "TO_BE_USER_CONTACT_ID" : "TO_BE_USER_ID";
+      return dispatch(chatStartCall(null, "voice", {
+        invitees: [{
+          "id": id,
+          "idType": type
+        }
+        ]
+      }));
+    }
     dispatch(chatStartCall(thread.id, "voice"));
   }
 
@@ -117,7 +129,8 @@ class MainHead extends Component {
             <Fragment>
               {
                 threadSelectMessageShowing ?
-                  <MainHeadBatchActions thread={thread} threadCheckedMessageList={threadCheckedMessageList} smallVersion={smallVersion}/>
+                  <MainHeadBatchActions thread={thread} threadCheckedMessageList={threadCheckedMessageList}
+                                        smallVersion={smallVersion}/>
                   :
                   <MainHeadThreadInfo smallVersion={smallVersion} thread={thread}/>
               }
@@ -153,7 +166,8 @@ class MainHead extends Component {
                     <Container className={style.MainHead__SearchContainer} inline onClick={this.onLeftAsideShow}>
                       <MdSearch size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
                     </Container>
-                    <Container className={style.MainHead__BackContainer} inline onClick={supportMode ? this.closeSupportModule : this.onThreadHide}>
+                    <Container className={style.MainHead__BackContainer} inline
+                               onClick={supportMode ? this.closeSupportModule : this.onThreadHide}>
                       {supportMode ?
                         <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
                         :
