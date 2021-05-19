@@ -91,7 +91,7 @@ module.exports = (e, argv) => {
         },
         {
           test: /\.(png|jpg|gif|ttf|eot|woff2|woff|mp3|svg)$/,
-          exclude: /((oneone|talk-logo|layers|layers-2x|marker-icon|marker-icon-2x|marker-shadow|map-fake)\.png)|(cover\.jpg)/,
+          exclude: /((oneone|talk-logo|layers|layers-2x|marker-icon|marker-icon-2x|marker-shadow|map-fake)\.png)|(cover\.jpg)|((callinTone|ringtone)\.jpg)/,
           use: [
             {
               loader: "url-loader",
