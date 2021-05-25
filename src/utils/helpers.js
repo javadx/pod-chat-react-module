@@ -246,7 +246,12 @@ export function isMessageIsFile(message) {
       if (typeof message.metadata === "object") {
         return message.metadata.file;
       }
-      return JSON.parse(message.metadata).file;
+      try {
+
+        return JSON.parse(message.metadata).file;
+      }catch (e) {
+        return false
+      }
     }
   }
 }

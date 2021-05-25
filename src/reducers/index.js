@@ -5,7 +5,7 @@ import {
   contactBlockReducer,
   contactListShowingReducer,
   contactModalCreateGroupShowingReducer,
-  contactChattingReducer, contactGetListPartialReducer
+  contactChattingReducer, contactGetListPartialReducer,
 } from "./contactReducer";
 import {
   threadNotificationReducer,
@@ -44,6 +44,7 @@ import {
   chatSmallVersionReducer,
   chatNotificationReducer,
   chatNotificationClickHookReducer,
+  chatSelectParticipantForCallShowingReducer,
   chatInstanceReducer,
   chatAudioPlayerReducer,
   chatStateReducer,
@@ -83,6 +84,7 @@ const rootReducer = {
   contactGetListPartial: contactGetListPartialReducer,
   contactListShowing: contactListShowingReducer,
   contactModalCreateGroupShowing: contactModalCreateGroupShowingReducer,
+  chatSelectParticipantForCallShowing: chatSelectParticipantForCallShowingReducer,
   contactAdding: contactAddingReducer,
   contactAdd: contactAdd,
   contactBlock: contactBlockReducer,

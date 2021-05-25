@@ -3,7 +3,13 @@ import {connect} from "react-redux";
 
 //actions
 import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAcceptCall, chatAudioPlayer, chatCallBoxShowing, chatRejectCall} from "../actions/chatActions";
+import {
+  chatAcceptCall,
+  chatAudioPlayer,
+  chatCallBoxShowing,
+  chatCallStatus,
+  chatRejectCall
+} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
@@ -24,7 +30,7 @@ import {
 import style from "../../styles/app/MainCallBoxControlSet.scss";
 import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, mobileCheck} from "../utils/helpers";
-import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
+import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
 import classnames from "classnames";
 import {getParticipant} from "./ModalThreadInfoPerson";
 
@@ -48,11 +54,26 @@ export default class MainCallBoxControlSet extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {chatCallStatus} = this.props;
+    const {chatCallStatus: oldChatCallStatus} = prevProps;
+    const {status: oldStatus} = oldChatCallStatus;
+    const {status, call} = chatCallStatus;
+    if (oldStatus !== status) {
+      if(status === CHAT_CALL_STATUS_DIVS) {
+        const {volume, mic} = this.state;
+        call.uiLocalAudio.muted = !mic;
+        call.uiRemoteAudio.muted = !volume;
+      }
+    }
+  }
+
+
   onDropCallClick(e) {
     e.stopPropagation();
     const {stopRingtone, dispatch, chatCallStatus} = this.props;
     const {call, status} = chatCallStatus;
-    dispatch(chatRejectCall(call));
+    dispatch(chatRejectCall(call, status));
     stopRingtone(status);
   }
 
@@ -66,15 +87,29 @@ export default class MainCallBoxControlSet extends Component {
 
   onVolumeClick(e) {
     e.stopPropagation();
+    const currentState = this.state.volume;
+    const nextState =!currentState;
+    const {chatCallStatus} = this.props;
+    const {call, status} = chatCallStatus;
+    if(status === CHAT_CALL_STATUS_DIVS) {
+      call.uiRemoteAudio.muted = !nextState;
+    }
     this.setState({
-      volume: !this.state.volume,
+      volume: nextState,
     })
   }
 
   onMicClick(e) {
     e.stopPropagation();
+    const currentState = this.state.mic;
+    const nextState =!currentState;
+    const {chatCallStatus} = this.props;
+    const {call, status} = chatCallStatus;
+    if(status === CHAT_CALL_STATUS_DIVS) {
+      call.uiLocalAudio.muted = !nextState;
+    }
     this.setState({
-      mic: !this.state.mic,
+      mic: nextState,
     })
   }
 

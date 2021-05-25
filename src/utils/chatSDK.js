@@ -950,6 +950,17 @@ export default class ChatSDK {
   }
 
   @promiseDecorator
+  startGroupCall(resolve, reject, threadId, invitees, type, params = {}) {
+    const callParams = {
+      threadId,
+      invitees,
+      type,
+      ...params
+    };
+    chatAgent.startGroupCall(callParams);
+  }
+
+  @promiseDecorator
   acceptCall(resolve, reject, callId) {
     this.chatAgent.acceptCall({
       callId
@@ -966,4 +977,15 @@ export default class ChatSDK {
       resolve(res)
     });
   }
+
+  @promiseDecorator
+  endCall(resolve, reject, callId) {
+    this.chatAgent.endCall({
+      callId: callId
+    }, function (res) {
+      console.log({res});
+    })
+  }
+
+
 };

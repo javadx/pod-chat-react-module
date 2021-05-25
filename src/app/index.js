@@ -53,6 +53,7 @@ import ModalThreadInfo from "./ModalThreadInfo";
 import ModalImageCaption from "./ModalImageCaption";
 import ModalPrompt from "./ModalPrompt";
 import ModalShare from "./ModalShare";
+import ModalParticipantList from "./ModalParticipantList";
 
 //styling
 import style from "../../styles/app/index.scss";
@@ -80,6 +81,7 @@ class Index extends Component {
     this.modalThreadListRef = React.createRef();
     this.modalMediaRef = React.createRef();
     this.modalImageCaptionRef = React.createRef();
+    this.modalParticipantListRef = React.createRef();
     this.firstContactFetching = true;
     this.deletingDatabases = false;
   }
@@ -249,6 +251,7 @@ class Index extends Component {
             <Route exact={!chatRouterLess} path={chatRouterLess ? "" : ROUTE_THREAD_INFO}
                    render={() => <ModalThreadInfo smallVersion={small}/>}/>
             <ModalThreadList smallVersion={small} ref={this.modalThreadListRef}/>
+            <ModalParticipantList smallVersion={small} ref={this.modalParticipantListRef}/>
             <ModalImageCaption smallVersion={small} ref={this.modalImageCaptionRef}/>
             <ModalMedia selector={`.${style.Index__MediaTrigger} a`}
                         ref={this.modalMediaRef}

@@ -21,17 +21,18 @@ import MainCallBoxControlSet from "./MainCallBoxControlSet";
 //styling
 import style from "../../styles/app/MainCallBox.scss";
 import styleVar from "../../styles/variables.scss";
-import {getMessageMetaData} from "../utils/helpers";
+import {getMessageMetaData, isGroup} from "../utils/helpers";
 import {
   CHAT_CALL_BOX_COMPACTED,
-  CHAT_CALL_BOX_NORMAL,
+  CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS,
   CHAT_CALL_STATUS_INCOMING,
-  CHAT_CALL_STATUS_OUTGOING, DROPPING_INCOMING_TIME_OUT, DROPPING_OUTGOING_TIME_OUT
+  CHAT_CALL_STATUS_OUTGOING, CHAT_CALL_STATUS_STARTED, DROPPING_INCOMING_TIME_OUT, DROPPING_OUTGOING_TIME_OUT
 } from "../constants/callModes";
 import {chatCallBoxShowingReducer} from "../reducers/chatReducer";
 import MainCallBoxHead from "./MainCallBoxHead";
 import ringtoneSound from "../constants/ringtone.mp3";
 import callingTone from "../constants/callingTone.mp3";
+import MainCallBoxSceneGroup from "./MainCallBoxSceneGroup";
 
 
 @connect(store => {
@@ -75,7 +76,7 @@ export default class MainCallBox extends Component {
     const {chatCallStatus} = this.props;
     const {chatCallStatus: oldChatCallStatus} = prevProps;
     const {status: oldStatus} = oldChatCallStatus;
-    const {status} = chatCallStatus;
+    const {status, call} = chatCallStatus;
     if (oldStatus !== status) {
       this.interValId = window.clearInterval(this.interValId);
       if (status === CHAT_CALL_STATUS_INCOMING) {
@@ -86,7 +87,12 @@ export default class MainCallBox extends Component {
           this.setTimeoutForDropping(CHAT_CALL_STATUS_OUTGOING, DROPPING_OUTGOING_TIME_OUT);
           this.playRingtone(CHAT_CALL_STATUS_OUTGOING);
         }
-        if (!status) {
+        if(status === CHAT_CALL_STATUS_DIVS) {
+          const {uiRemoteAudio, uiLocalAudio} = call;
+          document.body.appendChild(uiRemoteAudio);
+          document.body.appendChild(uiLocalAudio);
+        }
+        if (!status || status === CHAT_CALL_STATUS_STARTED || status === CHAT_CALL_STATUS_DIVS) {
           this.stopRingtone(CHAT_CALL_STATUS_OUTGOING);
           this.stopRingtone(CHAT_CALL_STATUS_INCOMING);
         }
@@ -126,13 +132,15 @@ export default class MainCallBox extends Component {
 
   render() {
     const {chatCallStatus, chatCallBoxShowing} = this.props;
-    const {showing: callBoxShowingType} = chatCallBoxShowing;
+    const {showing: callBoxShowingType, thread} = chatCallBoxShowing;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const classNames = classnames({
       [style.MainCallBox]: true,
       [style["MainCallBox--showing"]]: callBoxShowingType === CHAT_CALL_BOX_NORMAL,
-      [style["MainCallBox--calling"]]: !incomingCondition
+      [style["MainCallBox--calling"]]: !incomingCondition,
+      [style["MainCallBox--group"]]: thread && isGroup(thread)
+
     });
 
     return <Container className={classNames}>
@@ -144,7 +152,11 @@ export default class MainCallBox extends Component {
       {callBoxShowingType === CHAT_CALL_BOX_NORMAL &&
       <Fragment>
         <Container className={style.MainCallBox__Scene}>
-          <MainCallBoxScene chatCallStatus={chatCallStatus} chatCallBoxShowing={chatCallBoxShowing}/>
+          {isGroup(thread) ?
+            <MainCallBoxSceneGroup chatCallStatus={chatCallStatus} chatCallBoxShowing={chatCallBoxShowing}/>
+            :
+            <MainCallBoxScene chatCallStatus={chatCallStatus} chatCallBoxShowing={chatCallBoxShowing}/>
+          }
         </Container>
         <Container className={style.MainCallBox__ControlSet}>
           <MainCallBoxControlSet stopRingtone={this.stopRingtone} className={style.MainCallBox__ControlSet}/>

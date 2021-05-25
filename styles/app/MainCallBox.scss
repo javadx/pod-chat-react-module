@@ -57,6 +57,18 @@
   background: linear-gradient(to bottom right, transparent 0%, #fff 50%, #f9f9f9 50%, #ffffff 100%);
 }
 
+.MainCallBox--group {
+
+}
+
+.MainCallBox--group:not(.MainCallBox--calling) {
+  height: 250px;
+}
+
+.MainCallBox--group:after {
+  content: none;
+}
+
 
 .MainCallBox__Head {
 

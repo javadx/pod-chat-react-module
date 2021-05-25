@@ -1,8 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {getName} from "./_component/contactList";
-import ModalContactList, {statics as modalContactListStatics} from "./ModalContactList";
 
 //strings
 import strings from "../constants/localization";

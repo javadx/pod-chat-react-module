@@ -148,30 +148,50 @@ class ModalContactList extends Component {
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onScrollBottomThreshold = this.onScrollBottomThreshold.bind(this);
     this.onClose = this.onClose.bind(this);
+    this._fillRequestData = this._fillRequestData.bind(this);
     this.state = {
-      query: null
+      query: null,
+      hasNext: false,
+      nextOffset: 0,
+      contacts: []
     };
   }
 
   componentDidUpdate({isShow: oldIsShow, chatInstance: oldChatInstance, contactsNextOffset: oldContactsNextOffset}) {
-    const {chatInstance, dispatch, isShow, userType, contacts, contactsHasNext, contactsNextOffset} = this.props;
-    const {searchInput} = this.state;
+    const {chatInstance, dispatch, isShow, userType, contacts, contactsHasNext, contactsNextOffset, onSearchChangeRequest, onScrollBottomThresholdRequest} = this.props;
+    const {searchInput, nextOffset, hasNext} = this.state;
 
     if (oldChatInstance !== chatInstance) {
-      dispatch(contactGetList(0, statics.count, searchInput));
+      if (onSearchChangeRequest) {
+        onSearchChangeRequest(searchInput, this._fillRequestData)
+      } else {
+        dispatch(contactGetList(0, statics.count, searchInput));
+      }
     }
 
     const filterContacts = filterContactList(contacts, userType);
     if (!filterContacts.length) {
       if (oldContactsNextOffset !== contactsNextOffset) {
-        if (contactsHasNext) {
-          dispatch(contactGetList(contactsNextOffset, statics.count, searchInput));
+        if (onScrollBottomThresholdRequest) {
+          if (hasNext) {
+            onScrollBottomThresholdRequest(nextOffset, searchInput, (contacts, nextOffset, hasNext) => {
+              this._fillRequestData(contacts, nextOffset, hasNext, false, true)
+            });
+          }
+        } else {
+          if (contactsHasNext) {
+            dispatch(contactGetList(contactsNextOffset, statics.count, searchInput));
+          }
         }
       }
     }
     if (oldIsShow !== isShow) {
       if (chatInstance) {
-        dispatch(contactGetList(0, statics.count, searchInput));
+        if (onSearchChangeRequest) {
+          onSearchChangeRequest(searchInput, this._fillRequestData)
+        } else {
+          dispatch(contactGetList(0, statics.count, searchInput));
+        }
       }
     }
     if (searchInput) {
@@ -183,10 +203,32 @@ class ModalContactList extends Component {
   }
 
   componentDidMount() {
-    const {dispatch, chatInstance} = this.props;
+    const {dispatch, chatInstance, onInitRequest} = this.props;
     if (chatInstance) {
-      dispatch(contactGetList(null, null, null, true));
-      dispatch(contactGetList(0, statics.count));
+      if (onInitRequest) {
+        this._fillRequestData(null, null, null, true);
+        onInitRequest(this._fillRequestData)
+      } else {
+        dispatch(contactGetList(null, null, null, true));
+        dispatch(contactGetList(0, statics.count));
+      }
+    }
+  }
+
+  _fillRequestData(contacts, nextOffset, hasNext, reset, isConcat) {
+    const {contacts: currentContacts} = this.state;
+    if (reset) {
+      return this.setState({
+        hasNext: false,
+        nextOffset: 0,
+        contacts: []
+      });
+    } else {
+      this.setState({
+        hasNext: hasNext,
+        nextOffset: nextOffset,
+        contacts: isConcat ? currentContacts.concat(contacts) : contacts
+      });
     }
   }
 
@@ -211,14 +253,27 @@ class ModalContactList extends Component {
   }
 
   onSearchChange(query) {
-    const {dispatch} = this.props;
-    dispatch(contactGetList(0, statics.count, query));
+    const {dispatch, onSearchChangeRequest} = this.props;
+    if (onSearchChangeRequest) {
+      onSearchChangeRequest(query, this._fillRequestData);
+    } else {
+      dispatch(contactGetList(0, statics.count, query));
+    }
   }
 
   onScrollBottomThreshold() {
-    const {contactsNextOffset, dispatch} = this.props;
+    const {contactsNextOffset, dispatch, onScrollBottomThresholdRequest} = this.props;
+    const {nextOffset, hasNext} = this.state;
     const {query} = this.state;
-    dispatch(contactGetList(contactsNextOffset, statics.count, query));
+    if (onScrollBottomThresholdRequest) {
+      if(hasNext) {
+        onScrollBottomThresholdRequest(nextOffset, query, (contacts, nextOffset, hasNext) => {
+          this._fillRequestData(contacts, nextOffset, hasNext, false, true)
+        });
+      }
+    } else {
+      dispatch(contactGetList(contactsNextOffset, statics.count, query));
+    }
   }
 
   render() {
@@ -226,14 +281,15 @@ class ModalContactList extends Component {
       contacts, isShow, smallVersion, chatInstance, onSelect, onDeselect,
       contactsHasNext, contactsFetching, contactsPartialFetching,
       FooterFragment, LeftActionFragment,
-      selectiveMode, activeList, headingTitle, userType
+      selectiveMode, activeList, headingTitle, userType,
+      onScrollBottomThresholdRequest, outSideAvatarTextFragment
     } = this.props;
-    const {query} = this.state;
+    const {query, contacts: outRequestContacts} = this.state;
     const commonArgs = {
-      contacts: filterContactList(contacts, userType),
+      contacts: onScrollBottomThresholdRequest ? outRequestContacts : filterContactList(contacts, userType),
       onSelect,
       invert: true,
-      AvatarTextFragment,
+      AvatarTextFragment: outSideAvatarTextFragment || AvatarTextFragment,
       LeftActionFragment,
       endReached: () => {
         if (contactsHasNext && !contactsPartialFetching) {
@@ -296,7 +352,7 @@ class ModalContactList extends Component {
         </ModalBody>
 
         <ModalFooter>
-          {FooterFragment && <FooterFragment/>}
+          {FooterFragment && <FooterFragment selectedContacts={activeList}/>}
         </ModalFooter>
 
       </Modal>

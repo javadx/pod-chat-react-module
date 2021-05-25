@@ -45,12 +45,12 @@ import {
   CHAT_SUPPORT_MODE,
   CHAT_SUPPORT_MODULE_BADGE_SHOWING,
   CHAT_CALL_BOX_SHOWING,
-  CHAT_CALL_STATUS
+  CHAT_CALL_STATUS, CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING
 } from "../constants/actionTypes";
 import {messageInfo} from "./messageActions";
 import {THREAD_HISTORY_LIMIT_PER_REQUEST} from "../constants/historyFetchLimits";
 import {
-  CHAT_CALL_BOX_NORMAL,
+  CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING,
   CHAT_CALL_STATUS_STARTED
@@ -160,17 +160,22 @@ export const chatSetInstance = config => {
         });
       },
       onCallEvents: (call, type) => {
+        const oldCall = getState().chatCallStatus;
         switch (type) {
           case "RECEIVE_CALL":
-            dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, null, call.creatorVO));
+            dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, call.conversationVO || {}, call.creatorVO));
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_INCOMING, call));
           case "CALL_STARTED":
-            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {call}));
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {callId: call.clientDTO.desc.split("-")[1], ...oldCall.call, ...call}));
           case "CALL_ENDED":
             dispatch(chatCallBoxShowing(false));
-            return dispatch(chatCallStatus(null, null));
+            const {uiLocalAudio, uiRemoteAudio} = oldCall.call;
+            dispatch(chatCallStatus(null, null));
+            uiLocalAudio.remove();
+            uiRemoteAudio.remove();
+            return;
           case "CALL_DIVS":
-            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {call}));
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_DIVS, {...oldCall.call, ...call}));
           default:
             break;
         }
@@ -414,12 +419,19 @@ export const chatAcceptCall = (call) => {
   }
 };
 
-export const chatRejectCall = (call) => {
+export const chatRejectCall = (call, status) => {
   return (dispatch, getState) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
-    if (call) {
-      chatSDK.rejectCall(call.callId);
+    if (status === CHAT_CALL_STATUS_DIVS) {
+      const {uiLocalAudio, uiRemoteAudio} = call;
+      uiLocalAudio.remove();
+      uiRemoteAudio.remove();
+      chatSDK.endCall(call.callId);
+    } else {
+      if (call) {
+        chatSDK.rejectCall(call.callId);
+      }
     }
     dispatch(chatCallStatus(null, null));
     dispatch(chatCallBoxShowing(false, null, null));
@@ -431,6 +443,24 @@ export const chatStartCall = (threadId, type, params) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
     chatSDK.startCall(threadId, type, params);
+    dispatch(chatCallStatus(CHAT_CALL_STATUS_OUTGOING, null));
+  }
+};
+
+export const chatSelectParticipantForCallShowing = data => {
+  return dispatch => {
+    return dispatch({
+      type: CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING,
+      payload: data
+    });
+  }
+};
+
+export const chatStartGroupCall = (threadId, invitees, type, params) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.startGroupCall(threadId, invitees, type, params);
     dispatch(chatCallStatus(CHAT_CALL_STATUS_OUTGOING, null));
   }
 };

@@ -16,10 +16,11 @@ import {
   CHAT_SUPPORT_MODE,
   CHAT_SUPPORT_MODULE_BADGE_SHOWING,
   CHAT_CALL_BOX_SHOWING,
-  CHAT_CALL_STATUS
+  CHAT_CALL_STATUS, CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING
 } from "../constants/actionTypes";
 import {listUpdateStrategyMethods, stateGenerator, stateGeneratorState, updateStore} from "../utils/storeHelper";
 import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
+import strings from "../constants/localization";
 
 const {SUCCESS} = stateGeneratorState;
 
@@ -68,7 +69,24 @@ export const chatSupportModuleBadgeShowingReducer = (state = true, action) => {
   }
 };
 
-export const chatCallBoxShowingReducer = (state = {showing: false, thread: null , contact: null}, action) => {
+export const chatSelectParticipantForCallShowingReducer = (state = {
+  showing: false,
+  headingTitle: null,
+  selectiveMode: false,
+  FooterFragment: null
+}, action) => {
+  switch (action.type) {
+    case CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING:
+      if (!action.payload) {
+        return {showing: false, headingTitle: null, selectiveMode: false, FooterFragment: null};
+      }
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallBoxShowingReducer = (state = {showing: false, thread: null, contact: null}, action) => {
   switch (action.type) {
     case CHAT_CALL_BOX_SHOWING:
       return action.payload;

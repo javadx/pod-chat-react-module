@@ -51,6 +51,8 @@ let strings = new LocalizedStrings({
     unpinFromTop: "برداشتن از بالا",
     forwardFrom: "ارسال شده از طرف",
     selectContacts: "انتخاب مخاطب‌ها",
+    selectParticipants: "انتخاب لیست اعضا",
+    forCallPleaseSelectContacts: "افرادی را برای تماس انتخاب کنید",
     openThread: "باز کردن گفتگو",
     download: "دانلود",
     createGroup: isChannel => `ایجاد ${isChannel ? "کانال" : "گروه"}`,
@@ -270,6 +272,7 @@ let strings = new LocalizedStrings({
     calling: "درحال برقراری ارتباط",
     ringing: "در حال تماس",
     callStarted: "در حال گفتگو",
+    call: "تماس",
     missedCallAt: date => {
       return `تماس از دست رفته در ${date}`
     },
