@@ -6,3 +6,4 @@ export const ROUTE_ADD_CONTACT = "/addContact";
 export const ROUTE_SHARE = "/share";
 export const ROUTE_CREATE_GROUP = "/createGroup";
 export const ROUTE_CREATE_CHANNEL = "/createChannel";
+export const ROUTE_JOIN_GROUP = "/join/:threadName";

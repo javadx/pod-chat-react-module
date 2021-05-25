@@ -31,6 +31,7 @@ export default class ChatSDK {
       httpUploadRequestTimeout: 0,
       fullResponseObject: true,
       dynamicHistoryCount: true,
+      callOptions: {},
       asyncLogging: {
         onFunction: true, // log main actions on console
         // onMessageReceive: true, // log received messages on console
@@ -924,6 +925,16 @@ export default class ChatSDK {
       if (!this._onError(result, reject)) {
         return resolve(participantIds);
       }
+    });
+  }
+
+  @promiseDecorator
+  joinPublicThread(resolve, reject, uniqueName) {
+    const params = {
+      uniqueName
+    };
+    this.chatAgent.joinPublicThread(params, function (joinThreadResults) {
+      resolve(joinThreadResults)
     });
   }
 };

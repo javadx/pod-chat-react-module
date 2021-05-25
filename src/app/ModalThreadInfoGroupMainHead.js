@@ -14,14 +14,14 @@ import {Heading, Text} from "../../../pod-chat-ui-kit/src/typography";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
-import {MdGroupAdd, MdArrowBack, MdSettings, MdBlock, MdNotifications, MdPersonAdd} from "react-icons/md";
+import {MdGroupAdd, MdLink, MdSettings, MdBlock, MdNotifications, MdPersonAdd} from "react-icons/md";
 import ModalThreadInfoMessageTypes from "./ModalThreadInfoMessageTypes";
 import utilsStyle from "../../styles/utils/utils.scss";
 import checkForPrivilege from "../utils/privilege";
 import {THREAD_ADMIN} from "../constants/privilege";
 
 
-export default function(props) {
+export default function (props) {
   let {
     thread, notificationPending,
     GapFragment,
@@ -37,6 +37,10 @@ export default function(props) {
   const iconClasses = `${utilsStyle["u-clickable"]} ${utilsStyle["u-hoverColorAccent"]}`;
 
   const isChannelResult = isChannel(thread);
+  let isPublic = thread.uniqueName;
+  if(isPublic) {
+    isPublic = `${window.location.protocol}//${window.location.hostname}/join/${isPublic}`
+  }
 
   return <ListItem>
     <Container relative>
@@ -86,6 +90,17 @@ export default function(props) {
 
     <Container>
       <List>
+        {isPublic &&
+          <ListItem selection invert>
+            <Container relative display="inline-flex">
+              <MdLink size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+              <Gap x={20}>
+                <Text link={isPublic} target="_blank" wordWrap="breakWord"
+                      title={isPublic}>{isPublic}</Text>
+              </Gap>
+            </Container>
+          </ListItem>
+        }
         {
           isThreadOwner ?
             <ListItem selection invert onSelect={onAddMemberSelect}>
