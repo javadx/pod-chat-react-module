@@ -39,7 +39,7 @@ export default function (props) {
   const isChannelResult = isChannel(thread);
   let isPublic = thread.uniqueName;
   if(isPublic) {
-    isPublic = `${window.location.protocol}//${window.location.hostname}/join/${isPublic}`
+    isPublic = `${window.location.protocol}//${window.location.hostname}/join?tn=${isPublic}`
   }
 
   return <ListItem>
