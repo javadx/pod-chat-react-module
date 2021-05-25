@@ -13,12 +13,7 @@ module.exports = (e, argv) => {
     devServer: {
       compress: true,
       public: "chat.fanapsoft.ir",
-      historyApiFallback:{
-        index:'/',
-        rewrites: [
-          { from: /\/main/, to: '/main.js'}
-        ]
-      },
+      historyApiFallback: true
     },
     module: {
       rules: [

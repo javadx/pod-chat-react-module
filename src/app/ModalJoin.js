@@ -38,8 +38,8 @@ class ModalJoin extends Component {
   }
 
   componentDidMount() {
-    const {match, history, dispatch} = this.props;
-    const threadName = match.params.threadName;
+    const {location, history, dispatch} = this.props;
+    const {tn: threadName} = queryString.parse(location.search, {ignoreQueryPrefix: true});
     if (threadName) {
       const extraMessage = message => (
         <Fragment>
@@ -69,6 +69,8 @@ class ModalJoin extends Component {
       }, e => {
         history.push(ROUTE_INDEX);
       }, strings.yes, null, extraMessage(threadName)));
+    } else {
+      history.push(ROUTE_INDEX);
     }
   }
 
