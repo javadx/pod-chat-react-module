@@ -12,7 +12,7 @@ import {
   ROUTE_ADD_CONTACT,
   ROUTE_CONTACTS,
   ROUTE_CREATE_CHANNEL,
-  ROUTE_CREATE_GROUP,
+  ROUTE_CREATE_GROUP, ROUTE_JOIN_GROUP,
   ROUTE_SHARE,
   ROUTE_THREAD_INFO,
 } from "../constants/routes";
@@ -53,6 +53,7 @@ import ModalThreadInfo from "./ModalThreadInfo";
 import ModalImageCaption from "./ModalImageCaption";
 import ModalPrompt from "./ModalPrompt";
 import ModalShare from "./ModalShare";
+import ModalJoin from "./ModalJoin";
 import ModalParticipantList from "./ModalParticipantList";
 
 //styling
@@ -248,6 +249,8 @@ class Index extends Component {
                    render={() => <ModalAddContact smallVersion={small}/>}/>
             <Route exact={!chatRouterLess} path={chatRouterLess ? "" : ROUTE_SHARE}
                    render={() => <ModalShare smallVersion={small}/>}/>
+            <Route exact={!chatRouterLess} path={chatRouterLess ? "" : ROUTE_JOIN_GROUP}
+                   render={() => <ModalJoin smallVersion={small}/>}/>
             <Route exact={!chatRouterLess} path={chatRouterLess ? "" : ROUTE_THREAD_INFO}
                    render={() => <ModalThreadInfo smallVersion={small}/>}/>
             <ModalThreadList smallVersion={small} ref={this.modalThreadListRef}/>

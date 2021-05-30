@@ -44,7 +44,7 @@ import {
   THREAD_UNREAD_MENTIONED_MESSAGE_LIST,
   THREAD_UNREAD_MENTIONED_MESSAGE_REMOVE,
   THREAD_DRAFT,
-  THREAD_GET_PARTICIPANT_ROLES, THREAD_TRIM_HISTORY, THREAD_TRIM_DOWN_HISTORY
+  THREAD_GET_PARTICIPANT_ROLES, THREAD_TRIM_HISTORY, THREAD_TRIM_DOWN_HISTORY, THREAD_NEW
 } from "../constants/actionTypes";
 import {stateGeneratorState} from "../utils/storeHelper";
 
@@ -149,6 +149,15 @@ export const threadGetList = (offset = 0, count, name, direct, params) => {
     dispatch({
       type: offset > 0 ? THREAD_GET_LIST_PARTIAL() : THREAD_GET_LIST(),
       payload: chatSDK.getThreads(offset, count, name)
+    });
+  }
+};
+
+export const threadNew = thread=> {
+  return (dispatch, getState) => {
+    dispatch({
+      type: THREAD_NEW,
+      payload: {thread}
     });
   }
 };
@@ -351,6 +360,13 @@ export const threadUnpinFromTop = (threadId) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
     chatSDK.unpinThread(threadId);
+  }
+};
+export const threadJoinPublicGroup = (threadName) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    return chatSDK.joinPublicThread(threadName)
   }
 };
 

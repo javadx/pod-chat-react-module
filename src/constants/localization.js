@@ -256,10 +256,13 @@ let strings = new LocalizedStrings({
       skype: "اسکایپ"
     },
     areYouSureABoutSendingThisMessage: "از فرستادن این پیام مطئنید",
+    areYouSureAboutJoiningThisThread: "از ملحق شدن به گروه زیر مطمئنید",
     gotoMessage: "رفتن به پیام",
     addToContact: "اضافه کردن به مخاطب‌ها",
     youCannotUseMicrophone: "شما دسترسی به میکروفون سیستم را نداده اید پس نمیتوانید از امکانات ضبط صدا استفاده کنید",
     fileHaveProblem: "فایل مشکل دارد",
+    yes: "بله",
+    hasFollowingErrorWhileJoining: "خطای در هنگام ملحق شدن به گروه به وجود آمد",
     messageTypes: {
       threadInfo: "اطلاعات",
       people: "اعضا",

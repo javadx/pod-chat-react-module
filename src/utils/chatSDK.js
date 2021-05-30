@@ -999,4 +999,14 @@ export default class ChatSDK {
     })
   }
 
+
+  @promiseDecorator
+  joinPublicThread(resolve, reject, uniqueName) {
+    const params = {
+      uniqueName
+    };
+    this.chatAgent.joinPublicThread(params, function (joinThreadResults) {
+      resolve(joinThreadResults)
+    });
+  }
 };
