@@ -9,5 +9,23 @@ export const CHAT_CALL_STATUS_CONNECTION_LOST = "CHAT_CALL_STATUS_CONNECTION_LOS
 export const DROPPING_OUTGOING_TIME_OUT = 20000000;
 export const DROPPING_INCOMING_TIME_OUT = 20000000;
 
-export class MOCK_CONTACT {
+export const MOCK_CONTACT = {
+  auditor: false,
+  blocked: false,
+  chatProfileVO: {bio: "عیب رندان مکن ای زاهد پاکیزه سرشت"},
+  contactFirstName: "masood",
+  contactId: 702,
+  contactLastName: "امجدی",
+  contactName: "masood امجدی",
+  coreUserId: 982,
+  firstName: "مسعود",
+  id: 1,
+  image: "https://core.pod.ir:443/nzh/image/?imageId=17006&width=476&height=476&hashCode=1666eedb75b-0.7473066083939505",
+  lastName: "امجدی",
+  name: "مسعود امجدی",
+  notSeenDuration: 45939416,
+  receiveEnable: true,
+  sendEnable: true,
+  threadId: 142,
+  username: "ma.amjadi",
 }

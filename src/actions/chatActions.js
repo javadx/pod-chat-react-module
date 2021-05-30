@@ -45,7 +45,10 @@ import {
   CHAT_SUPPORT_MODE,
   CHAT_SUPPORT_MODULE_BADGE_SHOWING,
   CHAT_CALL_BOX_SHOWING,
-  CHAT_CALL_STATUS, CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING
+  CHAT_CALL_STATUS,
+  CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING,
+  CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
+  THREAD_PARTICIPANT_GET_LIST_PARTIAL, THREAD_PARTICIPANT_GET_LIST, CHAT_CALL_PARTICIPANT_LIST
 } from "../constants/actionTypes";
 import {messageInfo} from "./messageActions";
 import {THREAD_HISTORY_LIMIT_PER_REQUEST} from "../constants/historyFetchLimits";
@@ -162,11 +165,18 @@ export const chatSetInstance = config => {
       onCallEvents: (call, type) => {
         const oldCall = getState().chatCallStatus;
         switch (type) {
+          case "CALL_SESSION_CREATED":
+            return dispatch(chatCallStatus(oldCall.status, call));
           case "RECEIVE_CALL":
             dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, call.conversationVO || {}, call.creatorVO));
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_INCOMING, call));
-          case "CALL_STARTED":
-            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {callId: call.clientDTO.desc.split("-")[1], ...oldCall.call, ...call}));
+          case "CALL_STARTED": {
+            const callId = call.clientDTO.desc.split("-")[1];
+            if(oldCall.call.conversationVO.group) {
+              dispatch(chatCallGetParticipantList(callId));
+            }
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {callId, ...oldCall.call, ...call}))
+          }
           case "CALL_ENDED":
             dispatch(chatCallBoxShowing(false));
             const {uiLocalAudio, uiRemoteAudio} = oldCall.call;
@@ -406,6 +416,23 @@ export const chatCallStatus = (status, call) => {
     return dispatch({
       type: CHAT_CALL_STATUS,
       payload: {status, call}
+    });
+  }
+};
+
+export const chatCallGetParticipantList = (callId, payload) => {
+  return (dispatch, getState) => {
+    if (payload) {
+      return dispatch({
+        type: CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
+        payload
+      });
+    }
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    dispatch({
+      type: CHAT_CALL_PARTICIPANT_LIST(),
+      payload: chatSDK.getCallParticipants(callId)
     });
   }
 };

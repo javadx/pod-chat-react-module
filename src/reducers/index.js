@@ -58,7 +58,8 @@ import {
   chatSupportModeReducer,
   chatSupportModuleBadgeShowingReducer,
   chatCallBoxShowingReducer,
-  chatCallStatusReducer
+  chatCallStatusReducer,
+  chatCallParticipantListReducer
 } from "./chatReducer";
 import userReducer from "./userReducer";
 
@@ -80,6 +81,7 @@ const rootReducer = {
   chatSupportModuleBadgeShowing: chatSupportModuleBadgeShowingReducer,
   chatCallBoxShowing: chatCallBoxShowingReducer,
   chatCallStatus: chatCallStatusReducer,
+  chatCallParticipantList: chatCallParticipantListReducer,
   contactGetList: contactGetListReducer,
   contactGetListPartial: contactGetListPartialReducer,
   contactListShowing: contactListShowingReducer,

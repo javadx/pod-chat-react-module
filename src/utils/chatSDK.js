@@ -28,6 +28,7 @@ export default class ChatSDK {
       messageTtl: 10000, // Message time to live
       reconnectOnClose: true, // auto connect to socket after socket close
       enableCache: false,
+      callOptions: {},
       httpUploadRequestTimeout: 0,
       fullResponseObject: true,
       dynamicHistoryCount: true,
@@ -987,5 +988,15 @@ export default class ChatSDK {
     })
   }
 
+  @promiseDecorator
+  getCallParticipants(resolve, reject, callId) {
+    this.chatAgent.getCallParticipants({
+      callId
+    }, result => {
+      if (!this._onError(result, reject)) {
+        return resolve(result.result.participants);
+      }
+    })
+  }
 
 };

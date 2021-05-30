@@ -25,6 +25,7 @@ import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
 import Gap from "raduikit/src/gap";
 import strings from "../constants/localization";
+import MainCallBoxSceneGroupParticipants from "./MainCallBoxSceneGroupParticipants";
 
 
 @connect(store => {
@@ -44,13 +45,14 @@ export default class MainCallBoxSceneGroup extends Component {
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const {thread, contact} = chatCallBoxShowing;
     const avatarContainerClassNames = classnames({
-      [style.MainCallBoxSceneGroup]: !incomingCondition
+      [style.MainCallBoxSceneGroup__AvatarContainer]: !incomingCondition
     });
     const avatarClassName = classnames({
       [style.MainCallBoxSceneGroup__Avatar]: true
     });
 
-    return <Container className={avatarContainerClassNames}>
+    return <Container className={style.MainCallBoxSceneGroup}>
+      <MainCallBoxSceneGroupParticipants/>
       <Container className={avatarContainerClassNames}>
         <Avatar cssClassNames={avatarClassName} inline={false}>
           <AvatarImage
@@ -61,8 +63,6 @@ export default class MainCallBoxSceneGroup extends Component {
           <Gap y={5}/>
           <AvatarName maxWidth={"110px"} style={{marginRight: "0", maxWidth: "96px"}} size="sm">
             {thread.title}
-
-
           </AvatarName>
           {incomingCondition &&
             <AvatarText>

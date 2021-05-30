@@ -273,6 +273,9 @@ let strings = new LocalizedStrings({
     ringing: "در حال تماس",
     callStarted: "در حال گفتگو",
     call: "تماس",
+    peopleIsTalking:(numberOfPeople)=>{
+      return `${numberOfPeople} نفر در حال مکالمه`
+    },
     missedCallAt: date => {
       return `تماس از دست رفته در ${date}`
     },

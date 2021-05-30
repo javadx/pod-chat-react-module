@@ -1,0 +1,24 @@
+
+.MainCallBoxSceneGroupParticipantsDetails {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  background-color: $color-white;
+  z-index: 1;
+}
+
+.MainCallBoxSceneGroupParticipantsDetails__Head {
+  height: 39px;
+  display: flex;
+  padding: 0 13px;
+  align-content: center;
+  align-items: center;
+}
+
+.MainCallBoxSceneGroupParticipantsDetails__HeadText {
+  flex-grow: 1;
+}
+
+.MainCallBoxSceneGroupParticipantsDetails__CloseButton {
+  flex: none
+}

@@ -352,7 +352,7 @@ class ModalContactList extends Component {
         </ModalBody>
 
         <ModalFooter>
-          {FooterFragment && <FooterFragment selectedContacts={activeList}/>}
+          {FooterFragment && <FooterFragment selectedContacts={activeList} allContacts={onScrollBottomThresholdRequest ? outRequestContacts : contacts}/>}
         </ModalFooter>
 
       </Modal>

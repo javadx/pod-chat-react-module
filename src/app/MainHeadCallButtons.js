@@ -31,7 +31,7 @@ import MainHeadBatchActions from "./MainHeadBatchActions";
 import style from "../../styles/app/MainHeadCallButtons.scss";
 import styleVar from "../../styles/variables.scss";
 import {
-  chatCallBoxShowing, chatSelectParticipantForCallShowing,
+  chatCallBoxShowing, chatCallGetParticipantList, chatSelectParticipantForCallShowing,
   chatStartCall,
   chatStartGroupCall,
   chatSupportModuleBadgeShowing
@@ -62,13 +62,14 @@ export default class MainHeadCallButtons extends Component {
     this._selectParticipantForCallFooterFragment = this._selectParticipantForCallFooterFragment.bind(this);
   }
 
-  _selectParticipantForCallFooterFragment({selectedContacts}) {
+  _selectParticipantForCallFooterFragment({selectedContacts, allContacts}) {
     const {thread, dispatch} = this.props;
     return <Container>
       {(selectedContacts && selectedContacts.length >= 1) &&
       <Button onClick={e => {
         dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread));
         dispatch(chatSelectParticipantForCallShowing(false));
+        dispatch(chatCallGetParticipantList(null, allContacts.filter(e => selectedContacts.indexOf(e.id) > -1)));
         dispatch(chatStartGroupCall(thread.id, createInvitees(selectedContacts), "voice"));
       }}>{strings.call}</Button>
       }

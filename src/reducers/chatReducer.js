@@ -16,13 +16,22 @@ import {
   CHAT_SUPPORT_MODE,
   CHAT_SUPPORT_MODULE_BADGE_SHOWING,
   CHAT_CALL_BOX_SHOWING,
-  CHAT_CALL_STATUS, CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING
+  CHAT_CALL_STATUS,
+  CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING,
+  THREAD_PARTICIPANT_GET_LIST,
+  THREAD_PARTICIPANTS_LIST_CHANGE,
+  THREAD_PARTICIPANT_GET_LIST_PARTIAL,
+  THREAD_PARTICIPANTS_REMOVED,
+  THREAD_LEAVE_PARTICIPANT,
+  CHAT_CALL_PARTICIPANT_LIST,
+  CHAT_CALL_PARTICIPANT_LIST_CHANGE,
+  CHAT_CALL_PARTICIPANT_LIST_PRELOAD, CHAT_CALL_PARTICIPANT_REMOVED, CHAT_CALL_PARTICIPANT_LEFT
 } from "../constants/actionTypes";
 import {listUpdateStrategyMethods, stateGenerator, stateGeneratorState, updateStore} from "../utils/storeHelper";
 import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
 import strings from "../constants/localization";
 
-const {SUCCESS} = stateGeneratorState;
+const {PENDING, SUCCESS, ERROR, CANCELED} = stateGeneratorState;
 
 export const chatInstanceReducer = (state = {
   chatSDK: null,
@@ -90,6 +99,41 @@ export const chatCallBoxShowingReducer = (state = {showing: false, thread: null,
   switch (action.type) {
     case CHAT_CALL_BOX_SHOWING:
       return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallParticipantListReducer = (state = {
+  participants: [],
+  fetching: false,
+  fetched: false,
+  error: false
+}, action) => {
+  switch (action.type) {
+    case CHAT_CALL_PARTICIPANT_LIST(PENDING):
+      return {...state, ...stateGenerator(PENDING, {participants: state.participants})};
+    case CHAT_CALL_PARTICIPANT_LIST(CANCELED):
+      return {...state, ...{participants: []}};
+    case CHAT_CALL_PARTICIPANT_LIST_CHANGE:
+    case CHAT_CALL_PARTICIPANT_LIST_PRELOAD:
+    case CHAT_CALL_PARTICIPANT_LIST(SUCCESS): {
+      return {
+        ...state, ...stateGenerator(SUCCESS, {participants: action.payload})
+      };
+    }
+    case CHAT_CALL_PARTICIPANT_REMOVED:
+    case CHAT_CALL_PARTICIPANT_LEFT:
+      return {
+        ...state, ...stateGenerator(SUCCESS, {
+          participants: updateStore(state.participants, action.payload, {
+            method: listUpdateStrategyMethods.REMOVE,
+            by: ["id"]
+          })
+        })
+      };
+    case CHAT_CALL_PARTICIPANT_LIST(ERROR):
+      return {...state, ...stateGenerator(ERROR, action.payload)};
     default:
       return state;
   }
