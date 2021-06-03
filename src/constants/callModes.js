@@ -8,7 +8,7 @@ export const CHAT_CALL_STATUS_DIVS = "CHAT_CALL_STATUS_DIVS";
 export const CHAT_CALL_STATUS_CONNECTION_LOST = "CHAT_CALL_STATUS_CONNECTION_LOST";
 export const DROPPING_OUTGOING_TIME_OUT = 20000000;
 export const DROPPING_INCOMING_TIME_OUT = 20000000;
-
+export const CALL_DIV_ID = "call-div";
 export const MOCK_CONTACT = {
   auditor: false,
   blocked: false,
@@ -28,4 +28,4 @@ export const MOCK_CONTACT = {
   sendEnable: true,
   threadId: 142,
   username: "ma.amjadi",
-}
+};

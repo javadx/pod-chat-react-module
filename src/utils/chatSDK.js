@@ -1,10 +1,11 @@
 import PodChat from "podchat-browser";
 import {promiseDecorator} from "./decorators";
 import React from "react";
-import {getNow, isAudioFile, isImageFile, isVideoFile} from "./helpers";
+import {callParticipantStandardization, getNow, isAudioFile, isImageFile, isVideoFile} from "./helpers";
 import Cookies from "js-cookie";
 import {THREAD_ADMIN} from "../constants/privilege";
 import {types, typesCode} from "../constants/messageTypes";
+import {CALL_DIV_ID} from "../constants/callModes";
 
 const errorCodes = {
   CLIENT_NOT_AUTH: 21,
@@ -28,7 +29,11 @@ export default class ChatSDK {
       messageTtl: 10000, // Message time to live
       reconnectOnClose: true, // auto connect to socket after socket close
       enableCache: false,
-      callOptions: {},
+      callOptions: {
+        callSocketAddress: "wss://46.32.6.187/gsthandler",
+        callTurnIp: "46.32.6.188",
+        callDivId: CALL_DIV_ID
+      },
       httpUploadRequestTimeout: 0,
       fullResponseObject: true,
       dynamicHistoryCount: true,
@@ -994,11 +999,10 @@ export default class ChatSDK {
       callId
     }, result => {
       if (!this._onError(result, reject)) {
-        return resolve(result.result.participants);
+        return resolve(callParticipantStandardization(result.result.participants));
       }
     })
   }
-
 
   @promiseDecorator
   joinPublicThread(resolve, reject, uniqueName) {
@@ -1006,6 +1010,28 @@ export default class ChatSDK {
       uniqueName
     };
     this.chatAgent.joinPublicThread(params, function (joinThreadResults) {
+      resolve(joinThreadResults)
+    });
+  }
+
+  @promiseDecorator
+  muteCallParticipants(resolve, reject, callId, userIds) {
+    const params = {
+      callId,
+      userIds
+    };
+    this.chatAgent.muteCallParticipants(params, function (joinThreadResults) {
+      resolve(joinThreadResults)
+    });
+  }
+
+  @promiseDecorator
+  unMuteCallParticipants(resolve, reject, callId, userIds) {
+    const params = {
+      callId,
+      userIds
+    };
+    this.chatAgent.unMuteCallParticipants(params, function (joinThreadResults) {
       resolve(joinThreadResults)
     });
   }

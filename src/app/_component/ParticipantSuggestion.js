@@ -209,11 +209,11 @@ export default class extends Component {
         <List>
           {participants.map(contact =>
             <ContactListItem contact={contact}
-                                     onSelect={this.onContactSelect} AvatarNameFragment={leftActionFragment}
-                                     maxAvatarNameWidth={"auto"}
-                                     activeRef={this.activeRef}
-                                     activeList={[participants[participantsActiveIndex] ? participants[participantsActiveIndex].id : null]}
-                                     selection invert/>
+                             onSelect={this.onContactSelect} AvatarNameFragment={leftActionFragment}
+                             maxAvatarNameWidth={"auto"}
+                             activeRef={this.activeRef}
+                             activeList={[participants[participantsActiveIndex] ? participants[participantsActiveIndex].id : null]}
+                             selection invert/>
           )}
         </List>
 

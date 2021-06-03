@@ -63,18 +63,32 @@ export default class MainHeadCallButtons extends Component {
   }
 
   _selectParticipantForCallFooterFragment({selectedContacts, allContacts}) {
-    const {thread, dispatch} = this.props;
+    const {thread, dispatch, user} = this.props;
+    const isMaximumCount = (selectedContacts && selectedContacts.length > 5);
     return <Container>
-      {(selectedContacts && selectedContacts.length >= 1) &&
-      <Button onClick={e => {
-        dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread));
-        dispatch(chatSelectParticipantForCallShowing(false));
-        dispatch(chatCallGetParticipantList(null, allContacts.filter(e => selectedContacts.indexOf(e.id) > -1)));
-        dispatch(chatStartGroupCall(thread.id, createInvitees(selectedContacts), "voice"));
-      }}>{strings.call}</Button>
-      }
+      <Container>
+        {(selectedContacts && selectedContacts.length >= 1) &&
+        <Button disabled={isMaximumCount} color={isMaximumCount ? "gray" : "accent"} onClick={e => {
+          if (isMaximumCount) {
+            return;
+          }
+          dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread));
+          dispatch(chatSelectParticipantForCallShowing(false));
+          const selectedParticipants = allContacts.filter(e => selectedContacts.indexOf(e.id) > -1);
+          selectedParticipants.find(e => e.id === user.id) ? null : selectedParticipants.push(user);
+          dispatch(chatCallGetParticipantList(null, selectedParticipants));
+          dispatch(chatStartGroupCall(thread.id, selectedContacts, "voice"));
+        }}>{strings.call}</Button>
+        }
 
-      <Button text onClick={() => dispatch(chatSelectParticipantForCallShowing(false))}>{strings.cancel}</Button>
+        <Button text onClick={() => dispatch(chatSelectParticipantForCallShowing(false))}>{strings.cancel}</Button>
+      </Container>
+      <Container>
+        {
+          isMaximumCount &&
+          <Text color="accent">{strings.maximumNumberOfContactSelected}</Text>
+        }
+      </Container>
     </Container>
   }
 

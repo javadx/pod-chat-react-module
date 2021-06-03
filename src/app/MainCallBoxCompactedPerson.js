@@ -10,7 +10,7 @@ import Container from "../../../pod-chat-ui-kit/src/container";
 import Avatar, {AvatarImage, AvatarName, AvatarText} from "../../../pod-chat-ui-kit/src/avatar";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
-  MdClose,
+  MdMicOff,
   MdPlayArrow,
   MdPause
 } from "react-icons/md";
@@ -27,7 +27,11 @@ import ReactStopwatch from "react-stopwatch";
 import Gap from "raduikit/src/gap";
 
 
-@connect()
+@connect(store => {
+  return {
+    chatCallParticipantList: store.chatCallParticipantList.participants
+  };
+})
 export default class MainCallBoxCompacted extends Component {
 
   constructor(props) {
@@ -35,18 +39,29 @@ export default class MainCallBoxCompacted extends Component {
   }
 
   render() {
-    const {dispatch, chatCallBoxShowing, chatCallStatus} = this.props;
+    const {dispatch, chatCallBoxShowing, chatCallStatus, chatCallParticipantList} = this.props;
     const {status} = chatCallStatus;
     const {contact} = chatCallBoxShowing;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const callStarted = status === CHAT_CALL_STATUS_STARTED;
+    const realUserFromParticipantList = chatCallParticipantList.find(participant => contact.id === participant.id);
+    const realUser = realUserFromParticipantList || user;
     return <Container className={style.MainCallBoxCompactedPerson} onClick={this.onAudioPlayerClick}>
       <Avatar>
-        <AvatarImage src={avatarUrlGenerator(getImage(contact), avatarUrlGenerator.SIZES.MEDIUM)}
-                     text={avatarNameGenerator(getName(contact)).letter}
-                     textBg={avatarNameGenerator(getName(contact)).color}/>
+        <Container relative>
+          <AvatarImage src={avatarUrlGenerator(getImage(realUser), avatarUrlGenerator.SIZES.MEDIUM)}
+                       text={avatarNameGenerator(getName(realUser)).letter}
+                       textBg={avatarNameGenerator(getName(realUser)).color}/>
+          {realUser.mute &&
+          <Container className={style.MainCallBoxCompactedPerson__MicOffContainer}>
+            <MdMicOff size={styleVar.iconSizeXs}
+                      color={styleVar.colorGrayDark}
+                      style={{margin: "3px 4px"}}/>
+          </Container>
+          }
+        </Container>
         <AvatarName maxWidth={"150px"}>
-          {getName(contact)}
+          {getName(realUser)}
           <AvatarText>
             <Text size="xs"
                   color="accent"

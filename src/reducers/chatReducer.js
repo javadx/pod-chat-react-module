@@ -25,7 +25,10 @@ import {
   THREAD_LEAVE_PARTICIPANT,
   CHAT_CALL_PARTICIPANT_LIST,
   CHAT_CALL_PARTICIPANT_LIST_CHANGE,
-  CHAT_CALL_PARTICIPANT_LIST_PRELOAD, CHAT_CALL_PARTICIPANT_REMOVED, CHAT_CALL_PARTICIPANT_LEFT
+  CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
+  CHAT_CALL_PARTICIPANT_REMOVED,
+  CHAT_CALL_PARTICIPANT_LEFT,
+  CHAT_CALL_PARTICIPANT_JOINED
 } from "../constants/actionTypes";
 import {listUpdateStrategyMethods, stateGenerator, stateGeneratorState, updateStore} from "../utils/storeHelper";
 import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
@@ -113,9 +116,6 @@ export const chatCallParticipantListReducer = (state = {
   switch (action.type) {
     case CHAT_CALL_PARTICIPANT_LIST(PENDING):
       return {...state, ...stateGenerator(PENDING, {participants: state.participants})};
-    case CHAT_CALL_PARTICIPANT_LIST(CANCELED):
-      return {...state, ...{participants: []}};
-    case CHAT_CALL_PARTICIPANT_LIST_CHANGE:
     case CHAT_CALL_PARTICIPANT_LIST_PRELOAD:
     case CHAT_CALL_PARTICIPANT_LIST(SUCCESS): {
       return {
@@ -131,6 +131,25 @@ export const chatCallParticipantListReducer = (state = {
             by: ["id"]
           })
         })
+      };
+    case CHAT_CALL_PARTICIPANT_LIST_CHANGE:
+    case CHAT_CALL_PARTICIPANT_JOINED:
+      return {
+        ...state, ...stateGenerator(SUCCESS, {
+          participants: updateStore(state.participants, action.payload, {
+            method: listUpdateStrategyMethods.UPDATE,
+            mix: true,
+            by: ["id"],
+            upsert: true
+          })
+        })
+      };
+    case CHAT_CALL_PARTICIPANT_LIST(CANCELED):
+      return {
+        participants: [],
+        fetching: false,
+        fetched: false,
+        error: false
       };
     case CHAT_CALL_PARTICIPANT_LIST(ERROR):
       return {...state, ...stateGenerator(ERROR, action.payload)};

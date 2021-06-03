@@ -757,3 +757,14 @@ export function emailify(text) {
                                                      title={urlReal}>{urlReal}</Text>)
   });
 }
+
+export function callParticipantStandardization(arrayOfParticipants) {
+  return arrayOfParticipants.map(participant=>{
+    const {participantVO} = participant;
+    delete participant.participantVO;
+    return {
+      ...participantVO,
+      ...participant
+    }
+  })
+}

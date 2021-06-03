@@ -17,9 +17,7 @@ import {
 //styling
 import style from "../../styles/app/MainCallBoxHead.scss";
 import styleVar from "../../styles/variables.scss";
-import {CHAT_CALL_STATUS_DIVS, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
-import classnames from "classnames";
-import {getParticipant} from "./ModalThreadInfoPerson";
+import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
 import strings from "../constants/localization";
 window.calltimerSec = 0;
 window.calltimerMins = 0;
@@ -80,7 +78,7 @@ export default class MainCallBoxHead extends Component {
     const {chatCallStatus} = this.props;
     const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
-    const callStarted = status === CHAT_CALL_STATUS_STARTED || status === CHAT_CALL_STATUS_DIVS;
+    const callStarted = status === CHAT_CALL_STATUS_STARTED;
     return <Container className={style.MainCallBoxHead}>
       <Container className={style.MainCallBoxHead__StatusContainer}>
         <Text bold

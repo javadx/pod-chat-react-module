@@ -6,8 +6,8 @@ import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threa
 import {
   chatAcceptCall,
   chatAudioPlayer,
-  chatCallBoxShowing,
-  chatCallStatus,
+  chatCallBoxShowing, chatCallMuteParticipants,
+  chatCallStatus, chatCallUnMuteParticipants,
   chatRejectCall
 } from "../actions/chatActions";
 
@@ -30,14 +30,22 @@ import {
 import style from "../../styles/app/MainCallBoxControlSet.scss";
 import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, mobileCheck} from "../utils/helpers";
-import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
+import {
+  CALL_DIV_ID,
+  CHAT_CALL_BOX_NORMAL,
+  CHAT_CALL_STATUS_DIVS,
+  CHAT_CALL_STATUS_INCOMING,
+  CHAT_CALL_STATUS_STARTED
+} from "../constants/callModes";
 import classnames from "classnames";
 import {getParticipant} from "./ModalThreadInfoPerson";
 
 
 @connect(store => {
   return {
-    chatCallStatus: store.chatCallStatus
+    chatCallStatus: store.chatCallStatus,
+    user: store.user.user,
+    chatCallParticipantList: store.chatCallParticipantList.participants
   }
 })
 export default class MainCallBoxControlSet extends Component {
@@ -54,20 +62,56 @@ export default class MainCallBoxControlSet extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const {chatCallStatus} = this.props;
-    const {chatCallStatus: oldChatCallStatus} = prevProps;
-    const {status: oldStatus} = oldChatCallStatus;
-    const {status, call} = chatCallStatus;
-    if (oldStatus !== status) {
-      if(status === CHAT_CALL_STATUS_DIVS) {
-        const {volume, mic} = this.state;
-        call.uiLocalAudio.muted = !mic;
-        call.uiRemoteAudio.muted = !volume;
+  componentDidMount() {
+    const {user, chatCallParticipantList, chatCallStatus} = this.props;
+    if (chatCallParticipantList.length) {
+      const participant = chatCallParticipantList.find(e => e.id === user.id);
+
+      if (participant) {
+        const {mic, volume} = this.state;
+        if (participant.mute) {
+          if (mic) {
+            this.setState({
+              mic: false
+            });
+          }
+        }
+
+        if (chatCallStatus && chatCallStatus.call) {
+          const {uiRemoteAudio} = chatCallStatus.call;
+          if (volume && uiRemoteAudio) {
+            if (uiRemoteAudio.muted) {
+              this.setState({
+                volume: false
+              });
+            }
+          }
+        }
       }
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {chatCallStatus, dispatch} = this.props;
+    const {chatCallStatus: oldChatCallStatus} = prevProps;
+    const {status: oldStatus} = oldChatCallStatus;
+    const {status} = chatCallStatus;
+    if (oldStatus !== status) {
+      if (status === CHAT_CALL_STATUS_STARTED) {
+        const {volume, mic} = this.state;
+        const {callId, uiRemoteAudio} = chatCallStatus.call;
+        const {user} = this.props;
+        if (!mic) {
+          dispatch(chatCallMuteParticipants(callId, [user.id]));
+        }
+        if (!volume) {
+          if (uiRemoteAudio) {
+            uiRemoteAudio.muted = true;
+          }
+        }
+      }
+    }
+  }
 
   onDropCallClick(e) {
     e.stopPropagation();
@@ -88,11 +132,12 @@ export default class MainCallBoxControlSet extends Component {
   onVolumeClick(e) {
     e.stopPropagation();
     const currentState = this.state.volume;
-    const nextState =!currentState;
+    const nextState = !currentState;
     const {chatCallStatus} = this.props;
     const {call, status} = chatCallStatus;
-    if(status === CHAT_CALL_STATUS_DIVS) {
-      call.uiRemoteAudio.muted = !nextState;
+    const {uiRemoteAudio} = call;
+    if (uiRemoteAudio) {
+      uiRemoteAudio.muted = !nextState;
     }
     this.setState({
       volume: nextState,
@@ -102,11 +147,12 @@ export default class MainCallBoxControlSet extends Component {
   onMicClick(e) {
     e.stopPropagation();
     const currentState = this.state.mic;
-    const nextState =!currentState;
-    const {chatCallStatus} = this.props;
-    const {call, status} = chatCallStatus;
-    if(status === CHAT_CALL_STATUS_DIVS) {
-      call.uiLocalAudio.muted = !nextState;
+    const nextState = !currentState;
+    const {chatCallStatus, user, dispatch} = this.props;
+    if (nextState) {
+      dispatch(chatCallUnMuteParticipants(chatCallStatus.call.callId, [user.id]));
+    } else {
+      dispatch(chatCallMuteParticipants(chatCallStatus.call.callId, [user.id]));
     }
     this.setState({
       mic: nextState,

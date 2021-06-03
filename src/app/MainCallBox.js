@@ -24,7 +24,7 @@ import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isGroup} from "../utils/helpers";
 import {
   CHAT_CALL_BOX_COMPACTED,
-  CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS,
+  CHAT_CALL_BOX_NORMAL,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING, CHAT_CALL_STATUS_STARTED, DROPPING_INCOMING_TIME_OUT, DROPPING_OUTGOING_TIME_OUT
 } from "../constants/callModes";
@@ -87,12 +87,7 @@ export default class MainCallBox extends Component {
           this.setTimeoutForDropping(CHAT_CALL_STATUS_OUTGOING, DROPPING_OUTGOING_TIME_OUT);
           this.playRingtone(CHAT_CALL_STATUS_OUTGOING);
         }
-        if(status === CHAT_CALL_STATUS_DIVS) {
-          const {uiRemoteAudio, uiLocalAudio} = call;
-          document.body.appendChild(uiRemoteAudio);
-          document.body.appendChild(uiLocalAudio);
-        }
-        if (!status || status === CHAT_CALL_STATUS_STARTED || status === CHAT_CALL_STATUS_DIVS) {
+        if (!status || status === CHAT_CALL_STATUS_STARTED) {
           this.stopRingtone(CHAT_CALL_STATUS_OUTGOING);
           this.stopRingtone(CHAT_CALL_STATUS_INCOMING);
         }

@@ -52,7 +52,10 @@ export default class MainCallBoxSceneGroup extends Component {
     });
 
     return <Container className={style.MainCallBoxSceneGroup}>
-      <MainCallBoxSceneGroupParticipants/>
+      {
+        !incomingCondition && <MainCallBoxSceneGroupParticipants chatCallBoxShowing={chatCallBoxShowing}/>
+      }
+
       <Container className={avatarContainerClassNames}>
         <Avatar cssClassNames={avatarClassName} inline={false}>
           <AvatarImage
@@ -65,9 +68,9 @@ export default class MainCallBoxSceneGroup extends Component {
             {thread.title}
           </AvatarName>
           {incomingCondition &&
-            <AvatarText>
-              <Text size="xs" inline color="accent"> {getName(contact)} در حال تماس است</Text>
-            </AvatarText>
+          <AvatarText>
+            <Text size="xs" inline color="accent"> {getName(contact)} در حال تماس است</Text>
+          </AvatarText>
           }
         </Avatar>
       </Container>

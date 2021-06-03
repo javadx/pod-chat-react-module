@@ -1,3 +1,5 @@
+@import "../mixin/MainCallBoxMuteBox";
+
 .MainCallBoxScene {
   display: flex;
   align-items: center;
@@ -30,4 +32,8 @@
   bottom: 50px;
   top: auto;
   left: auto;
+}
+
+.MainCallBoxScene__MicOffContainer {
+  @include muteBox(0, 0);
 }

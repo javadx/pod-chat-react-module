@@ -22,6 +22,8 @@ import styleVar from "../../styles/variables.scss";
 import {chatCallBoxShowingReducer} from "../reducers/chatReducer";
 import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
 import classnames from "classnames";
+import {isGroup} from "../utils/helpers";
+import MainCallBoxCompactedGroup from "./MainCallBoxCompactedGroup";
 
 
 @connect(store => {
@@ -44,6 +46,7 @@ export default class MainCallBoxCompacted extends Component {
 
   render() {
     const {chatCallBoxShowing, chatCallStatus, mainCallBoxRef} = this.props;
+    const {thread} = chatCallBoxShowing;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const className = classnames({
@@ -52,7 +55,11 @@ export default class MainCallBoxCompacted extends Component {
     });
     return <Container className={className} onClick={this.onCompactCallClick}>
       <Container className={style.MainCallBoxCompacted__Person}>
-        <MainCallBoxCompactedPerson chatCallBoxShowing={chatCallBoxShowing} chatCallStatus={chatCallStatus}/>
+        {isGroup(thread) ?
+          <MainCallBoxCompactedGroup chatCallBoxShowing={chatCallBoxShowing} chatCallStatus={chatCallStatus}/>
+          :
+          <MainCallBoxCompactedPerson chatCallBoxShowing={chatCallBoxShowing} chatCallStatus={chatCallStatus}/>
+        }
       </Container>
       <Container className={style.MainCallBoxCompacted__ControlSet}>
         <MainCallBoxControlSet stopRingtone={mainCallBoxRef.current && mainCallBoxRef.current.stopRingtone} buttonSize="sm"/>

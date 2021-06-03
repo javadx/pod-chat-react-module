@@ -9,7 +9,7 @@ import {chatAudioPlayer} from "../actions/chatActions";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
-  MdClose,
+  MdMicOff,
   MdPlayArrow,
   MdPause
 } from "react-icons/md";
@@ -51,7 +51,7 @@ export default class MainCallBoxSceneGroup extends Component {
   }
 
   render() {
-    const {chatCallParticipantList} = this.props;
+    const {chatCallParticipantList, chatCallBoxShowing, user} = this.props;
     const {detailsListShowing} = this.state;
     const mainCallBoxSceneGroupParticipantsClassNames = classnames({
       [style.MainCallBoxSceneGroupParticipants]: true,
@@ -62,12 +62,21 @@ export default class MainCallBoxSceneGroup extends Component {
     });
     if (detailsListShowing) {
       return <MainCallBoxSceneGroupParticipantsDetails chatCallParticipantList={chatCallParticipantList}
+                                                       chatCallBoxShowing={chatCallBoxShowing}
+                                                       user={user}
                                                        setDetailsShowing={this.setDetailsShowing}/>
     }
     return <Container className={mainCallBoxSceneGroupParticipantsClassNames}
                       onClick={() => this.setDetailsShowing(true)}>
       {chatCallParticipantList.map(participant =>
         <Container className={style.MainCallBoxSceneGroupParticipants__Participant}>
+          {participant.mute &&
+          <Container className={style.MainCallBoxSceneGroupParticipants__MicOffContainer} topLeft>
+            <MdMicOff size={styleVar.iconSizeXs}
+                      color={styleVar.colorGrayDark}
+                      style={{margin: "3px 4px"}}/>
+          </Container>
+          }
           <Avatar cssClassNames={avatarClassName} inline={false}>
             <AvatarImage src={avatarUrlGenerator(getImage(participant), avatarUrlGenerator.SIZES.XLARGE)}
                          text={avatarNameGenerator(getName(participant)).letter}

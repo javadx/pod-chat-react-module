@@ -1,3 +1,5 @@
+@import "../mixin/MainCallBoxMuteBox";
+
 .MainCallBoxSceneGroupParticipants {
   position: absolute;
   right: 0;
@@ -23,6 +25,11 @@
   border: 2px solid $color-accent-light;
   box-shadow: 0 0 2px $color-gray-dark;
   border-radius: 54px;
+  position: relative;
+}
+
+.MainCallBoxSceneGroupParticipants__MicOffContainer {
+  @include muteBox(-10px, -10px);
 }
 
 

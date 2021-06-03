@@ -36,7 +36,6 @@ import {avatarUrlGenerator} from "../utils/helpers";
 import {statics as modalContactListStatics} from "./ModalContactList";
 
 
-
 function AvatarTextFragment({contact}) {
   return <Text size="xs" inline
                color={contact.blocked ? "red" : "accent"}>{strings.lastSeen(date.prettifySince(contact ? contact.notSeenDuration : ""))}</Text>;
@@ -65,8 +64,29 @@ export default class ModalParticipantList extends Component {
     this.state = {
       query: null,
       threadSelectedParticipants: [],
-      threadParticipants: []
+      threadParticipants: [],
+      maximumLimitSelection: false
     };
+  }
+
+  _resetState() {
+    this.setState({
+      query: null,
+      threadSelectedParticipants: [],
+      threadParticipants: []
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {chatSelectParticipantForCallShowing: oldChatSelectParticipantForCallShowing} = prevProps;
+    const {chatSelectParticipantForCallShowing} = this.props;
+    const {showing: oldShowing} = oldChatSelectParticipantForCallShowing;
+    const {showing} = chatSelectParticipantForCallShowing;
+    if (!showing) {
+      if (oldShowing) {
+        this._resetState();
+      }
+    }
   }
 
   _requestForParticipant(callBack, offset = 0, query = null) {
@@ -98,7 +118,9 @@ export default class ModalParticipantList extends Component {
   onSelect(id) {
     const {threadSelectedParticipants} = this.state;
     let contactsClone = [...threadSelectedParticipants];
+
     contactsClone.push(id);
+
     this.setState({
       threadSelectedParticipants: contactsClone
     });

@@ -9,12 +9,13 @@ import {chatAudioPlayer} from "../actions/chatActions";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
-  MdClose,
+  MdMicOff,
   MdPlayArrow,
   MdPause
 } from "react-icons/md";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
 import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
+import MainCallBoxToaster from "./MainCallBoxToaster";
 
 //styling
 import style from "../../styles/app/MainCallBoxScene.scss";
@@ -23,12 +24,13 @@ import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../ut
 import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
 import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
-import Gap from "raduikit/src/gap";
+import Gap from "raduikit/src/gap"
 
 
 @connect(store => {
   return {
-    user: store.user.user
+    user: store.user.user,
+    chatCallParticipantList: store.chatCallParticipantList.participants
   };
 })
 export default class MainCallBoxScene extends Component {
@@ -38,7 +40,7 @@ export default class MainCallBoxScene extends Component {
   }
 
   render() {
-    const {chatCallStatus, chatCallBoxShowing, user} = this.props;
+    const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList} = this.props;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const {contact} = chatCallBoxShowing;
@@ -50,25 +52,38 @@ export default class MainCallBoxScene extends Component {
       [style["MainCallBoxScene__Avatar--side"]]: isSide
     });
 
-    const AvatarBuilder = ({user, className}) =>
-      <Container className={avatarContainerClassNames}>
-        <Avatar cssClassNames={className} inline={false}>
-          <AvatarImage src={avatarUrlGenerator(getImage(user), avatarUrlGenerator.SIZES.XLARGE)}
-                       size="xlg"
-                       text={avatarNameGenerator(getName(user)).letter}
-                       textBg={avatarNameGenerator(getName(user)).color}/>
-          <Gap y={5}/>
-          <AvatarName maxWidth={"110px"} style={{marginRight: "0", maxWidth: "96px"}} size="sm">
-            {getName(user)}
-          </AvatarName>
-        </Avatar>
-      </Container>;
+    const AvatarBuilder = ({user, className}) => {
+      const realUserFromParticipantList = chatCallParticipantList.find(participant => user.id === participant.id);
+      const realUser = realUserFromParticipantList || user;
+      return <Container className={avatarContainerClassNames}>
 
-    return <Container className={style.MainCallBoxScene}>
-      <AvatarBuilder user={incomingCondition ? contact : user} className={incomingCondition ? "" : avatarClassName()}/>
-      {!incomingCondition &&
-      <AvatarBuilder user={contact} className={avatarClassName(true)}/>}
+          <Avatar cssClassNames={className} inline={false}>
+            {realUser.mute &&
+            <Container className={style.MainCallBoxScene__MicOffContainer}>
+              <MdMicOff size={styleVar.iconSizeXs}
+                        color={styleVar.colorGrayDark}
+                        style={{margin: "3px 4px"}}/>
+            </Container>
+            }
+            <AvatarImage src={avatarUrlGenerator(getImage(realUser), avatarUrlGenerator.SIZES.XLARGE)}
+                         size="xlg"
+                         text={avatarNameGenerator(getName(realUser)).letter}
+                         textBg={avatarNameGenerator(getName(realUser)).color}/>
+            <Gap y={5}/>
+            <AvatarName maxWidth={"110px"} style={{marginRight: "0", maxWidth: "96px"}} size="sm">
+              {getName(realUser)}
+            </AvatarName>
+          </Avatar>
+        </Container>
+        };
 
-    </Container>
-  }
-}
+        return <Container className={style.MainCallBoxScene}>
+          <MainCallBoxToaster/>
+        <AvatarBuilder user={incomingCondition ? contact : user}
+                       className={incomingCondition ? "" : avatarClassName()}/>
+        {!incomingCondition &&
+        <AvatarBuilder user={contact} className={avatarClassName(true)}/>}
+
+      </Container>
+        }
+        }

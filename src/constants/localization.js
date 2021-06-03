@@ -276,6 +276,7 @@ let strings = new LocalizedStrings({
     ringing: "در حال تماس",
     callStarted: "در حال گفتگو",
     call: "تماس",
+    maximumNumberOfContactSelected: "حد نصاب تعداد نفرات تماس 5 نفر است",
     peopleIsTalking:(numberOfPeople)=>{
       return `${numberOfPeople} نفر در حال مکالمه`
     },

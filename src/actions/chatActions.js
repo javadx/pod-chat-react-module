@@ -48,16 +48,21 @@ import {
   CHAT_CALL_STATUS,
   CHAT_SELECT_PARTICIPANT_FOR_CALL_SHOWING,
   CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
-  THREAD_PARTICIPANT_GET_LIST_PARTIAL, THREAD_PARTICIPANT_GET_LIST, CHAT_CALL_PARTICIPANT_LIST
+  THREAD_PARTICIPANT_GET_LIST_PARTIAL,
+  THREAD_PARTICIPANT_GET_LIST,
+  CHAT_CALL_PARTICIPANT_LIST,
+  CHAT_CALL_PARTICIPANT_LEFT, CHAT_CALL_PARTICIPANT_JOINED, CHAT_CALL_PARTICIPANT_LIST_CHANGE
 } from "../constants/actionTypes";
 import {messageInfo} from "./messageActions";
 import {THREAD_HISTORY_LIMIT_PER_REQUEST} from "../constants/historyFetchLimits";
 import {
+  CALL_DIV_ID,
   CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_DIVS,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING,
   CHAT_CALL_STATUS_STARTED
 } from "../constants/callModes";
+import {callParticipantStandardization} from "../utils/helpers";
 
 
 let firstReadyPassed = false;
@@ -79,6 +84,12 @@ function findInTyping(threadId, userId, remove) {
     }
   }
   return {};
+}
+
+function resetChatCall(dispatch) {
+  dispatch(chatCallStatus());
+  document.getElementById(CALL_DIV_ID).innerHTML = "";
+  dispatch(chatCallGetParticipantList());
 }
 
 export const chatSetInstance = config => {
@@ -167,25 +178,27 @@ export const chatSetInstance = config => {
         switch (type) {
           case "CALL_SESSION_CREATED":
             return dispatch(chatCallStatus(oldCall.status, call));
+          case "CALL_PARTICIPANT_LEFT":
+            return dispatch(chatCallParticipantLeft(callParticipantStandardization(call)));
+          case "CALL_PARTICIPANT_JOINED":
+            return dispatch(chatCallParticipantJoined(callParticipantStandardization(call)));
+          case "CALL_PARTICIPANT_MUTE":
+          case "CALL_PARTICIPANT_UNMUTE":
+            return dispatch(chatCallParticipantListChange(callParticipantStandardization(call)));
           case "RECEIVE_CALL":
             dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, call.conversationVO || {}, call.creatorVO));
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_INCOMING, call));
           case "CALL_STARTED": {
             const callId = call.clientDTO.desc.split("-")[1];
-            if(oldCall.call.conversationVO.group) {
-              dispatch(chatCallGetParticipantList(callId));
-            }
+            dispatch(chatCallGetParticipantList(callId));
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {callId, ...oldCall.call, ...call}))
           }
           case "CALL_ENDED":
             dispatch(chatCallBoxShowing(false));
-            const {uiLocalAudio, uiRemoteAudio} = oldCall.call;
-            dispatch(chatCallStatus(null, null));
-            uiLocalAudio.remove();
-            uiRemoteAudio.remove();
+            resetChatCall(dispatch);
             return;
           case "CALL_DIVS":
-            return dispatch(chatCallStatus(CHAT_CALL_STATUS_DIVS, {...oldCall.call, ...call}));
+            return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {...oldCall.call, ...call}));
           default:
             break;
         }
@@ -411,7 +424,7 @@ export const chatCallBoxShowing = (showing, thread, contact) => {
   }
 };
 
-export const chatCallStatus = (status, call) => {
+export const chatCallStatus = (status = null, call = null) => {
   return dispatch => {
     return dispatch({
       type: CHAT_CALL_STATUS,
@@ -420,8 +433,35 @@ export const chatCallStatus = (status, call) => {
   }
 };
 
+export const chatCallMuteParticipants = (callId, userIds) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.muteCallParticipants(callId, userIds);
+    dispatch(chatCallParticipantListChange(userIds.map(user => {
+      return {id: user, mute: true}
+    })));
+  }
+};
+
+export const chatCallUnMuteParticipants = (callId, userIds) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.unMuteCallParticipants(callId, userIds);
+    dispatch(chatCallParticipantListChange(userIds.map(user => {
+      return {id: user, mute: false}
+    })));
+  }
+};
+
 export const chatCallGetParticipantList = (callId, payload) => {
   return (dispatch, getState) => {
+    if (!callId && !payload) {
+      return dispatch({
+        type: CHAT_CALL_PARTICIPANT_LIST(CANCELED)
+      });
+    }
     if (payload) {
       return dispatch({
         type: CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
@@ -437,6 +477,34 @@ export const chatCallGetParticipantList = (callId, payload) => {
   }
 };
 
+export const chatCallParticipantJoined = participant => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_CALL_PARTICIPANT_JOINED,
+      payload: participant
+    });
+  }
+};
+
+export const chatCallParticipantLeft = (participantId) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: CHAT_CALL_PARTICIPANT_LEFT,
+      payload: participantId
+    });
+  }
+};
+
+export const chatCallParticipantListChange = participants => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_CALL_PARTICIPANT_LIST_CHANGE,
+      payload: participants
+    });
+  }
+};
+
+
 export const chatAcceptCall = (call) => {
   return (dispatch, getState) => {
     const state = getState();
@@ -450,17 +518,14 @@ export const chatRejectCall = (call, status) => {
   return (dispatch, getState) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
-    if (status === CHAT_CALL_STATUS_DIVS) {
-      const {uiLocalAudio, uiRemoteAudio} = call;
-      uiLocalAudio.remove();
-      uiRemoteAudio.remove();
+    if (status === CHAT_CALL_STATUS_STARTED) {
       chatSDK.endCall(call.callId);
     } else {
       if (call) {
         chatSDK.rejectCall(call.callId);
       }
     }
-    dispatch(chatCallStatus(null, null));
+    resetChatCall(dispatch);
     dispatch(chatCallBoxShowing(false, null, null));
   }
 };
