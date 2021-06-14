@@ -272,18 +272,28 @@ let strings = new LocalizedStrings({
       sound: "صداها",
       voice: "ضبط شده‌ها"
     },
-    calling: "درحال برقراری ارتباط",
-    ringing: "در حال تماس",
+    calling: isVideoCall => {
+      if (isVideoCall) {
+        return "درحال برقراری ارتباط تصویری";
+      }
+      return "درحال برقراری ارتباط صوتی";
+    },
+    ringing: isVideoCall => {
+      if (isVideoCall) {
+        return "در حال تماس تصویری";
+      }
+      return "در حال تماس صوتی";
+    },
     callStarted: "در حال گفتگو",
     call: "تماس",
     maximumNumberOfContactSelected: "حد نصاب تعداد نفرات تماس 5 نفر است",
-    peopleIsTalking:(numberOfPeople)=>{
+    peopleIsTalking: (numberOfPeople) => {
       return `${numberOfPeople} نفر در حال مکالمه`
     },
     missedCallAt: date => {
       return `تماس از دست رفته در ${date}`
     },
-    participantRejectYourCall: (name,date)=>{
+    participantRejectYourCall: (name, date) => {
       return `رد تماس توسط ${name} در ${date}`
     }
   },

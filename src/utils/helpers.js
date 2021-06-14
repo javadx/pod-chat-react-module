@@ -768,3 +768,11 @@ export function callParticipantStandardization(arrayOfParticipants) {
     }
   })
 }
+
+export function isVideoCall(call) {
+  if(call) {
+    if(call.type === 1) {
+      return true
+    }
+  }
+}

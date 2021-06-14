@@ -22,7 +22,7 @@ import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
-import {MdChevronLeft, MdSearch, MdCheck, MdClose, MdPhone} from "react-icons/md";
+import {MdVideocam, MdPhone} from "react-icons/md";
 import MainHeadThreadInfo from "./MainHeadThreadInfo";
 import MainHeadBatchActions from "./MainHeadBatchActions";
 
@@ -59,6 +59,7 @@ export default class MainHeadCallButtons extends Component {
   constructor(props) {
     super(props);
     this.onVoiceCallClick = this.onVoiceCallClick.bind(this);
+    this.onVideoCallClick = this.onVideoCallClick.bind(this);
     this._selectParticipantForCallFooterFragment = this._selectParticipantForCallFooterFragment.bind(this);
   }
 
@@ -104,14 +105,14 @@ export default class MainHeadCallButtons extends Component {
     ));
   }
 
-  _p2pCall() {
+  _p2pCall(callType) {
     const {participants, thread, user, dispatch} = this.props;
     const contact = thread.onTheFly ? thread.participant : getParticipant(participants, user);
     dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread, contact));
     if (thread.onTheFly) {
       const id = contact.isMyContact ? contact.contactId : contact.id;
       const type = contact.isMyContact ? "TO_BE_USER_CONTACT_ID" : "TO_BE_USER_ID";
-      return dispatch(chatStartCall(null, "voice", {
+      return dispatch(chatStartCall(null, callType, {
         invitees: [{
           "id": id,
           "idType": type
@@ -119,7 +120,7 @@ export default class MainHeadCallButtons extends Component {
         ]
       }));
     }
-    dispatch(chatStartCall(thread.id, "voice"));
+    dispatch(chatStartCall(thread.id, callType));
   }
 
   onVoiceCallClick() {
@@ -127,21 +128,34 @@ export default class MainHeadCallButtons extends Component {
     if (isGroup(thread)) {
       return this._groupCall();
     }
-    this._p2pCall();
+    this._p2pCall("voice");
+  }
+
+  onVideoCallClick() {
+    this._p2pCall("video");
   }
 
   render() {
-    const {smallVersion, chatCallStatus} = this.props;
+    const {smallVersion, chatCallStatus, thread} = this.props;
     const classNames = classnames({
-      [style.MainHeadCallButtons]: true,
-      [style["MainHeadCallButtons--smallVersion"]]: smallVersion
+      [style.MainHeadCallButtons__Button]: true,
+      [style["MainHeadCallButtons__Button--smallVersion"]]: smallVersion
     });
     return (
-      <Container className={classNames} inline
-                 onClick={chatCallStatus.status ? e => {
-                 } : this.onVoiceCallClick}>
-        <MdPhone size={styleVar.iconSizeMd}
-                 color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
+      <Container inline>
+        <Container className={classNames} onClick={chatCallStatus.status ? e => {
+        } : this.onVoiceCallClick}>
+          <MdPhone size={styleVar.iconSizeMd}
+                   color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
+        </Container>
+        {!isGroup(thread) &&
+        <Container className={classNames} onClick={chatCallStatus.status ? e => {
+        } : this.onVideoCallClick}>
+          <MdVideocam size={styleVar.iconSizeMd}
+                      color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
+        </Container>
+        }
+
       </Container>
     )
   }

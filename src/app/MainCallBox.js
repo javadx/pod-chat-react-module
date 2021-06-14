@@ -105,11 +105,11 @@ export default class MainCallBox extends Component {
     if (type === CHAT_CALL_STATUS_INCOMING) {
       this.ringtone.currentTime = 0;
       this.ringtone.muted = false;
-      this.ringtone.play();
+      //this.ringtone.play();
     } else if (type === CHAT_CALL_STATUS_OUTGOING) {
       this.callingTone.currentTime = 0;
       this.callingTone.muted = false;
-      this.callingTone.play();
+      //this.callingTone.play();
     }
   }
 

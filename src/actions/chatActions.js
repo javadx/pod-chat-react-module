@@ -86,8 +86,17 @@ function findInTyping(threadId, userId, remove) {
   return {};
 }
 
-function resetChatCall(dispatch) {
+function resetChatCall(dispatch, call) {
   dispatch(chatCallStatus());
+  if(call) {
+    if(call.uiLocalVideo) {
+      const {uiRemoteVideo, uiLocalVideo, uiRemoteAudio, uiLocalAudio} = call;
+      uiRemoteVideo.remove();
+      uiLocalVideo.remove();
+      uiRemoteAudio.remove();
+      uiLocalAudio.remove();
+    }
+  }
   document.getElementById(CALL_DIV_ID).innerHTML = "";
   dispatch(chatCallGetParticipantList());
 }
@@ -195,7 +204,7 @@ export const chatSetInstance = config => {
           }
           case "CALL_ENDED":
             dispatch(chatCallBoxShowing(false));
-            resetChatCall(dispatch);
+            resetChatCall(dispatch, oldCall.call);
             return;
           case "CALL_DIVS":
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {...oldCall.call, ...call}));
@@ -525,7 +534,7 @@ export const chatRejectCall = (call, status) => {
         chatSDK.rejectCall(call.callId);
       }
     }
-    resetChatCall(dispatch);
+    resetChatCall(dispatch, call);
     dispatch(chatCallBoxShowing(false, null, null));
   }
 };

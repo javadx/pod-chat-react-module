@@ -21,7 +21,7 @@ import {
   MdVolumeOff,
   MdVolumeUp,
   MdMic,
-  MdSpeaker,
+  MdVideocam,
   MdPlayArrow,
   MdPause
 } from "react-icons/md";
@@ -29,7 +29,7 @@ import {
 //styling
 import style from "../../styles/app/MainCallBoxControlSet.scss";
 import styleVar from "../../styles/variables.scss";
-import {getMessageMetaData, mobileCheck} from "../utils/helpers";
+import {getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
   CALL_DIV_ID,
   CHAT_CALL_BOX_NORMAL,
@@ -162,7 +162,7 @@ export default class MainCallBoxControlSet extends Component {
   render() {
     const {chatCallStatus, buttonSize} = this.props;
     const {mic, volume} = this.state;
-    const {status} = chatCallStatus;
+    const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const callDropClassNames = classnames({
       [style.MainCallBoxControlSet__Button]: true,
@@ -187,7 +187,11 @@ export default class MainCallBoxControlSet extends Component {
       </ButtonFloating>
       {incomingCondition &&
       <ButtonFloating onClick={this.onAcceptCallClick} size={buttonSize || "sm"} className={callAcceptClassNames}>
-        <MdCall size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+        {isVideoCall(call) ?
+          <MdVideocam size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          :
+          <MdCall size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+        }
       </ButtonFloating>
       }
       {!incomingCondition &&

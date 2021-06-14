@@ -19,6 +19,7 @@ import style from "../../styles/app/MainCallBoxHead.scss";
 import styleVar from "../../styles/variables.scss";
 import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
 import strings from "../constants/localization";
+import {isVideoCall} from "../utils/helpers";
 window.calltimerSec = 0;
 window.calltimerMins = 0;
 
@@ -79,10 +80,11 @@ export default class MainCallBoxHead extends Component {
     const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const callStarted = status === CHAT_CALL_STATUS_STARTED;
+    const isVideoCallBool = (isVideoCall(call));
     return <Container className={style.MainCallBoxHead}>
       <Container className={style.MainCallBoxHead__StatusContainer}>
         <Text bold
-              size="sm">{incomingCondition ? strings.ringing : callStarted ? strings.callStarted : strings.calling}</Text>
+              size="sm">{incomingCondition ? strings.ringing(isVideoCallBool) : callStarted ? strings.callStarted : strings.calling(isVideoCallBool)}</Text>
         {callStarted &&
 
         <ReactStopwatch
@@ -93,7 +95,7 @@ export default class MainCallBoxHead extends Component {
             window.calltimerSec = seconds;
             return (
               <Text size="xs" color="accent" bold>
-                {minutes > 10 ? minutes : `0${minutes}`}:{seconds > 10 ? seconds : `0${seconds}`}
+                {minutes >= 10 ? minutes : `0${minutes}`}:{seconds >= 10 ? seconds : `0${seconds}`}
               </Text>
             );
           }}/>

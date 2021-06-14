@@ -1,14 +1,14 @@
 @import "scope";
 @import "../mixin/responsive";
 
-.MainHeadCallButtons {
+.MainHeadCallButtons__Button {
   padding: 18px 9px;
+  display: inline-block;
 }
-
 
 @include grid("md") {
 
-  .MainHeadCallButtons:not(.MainHeadCallButtons--smallVersion) {
+  .MainHeadCallButtons__Button:not(.MainHeadCallButtons__Button--smallVersion) {
     padding: 18px;
   }
 }

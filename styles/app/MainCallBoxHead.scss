@@ -3,7 +3,8 @@
   flex-direction: row;
   padding: 10px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
+  position: relative;
 }
 
 .MainCallBoxHead__StatusContainer {

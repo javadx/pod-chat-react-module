@@ -1,0 +1,35 @@
+@import "../mixin/MainCallBoxMuteBox";
+
+.MainCallBoxSceneAudio {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+}
+
+.MainCallBoxSceneAudio__AvatarContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.MainCallBoxSceneAudio__Avatar {
+  position: absolute;
+  top: 50px;
+  left: 15px;
+  z-index: 2;
+}
+
+.MainCallBoxSceneAudio__Avatar--side {
+  right: 15px;
+  bottom: 50px;
+  top: auto;
+  left: auto;
+}
+
+.MainCallBoxSceneAudio__MicOffContainer {
+  @include muteBox(0, 0);
+}
