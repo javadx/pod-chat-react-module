@@ -1031,8 +1031,19 @@ export default class ChatSDK {
       callId,
       userIds
     };
-    this.chatAgent.unMuteCallParticipants(params, function (joinThreadResults) {
-      resolve(joinThreadResults)
+    this.chatAgent.unMuteCallParticipants(params, function (result) {
+      resolve(result)
+    });
+  }
+
+  @promiseDecorator
+  removeCallParticipants(resolve, reject, callId, userIds) {
+    const params = {
+      callId,
+      userIds
+    };
+    this.chatAgent.removeCallParticipants(params, function (result) {
+      resolve(result)
     });
   }
 };

@@ -1,0 +1,29 @@
+
+.CallBoxSceneGroupParticipantsDetails {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.CallBoxSceneGroupParticipantsDetails__Head {
+  height: 40px;
+  display: flex;
+  padding: 15px;
+  align-content: center;
+  align-items: center;
+  background-color: $color-gray-light;
+}
+
+.CallBoxSceneGroupParticipantsDetails__HeadText {
+  flex-grow: 1;
+}
+
+.CallBoxSceneGroupParticipantsDetails__CloseButton {
+  flex: none
+}

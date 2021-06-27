@@ -1,0 +1,62 @@
+@import "../mixin/responsive";
+
+.CallBoxCompacted {
+  display: inline-flex;
+  position: absolute;
+  background-color: $color-white;
+  border-bottom: 1px solid $color-gray;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: $z-index-2;
+  align-items: center;
+  top: 59px;
+  left: 0;
+  height: 59px;
+  width: 100%;
+}
+
+.CallBoxCompacted--incoming {
+  background: linear-gradient(
+                  -45deg, #e3ffb9, #ffd5b1, #e6f1da, #ecdb5e);
+  animation: gradient 5s ease infinite;
+  background-size: 600%;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.CallBoxCompacted__Person {
+  overflow: hidden;
+  margin-right: 10px;
+  text-overflow: ellipsis;
+  flex: 1 1 0;
+  display: inline-flex;
+}
+
+.CallBoxCompacted__ControlSet {
+  margin-left: 10px;
+  margin-top: 4px;
+}
+
+.CallBoxCompacted--noThreadOpened {
+
+}
+
+@include grid("md") {
+  .CallBoxCompacted:not(.CallBoxCompacted--small) {
+    width: 70%;
+  }
+
+  .CallBoxCompacted--noThreadOpened {
+    top: 0;
+  }
+}

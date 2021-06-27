@@ -1,0 +1,5 @@
+@import "../mixin/CallBoxMuteBox";
+
+.CallBoxCompactedPerson__MicOffContainer {
+  @include muteBox(-1px, -8px)
+}

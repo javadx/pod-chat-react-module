@@ -37,7 +37,12 @@ import {
   chatSupportModuleBadgeShowing
 } from "../actions/chatActions";
 import {isChannel, isGroup} from "../utils/helpers";
-import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
+import {
+  CHAT_CALL_BOX_COMPACTED,
+  CHAT_CALL_BOX_NORMAL,
+  CHAT_CALL_STATUS_STARTED,
+  MAX_GROUP_CALL_COUNT
+} from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
 
 function createInvitees(participants) {
@@ -51,7 +56,9 @@ function createInvitees(participants) {
 
 @connect(store => {
   return {
-    chatCallStatus: store.chatCallStatus
+    chatCallStatus: store.chatCallStatus,
+
+    participants: store.threadParticipantList.participants,
   };
 })
 export default class MainHeadCallButtons extends Component {
@@ -65,7 +72,7 @@ export default class MainHeadCallButtons extends Component {
 
   _selectParticipantForCallFooterFragment({selectedContacts, allContacts}) {
     const {thread, dispatch, user} = this.props;
-    const isMaximumCount = (selectedContacts && selectedContacts.length > 5);
+    const isMaximumCount = (selectedContacts && selectedContacts.length > MAX_GROUP_CALL_COUNT - 1);
     return <Container>
       <Container>
         {(selectedContacts && selectedContacts.length >= 1) &&
@@ -78,7 +85,10 @@ export default class MainHeadCallButtons extends Component {
           const selectedParticipants = allContacts.filter(e => selectedContacts.indexOf(e.id) > -1);
           selectedParticipants.find(e => e.id === user.id) ? null : selectedParticipants.push(user);
           dispatch(chatCallGetParticipantList(null, selectedParticipants));
-          dispatch(chatStartGroupCall(thread.id, selectedContacts, "voice"));
+          const invitess = selectedParticipants.map(e => {
+            return {id: e.username, type: "TO_BE_USER_USERNAME"}
+          });
+          dispatch(chatStartGroupCall(null, invitess, "voice"));
         }}>{strings.call}</Button>
         }
 
@@ -95,14 +105,20 @@ export default class MainHeadCallButtons extends Component {
 
   _groupCall() {
     const {participants, thread, user, dispatch} = this.props;
-    dispatch(chatSelectParticipantForCallShowing({
-        showing: true,
-        selectiveMode: true,
-        headingTitle: strings.forCallPleaseSelectContacts,
-        thread,
-        FooterFragment: this._selectParticipantForCallFooterFragment
-      },
-    ));
+    if (thread.participantCount > MAX_GROUP_CALL_COUNT) {
+      return dispatch(chatSelectParticipantForCallShowing({
+          showing: true,
+          selectiveMode: true,
+          headingTitle: strings.forCallPleaseSelectContacts,
+          thread,
+          FooterFragment: this._selectParticipantForCallFooterFragment
+        },
+      ));
+    }
+
+    dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread));
+    dispatch(chatCallGetParticipantList(null, participants));
+    dispatch(chatStartGroupCall(thread.id, null, "voice"));
   }
 
   _p2pCall(callType) {
@@ -120,6 +136,7 @@ export default class MainHeadCallButtons extends Component {
         ]
       }));
     }
+    dispatch(chatCallGetParticipantList(null, [contact, user]));
     dispatch(chatStartCall(thread.id, callType));
   }
 

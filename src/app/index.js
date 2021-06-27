@@ -61,6 +61,9 @@ import style from "../../styles/app/index.scss";
 import {isChannel, isThreadOwner} from "../utils/helpers";
 import {THREAD_ADMIN} from "../constants/privilege";
 import IndexErrorHandler from "./IndexErrorHandler";
+import CallBox from "./CallBox";
+import {CHAT_CALL_BOX_COMPACTED} from "../constants/callModes";
+import CallBoxCompacted from "./CallBoxCompacted";
 
 
 @connect(store => {
@@ -71,7 +74,8 @@ import IndexErrorHandler from "./IndexErrorHandler";
     thread: store.thread.thread,
     threadShowing: store.threadShowing,
     leftAsideShowing: store.threadLeftAsideShowing.isShowing,
-    messageNew: store.messageNew
+    messageNew: store.messageNew,
+    chatCallBoxShowing: store.chatCallBoxShowing
   };
 }, null, null, {forwardRef: true})
 class Index extends Component {
@@ -83,6 +87,7 @@ class Index extends Component {
     this.modalMediaRef = React.createRef();
     this.modalImageCaptionRef = React.createRef();
     this.modalParticipantListRef = React.createRef();
+    this.CallBoxRef = React.createRef();
     this.firstContactFetching = true;
     this.deletingDatabases = false;
   }
@@ -218,7 +223,7 @@ class Index extends Component {
   /*----outside api---*/
 
   render() {
-    const {threadShowing, customClassName, leftAsideShowing, small, chatRouterLess, supportMode} = this.props;
+    const {threadShowing, customClassName, leftAsideShowing, small, chatRouterLess, supportMode, chatCallBoxShowing} = this.props;
     const classNames = classnames({
       [customClassName]: customClassName,
       [style.Index]: true,
@@ -226,6 +231,9 @@ class Index extends Component {
       [style["Index--isThreadShow"]]: threadShowing,
       [style["Index--isAsideLeftShow"]]: leftAsideShowing
     });
+
+
+    const {showing: callBoxShowingType} = chatCallBoxShowing;
     const popups = (
       <Container>
         {supportMode ?
@@ -271,6 +279,12 @@ class Index extends Component {
     return (
       <Container className={classNames}>
         {popups}
+        {
+          callBoxShowingType &&
+          callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
+          <CallBoxCompacted chatCallBoxShowing={chatCallBoxShowing} CallBoxRef={this.CallBoxRef}/>
+        }
+        <CallBox chatCallBoxShowing={chatCallBoxShowing} ref={this.CallBoxRef}/>
         {!supportMode &&
         <Container className={style.Index__Aside}>
           <Aside/>

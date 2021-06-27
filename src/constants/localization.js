@@ -272,6 +272,7 @@ let strings = new LocalizedStrings({
       sound: "صداها",
       voice: "ضبط شده‌ها"
     },
+    callingWithNoType: "در حال تماس",
     calling: isVideoCall => {
       if (isVideoCall) {
         return "درحال برقراری ارتباط تصویری";

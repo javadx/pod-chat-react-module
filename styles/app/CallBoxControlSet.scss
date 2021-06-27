@@ -1,0 +1,23 @@
+.CallBoxControlSet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.CallBoxControlSet__Button {
+  box-shadow: none;
+  position: relative;
+}
+
+.CallBoxControlSet__DropCall {
+  transform: rotate(135deg);
+  background-color: $color-red;
+}
+
+.CallBoxControlSet__AcceptCall {
+  background-color: $color-green-dark;
+}
+
+.CallBoxControlSet__Speaker,
+.CallBoxControlSet__Mic {
+}

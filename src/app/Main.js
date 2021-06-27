@@ -20,8 +20,8 @@ import MainFooter from "./MainFooter";
 import MainPinMessage from "./MainPinMessage";
 import MainIntro from "./MainIntro";
 import MainAudioPlayer from "./MainAudioPlayer";
-import MainCallBox from "./MainCallBox";
-import MainCallBoxCompacted from "./MainCallBoxCompacted";
+import CallBox from "./CallBox";
+import CallBoxCompacted from "./CallBoxCompacted";
 
 //styling
 import style from "../../styles/app/Main.scss";
@@ -34,8 +34,7 @@ import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL} from "../constants/callMo
     thread: store.thread.thread,
     threadFetching: store.thread.fetching,
     chatRouterLess: store.chatRouterLess,
-    chatAudioPlayer: store.chatAudioPlayer,
-    chatCallBoxShowing: store.chatCallBoxShowing
+    chatAudioPlayer: store.chatAudioPlayer
   };
 })
 class Main extends Component {
@@ -43,7 +42,6 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.mainMessagesRef = React.createRef();
-    this.mainCallBoxRef = React.createRef();
   }
 
   componentDidUpdate({location: oldLocation}) {
@@ -60,7 +58,6 @@ class Main extends Component {
   render() {
     const {thread, chatRouterLess, threadFetching, chatAudioPlayer, history, chatCallBoxShowing} = this.props;
     const {id, pinMessageVO} = thread;
-    const {showing: callBoxShowingType} = chatCallBoxShowing;
 
     if (!id && !threadFetching) {
       return (
@@ -69,12 +66,6 @@ class Main extends Component {
             backgroundImage: `url("${coverImage}")`
           }}/>
           <MainIntro chatRouterLess={chatRouterLess} history={history}/>
-          {
-            callBoxShowingType &&
-            callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
-            <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing} mainCallBoxRef={this.mainCallBoxRef}/>
-          }
-          <MainCallBox chatCallBoxShowing={chatCallBoxShowing}  ref={this.mainCallBoxRef}/>
         </Container>
       )
     }
@@ -88,11 +79,7 @@ class Main extends Component {
                      backgroundImage: `url("${coverImage}")`
                    }}/>
                    <MainHead thread={thread} chatRouterLess={chatRouterLess} history={history}/>
-                   {
-                     callBoxShowingType &&
-                     callBoxShowingType === CHAT_CALL_BOX_COMPACTED &&
-                     <MainCallBoxCompacted chatCallBoxShowing={chatCallBoxShowing} mainCallBoxRef={this.mainCallBoxRef}/>
-                   }
+
                    {
                      chatAudioPlayer &&
                      <MainAudioPlayer thread={thread} chatAudioPlayer={chatAudioPlayer}/>
@@ -104,7 +91,7 @@ class Main extends Component {
 
                    <MainMessages thread={thread} ref={this.mainMessagesRef}/>
                    <MainFooter/>
-                   <MainCallBox chatCallBoxShowing={chatCallBoxShowing}  ref={this.mainCallBoxRef}/>
+
 
                  </Container>
                )

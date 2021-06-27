@@ -88,8 +88,8 @@ function findInTyping(threadId, userId, remove) {
 
 function resetChatCall(dispatch, call) {
   dispatch(chatCallStatus());
-  if(call) {
-    if(call.uiLocalVideo) {
+  if (call) {
+    if (call.uiLocalVideo) {
       const {uiRemoteVideo, uiLocalVideo, uiRemoteAudio, uiLocalAudio} = call;
       uiRemoteVideo.remove();
       uiLocalVideo.remove();
@@ -184,8 +184,10 @@ export const chatSetInstance = config => {
       },
       onCallEvents: (call, type) => {
         const oldCall = getState().chatCallStatus;
+        const user = getState().user.user;
         switch (type) {
           case "CALL_SESSION_CREATED":
+            call.isOwner = true;
             return dispatch(chatCallStatus(oldCall.status, call));
           case "CALL_PARTICIPANT_LEFT":
             return dispatch(chatCallParticipantLeft(callParticipantStandardization(call)));
@@ -199,7 +201,27 @@ export const chatSetInstance = config => {
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_INCOMING, call));
           case "CALL_STARTED": {
             const callId = call.clientDTO.desc.split("-")[1];
-            dispatch(chatCallGetParticipantList(callId));
+            call.isOwner = user.id === oldCall.call.creatorId;
+            if (call.isOwner) {
+              dispatch(chatCallGetParticipantList(callId, null, true)).then(participants => {
+                const oldThreadParticipant = getState().chatCallParticipantList.participants;
+                const newMap = oldThreadParticipant.map(participant => {
+                  const found = participants.find(finded => {
+                    if (participant.id === finded.id) {
+                      finded.joined = true;
+                      return finded;
+                    }
+                  });
+                  if (found) {
+                    return found;
+                  }
+                  return participant;
+                });
+                dispatch(chatCallGetParticipantList(callId, newMap));
+              });
+            } else {
+              dispatch(chatCallGetParticipantList(callId));
+            }
             return dispatch(chatCallStatus(CHAT_CALL_STATUS_STARTED, {callId, ...oldCall.call, ...call}))
           }
           case "CALL_ENDED":
@@ -464,7 +486,20 @@ export const chatCallUnMuteParticipants = (callId, userIds) => {
   }
 };
 
-export const chatCallGetParticipantList = (callId, payload) => {
+export const chatCallRemoveParticipants = (callId, userIds) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    chatSDK.removeCallParticipants(callId, userIds).then(e => {
+      dispatch({
+        type: CHAT_CALL_PARTICIPANT_LEFT,
+        payload: userIds
+      });
+    });
+  }
+};
+
+export const chatCallGetParticipantList = (callId, payload, direct) => {
   return (dispatch, getState) => {
     if (!callId && !payload) {
       return dispatch({
@@ -479,6 +514,9 @@ export const chatCallGetParticipantList = (callId, payload) => {
     }
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
+    if (direct) {
+      return chatSDK.getCallParticipants(callId);
+    }
     dispatch({
       type: CHAT_CALL_PARTICIPANT_LIST(),
       payload: chatSDK.getCallParticipants(callId)
@@ -488,6 +526,7 @@ export const chatCallGetParticipantList = (callId, payload) => {
 
 export const chatCallParticipantJoined = participant => {
   return dispatch => {
+    participant.joined = true;
     dispatch({
       type: CHAT_CALL_PARTICIPANT_JOINED,
       payload: participant
