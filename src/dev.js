@@ -27,7 +27,7 @@ function renderPodchat(token) {
 }
 
 auth({
-  clientId: "2051121e4348af52664cf7de0bda",
+  clientId: "88413l69cd4051a039cf115ee4e073",
   scope: "social:write",
   ssoBaseUrl: "https://accounts.pod.ir/oauth2",
   onNewToken: renderPodchat
