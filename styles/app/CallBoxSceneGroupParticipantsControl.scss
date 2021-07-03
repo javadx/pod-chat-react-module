@@ -1,5 +1,4 @@
-
-.CallBoxSceneGroupParticipantsDetails {
+.CallBoxSceneGroupParticipantsControl {
   position: absolute;
   right: 0;
   top: 0;
@@ -11,7 +10,7 @@
   z-index: 1;
 }
 
-.CallBoxSceneGroupParticipantsDetails__Head {
+.CallBoxSceneGroupParticipantsControl__Head {
   height: 40px;
   display: flex;
   padding: 15px;
@@ -20,10 +19,10 @@
   background-color: $color-gray-light;
 }
 
-.CallBoxSceneGroupParticipantsDetails__HeadText {
+.CallBoxSceneGroupParticipantsControl__HeadText {
   flex-grow: 1;
 }
 
-.CallBoxSceneGroupParticipantsDetails__CloseButton {
+.CallBoxSceneGroupParticipantsControl__CloseButton {
   flex: none
 }

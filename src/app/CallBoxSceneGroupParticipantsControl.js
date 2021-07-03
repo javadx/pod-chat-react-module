@@ -5,7 +5,7 @@ import checkForPrivilege, {isOwner} from "../utils/privilege";
 //actions
 import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
 import {
-  chatAudioPlayer,
+  chatAudioPlayer, chatCallGroupSettingsShowing, chatCallGroupSettingsShowingReducer,
   chatCallMuteParticipants,
   chatCallRemoveParticipants,
   chatCallUnMuteParticipants
@@ -25,7 +25,7 @@ import List from "../../../pod-chat-ui-kit/src/List";
 import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 
 //styling
-import style from "../../styles/app/CallBoxSceneGroupParticipantsDetails.scss";
+import style from "../../styles/app/CallBoxSceneGroupParticipantsControl.scss";
 import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
 import {
@@ -44,16 +44,16 @@ import Timer from "react-compound-timer";
 
 @connect(store => {
   return {
-    chatCallStatus: store.chatCallStatus,
-    thread: store.thread.thread
+    chatCallStatus: store.chatCallStatus
   }
 })
-export default class CallBoxSceneGroupParticipantsDetails extends Component {
+export default class CallBoxSceneGroupParticipantsControl extends Component {
 
   constructor(props) {
     super(props);
     this.onParticipantMuteClick = this.onParticipantMuteClick.bind(this);
     this.onParticipantRemoveClicked = this.onParticipantRemoveClicked.bind(this);
+    this.hideControl = this.hideControl.bind(this);
     this.state = {}
   }
 
@@ -72,24 +72,29 @@ export default class CallBoxSceneGroupParticipantsDetails extends Component {
     dispatch(chatCallRemoveParticipants(chatCallStatus.call.callId, [participant.id]));
   }
 
+  hideControl(){
+    const {dispatch} = this.props;
+    dispatch(chatCallGroupSettingsShowing(false));
+  }
+
   render() {
-    const {chatCallParticipantList, setDetailsShowing, chatCallBoxShowing, user, chatCallStatus, thread: currentThread} = this.props;
+    const {chatCallParticipantList, setDetailsShowing, chatCallBoxShowing, user, chatCallStatus} = this.props;
     const {call, status} = chatCallStatus;
     const classNames = classnames({
-      [style.CallBoxSceneGroupParticipantsDetails]: true
+      [style.CallBoxSceneGroupParticipantsControl]: true
     });
     const {thread, contact} = chatCallBoxShowing;
-    const isCallOwner = call && call.isOwner || isOwner(currentThread, user);
+    const isCallOwner = call && call.isOwner || isOwner(thread, user);
     const muteUnmutePermissionCondition = (isOwner(thread, user) || isCallOwner);
     return <Container className={classNames} topLeft>
-      <Container className={style.CallBoxSceneGroupParticipantsDetails__Head}>
-        <Container className={style.CallBoxSceneGroupParticipantsDetails__HeadText}>
+      <Container className={style.CallBoxSceneGroupParticipantsControl__Head}>
+        <Container className={style.CallBoxSceneGroupParticipantsControl__HeadText}>
           <Text bold
                 size="sm">{strings.peopleIsTalking(chatCallParticipantList.length)}
           </Text>
         </Container>
         <Container cursor="pointer">
-          <MdClose onClick={() => setDetailsShowing(false)}
+          <MdClose onClick={this.hideControl}
                    size={styleVar.iconSizeMd}
                    color={styleVar.colorAccentDark}/>
         </Container>

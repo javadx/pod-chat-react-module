@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 //actions
 import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAudioPlayer} from "../actions/chatActions";
+import {chatAudioPlayer, chatCallGroupSettingsShowing} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
@@ -25,13 +25,15 @@ import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
 import Gap from "raduikit/src/gap";
 import strings from "../constants/localization";
-import CallBoxSceneGroupParticipantsDetails from "./CallBoxSceneGroupParticipantsDetails";
+import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
+import {chatCallGroupSettingsShowingReducer} from "../reducers/chatReducer";
 
 
 @connect(store => {
   return {
     user: store.user.user,
-    chatCallParticipantList: store.chatCallParticipantList.participants
+    chatCallParticipantList: store.chatCallParticipantList.participants,
+    chatCallGroupSettingsShowing: store.chatCallGroupSettingsShowing
   };
 })
 export default class CallBoxSceneGroup extends Component {
@@ -44,14 +46,12 @@ export default class CallBoxSceneGroup extends Component {
     }
   }
 
-  setDetailsShowing(showing) {
-    this.setState({
-      detailsListShowing: showing
-    });
+  setDetailsShowing() {
+    this.props.dispatch(chatCallGroupSettingsShowing(true));
   }
 
   render() {
-    const {chatCallParticipantList, chatCallBoxShowing, user} = this.props;
+    const {chatCallParticipantList, chatCallBoxShowing, user, chatCallGroupSettingsShowing} = this.props;
     const {detailsListShowing} = this.state;
     const CallBoxSceneGroupParticipantsClassNames = classnames({
       [style.CallBoxSceneGroupParticipants]: true,
@@ -60,14 +60,13 @@ export default class CallBoxSceneGroup extends Component {
     const avatarClassName = classnames({
       [style.CallBoxSceneGroupParticipants__Avatar]: true
     });
-    if (detailsListShowing) {
-      return <CallBoxSceneGroupParticipantsDetails chatCallParticipantList={chatCallParticipantList}
+    if (chatCallGroupSettingsShowing) {
+      return <CallBoxSceneGroupParticipantsControl chatCallParticipantList={chatCallParticipantList}
                                                    chatCallBoxShowing={chatCallBoxShowing}
-                                                   user={user}
-                                                   setDetailsShowing={this.setDetailsShowing}/>
+                                                   user={user}/>
     }
     return <Container className={CallBoxSceneGroupParticipantsClassNames}
-                      onClick={() => this.setDetailsShowing(true)}>
+                      onClick={() => this.setDetailsShowing()}>
       {chatCallParticipantList.map(participant =>
         <Container className={style.CallBoxSceneGroupParticipants__Participant}>
           {participant.mute &&

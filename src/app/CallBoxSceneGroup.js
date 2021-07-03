@@ -1,5 +1,19 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {getImage, getName} from "./_component/contactList";
+import classnames from "classnames";
+import Gap from "raduikit/src/gap";
+import strings from "../constants/localization";
+import CallBoxSceneGroupVideo from "./CallBoxSceneGroupVideo";
+import CallBoxSceneGroupVoice from "./CallBoxSceneGroupVoice";
+import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
+import {
+  CHAT_CALL_STATUS_INCOMING,
+  CHAT_CALL_STATUS_OUTGOING,
+  CHAT_CALL_STATUS_STARTED,
+  MOCK_CONTACT,
+  MOCK_USER
+} from "../constants/callModes";
 
 //actions
 import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
@@ -19,13 +33,6 @@ import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 //styling
 import style from "../../styles/app/CallBoxSceneGroup.scss";
 import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
-import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
-import {getImage, getName} from "./_component/contactList";
-import classnames from "classnames";
-import Gap from "raduikit/src/gap";
-import strings from "../constants/localization";
-import CallBoxSceneGroupParticipants from "./CallBoxSceneGroupParticipants";
 
 
 @connect(store => {
@@ -41,9 +48,12 @@ export default class CallBoxSceneGroup extends Component {
 
   render() {
     const {chatCallStatus, chatCallBoxShowing, user} = this.props;
-    const {status} = chatCallStatus;
+    const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
+    const startedCondition = status === CHAT_CALL_STATUS_STARTED;
+    const isVideoCallResult = isVideoCall(call);
     const {thread, contact} = chatCallBoxShowing;
+
     const avatarContainerClassNames = classnames({
       [style.CallBoxSceneGroup__AvatarContainer]: !incomingCondition
     });
@@ -51,11 +61,16 @@ export default class CallBoxSceneGroup extends Component {
       [style.CallBoxSceneGroup__Avatar]: true
     });
 
+    const commonArgs = {
+      chatCallStatus,
+      chatCallBoxShowing,
+      user
+    };
+    if (isVideoCall(call) && !incomingCondition && startedCondition) {
+      return <CallBoxSceneGroupVideo {...commonArgs}/>
+    }
     return <Container className={style.CallBoxSceneGroup}>
-      {
-        !incomingCondition && <CallBoxSceneGroupParticipants chatCallBoxShowing={chatCallBoxShowing}/>
-      }
-
+      {!isVideoCallResult && !incomingCondition &&  <CallBoxSceneGroupVoice {...commonArgs}/>}
       <Container className={avatarContainerClassNames}>
         <Avatar cssClassNames={avatarClassName} inline={false}>
           <AvatarImage
@@ -75,5 +90,7 @@ export default class CallBoxSceneGroup extends Component {
         </Avatar>
       </Container>
     </Container>
+
+
   }
 }

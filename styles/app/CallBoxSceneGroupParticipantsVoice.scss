@@ -1,0 +1,14 @@
+.CallBoxSceneGroupParticipantsVoice {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+  transition: background-color ease 0.2s;
+  cursor: pointer;
+  z-index: 1;
+}

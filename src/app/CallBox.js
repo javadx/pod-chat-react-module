@@ -144,7 +144,7 @@ export default class CallBox extends Component {
 
 
       <Container className={style.CallBox__Head} onClick={this.onCallBoxClick}>
-        <CallBoxHead chatCallStatus={chatCallStatus}/>
+        <CallBoxHead chatCallStatus={chatCallStatus} thread={thread}/>
       </Container>
       {callBoxShowingType === CHAT_CALL_BOX_NORMAL &&
       <Fragment>

@@ -51,7 +51,10 @@ import {
   THREAD_PARTICIPANT_GET_LIST_PARTIAL,
   THREAD_PARTICIPANT_GET_LIST,
   CHAT_CALL_PARTICIPANT_LIST,
-  CHAT_CALL_PARTICIPANT_LEFT, CHAT_CALL_PARTICIPANT_JOINED, CHAT_CALL_PARTICIPANT_LIST_CHANGE
+  CHAT_CALL_PARTICIPANT_LEFT,
+  CHAT_CALL_PARTICIPANT_JOINED,
+  CHAT_CALL_PARTICIPANT_LIST_CHANGE,
+  CHAT_CALL_GROUP_VIDEO_VIEW_MODE, CHAT_CALL_GROUP_SETTINGS_SHOWING
 } from "../constants/actionTypes";
 import {messageInfo} from "./messageActions";
 import {THREAD_HISTORY_LIMIT_PER_REQUEST} from "../constants/historyFetchLimits";
@@ -88,6 +91,7 @@ function findInTyping(threadId, userId, remove) {
 
 function resetChatCall(dispatch, call) {
   dispatch(chatCallStatus());
+  dispatch(chatCallGroupSettingsShowing(false));
   if (call) {
     if (call.uiLocalVideo) {
       const {uiRemoteVideo, uiLocalVideo, uiRemoteAudio, uiLocalAudio} = call;
@@ -601,7 +605,25 @@ export const chatStartGroupCall = (threadId, invitees, type, params) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
     chatSDK.startGroupCall(threadId, invitees, type, params);
-    dispatch(chatCallStatus(CHAT_CALL_STATUS_OUTGOING, null));
+    dispatch(chatCallStatus(CHAT_CALL_STATUS_OUTGOING, {type: type === "video" ? 1 : 0}));
+  }
+};
+
+export const chatCallGroupVideoViewMode = type => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: CHAT_CALL_GROUP_VIDEO_VIEW_MODE,
+      payload: type
+    });
+  }
+};
+
+export const chatCallGroupSettingsShowing = showing => {
+  return dispatch => {
+    dispatch({
+      type: CHAT_CALL_GROUP_SETTINGS_SHOWING,
+      payload: showing
+    });
   }
 };
 

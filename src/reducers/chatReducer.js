@@ -28,7 +28,7 @@ import {
   CHAT_CALL_PARTICIPANT_LIST_PRELOAD,
   CHAT_CALL_PARTICIPANT_REMOVED,
   CHAT_CALL_PARTICIPANT_LEFT,
-  CHAT_CALL_PARTICIPANT_JOINED
+  CHAT_CALL_PARTICIPANT_JOINED, CHAT_CALL_GROUP_SETTINGS_SHOWING, CHAT_CALL_GROUP_VIDEO_VIEW_MODE
 } from "../constants/actionTypes";
 import {listUpdateStrategyMethods, stateGenerator, stateGeneratorState, updateStore} from "../utils/storeHelper";
 import {CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
@@ -101,6 +101,24 @@ export const chatSelectParticipantForCallShowingReducer = (state = {
 export const chatCallBoxShowingReducer = (state = {showing: false, thread: null, contact: null}, action) => {
   switch (action.type) {
     case CHAT_CALL_BOX_SHOWING:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallGroupSettingsShowingReducer = (state = false, action) => {
+  switch (action.type) {
+    case CHAT_CALL_GROUP_SETTINGS_SHOWING:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const chatCallGroupVideoViewModeReducer = (state = "grid"/*thumbnail*/, action) => {
+  switch (action.type) {
+    case CHAT_CALL_GROUP_VIDEO_VIEW_MODE:
       return action.payload;
     default:
       return state;

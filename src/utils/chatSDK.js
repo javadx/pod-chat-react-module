@@ -950,7 +950,6 @@ export default class ChatSDK {
       ...params
     };
     this.chatAgent.startCall(callType, function (res) {
-      console.log(e);
       resolve(res)
     });
   }
@@ -989,7 +988,6 @@ export default class ChatSDK {
     this.chatAgent.endCall({
       callId: callId
     }, function (res) {
-      console.log({res});
     })
   }
 

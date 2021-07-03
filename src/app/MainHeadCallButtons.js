@@ -88,7 +88,7 @@ export default class MainHeadCallButtons extends Component {
           const invitess = selectedParticipants.map(e => {
             return {id: e.username, type: "TO_BE_USER_USERNAME"}
           });
-          dispatch(chatStartGroupCall(null, invitess, "voice"));
+          dispatch(chatStartGroupCall(null, invitess, this._lastGroupCallRequest));
         }}>{strings.call}</Button>
         }
 
@@ -103,7 +103,7 @@ export default class MainHeadCallButtons extends Component {
     </Container>
   }
 
-  _groupCall() {
+  _groupCall(type) {
     const {participants, thread, user, dispatch} = this.props;
     if (thread.participantCount > MAX_GROUP_CALL_COUNT) {
       return dispatch(chatSelectParticipantForCallShowing({
@@ -118,7 +118,7 @@ export default class MainHeadCallButtons extends Component {
 
     dispatch(chatCallBoxShowing(CHAT_CALL_BOX_NORMAL, thread));
     dispatch(chatCallGetParticipantList(null, participants));
-    dispatch(chatStartGroupCall(thread.id, null, "voice"));
+    dispatch(chatStartGroupCall(thread.id, null, type));
   }
 
   _p2pCall(callType) {
@@ -143,13 +143,20 @@ export default class MainHeadCallButtons extends Component {
   onVoiceCallClick() {
     const {thread} = this.props;
     if (isGroup(thread)) {
-      return this._groupCall();
+      this._lastGroupCallRequest= "voice";
+      return this._groupCall("voice");
     }
     this._p2pCall("voice");
   }
 
   onVideoCallClick() {
+    const {thread} = this.props;
+    if (isGroup(thread)) {
+      this._lastGroupCallRequest= "video";
+      return this._groupCall("video");
+    }
     this._p2pCall("video");
+
   }
 
   render() {
@@ -165,13 +172,12 @@ export default class MainHeadCallButtons extends Component {
           <MdPhone size={styleVar.iconSizeMd}
                    color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
         </Container>
-        {!isGroup(thread) &&
+
         <Container className={classNames} onClick={chatCallStatus.status ? e => {
         } : this.onVideoCallClick}>
           <MdVideocam size={styleVar.iconSizeMd}
                       color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
         </Container>
-        }
 
       </Container>
     )
