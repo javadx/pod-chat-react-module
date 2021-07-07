@@ -16,6 +16,12 @@ object-assign
 */
 
 /*!
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+
+/*!
  * JavaScript Cookie v2.2.1
  * https://github.com/js-cookie/js-cookie
  *
@@ -63,7 +69,7 @@ object-assign
  */
 
 /*!
- * wavesurfer.js 4.6.0 (2021-03-05)
+ * wavesurfer.js 5.1.0 (2021-06-20)
  * https://wavesurfer-js.org
  * @license BSD-3-Clause
  */
@@ -93,6 +99,8 @@ object-assign
 /*! ./min */
 
 /*! ./observer */
+
+/*! ./orientation */
 
 /*! ./peakcache */
 
@@ -173,6 +181,10 @@ object-assign
 /*!******************************!*\
   !*** ./src/util/observer.js ***!
   \******************************/
+
+/*!*********************************!*\
+  !*** ./src/util/orientation.js ***!
+  \*********************************/
 
 /*!***********************************!*\
   !*** ./src/drawer.canvasentry.js ***!

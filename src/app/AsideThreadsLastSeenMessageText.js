@@ -47,10 +47,11 @@ export default function (props) {
                   <Container>
                     {isFileReal ?
                       <Text size="sm" inline color="gray" dark>{strings.sentAFile}</Text>
-                      :
+                      : lastMessage ?
                       <Text isHTML size="sm" inline color="gray"
                             sanitizeRule={sanitizeRule}
-                            dark>{decodeEmoji(lastMessage, 30)}</Text>
+                            dark>{decodeEmoji(lastMessage, 30)}</Text>:
+                        <Text bold size="xs" italic color="gray" dark>{strings.unknownMessage}</Text>
                     }
                   </Container>
 
@@ -62,9 +63,11 @@ export default function (props) {
               hasLastMessage ? isFileReal ?
                 <Text size="sm" inline color="gray" dark>{strings.sentAFile}</Text>
                 :
+                lastMessage ?
                 <Text isHTML size="sm" inline color="gray"
                       sanitizeRule={sanitizeRule}
-                      dark>{decodeEmoji(lastMessage, 30)}</Text>
+                      dark>{decodeEmoji(lastMessage, 30)}</Text>:
+                  <Text bold size="xs" italic color="gray" dark>{strings.unknownMessage}</Text>
                 :
                 <Text size="sm" inline
                       color="accent">{decodeEmoji(strings.createdAThread(inviter && (inviter.contactName || inviter.name), isGroup, isChannel), 30)}</Text>

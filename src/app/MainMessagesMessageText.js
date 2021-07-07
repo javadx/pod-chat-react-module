@@ -98,6 +98,7 @@ export default class MainMessagesMessageText extends Component {
       supportMode,
       ref
     } = this.props;
+    const text = mentionify(emailify(decodeEmoji(urlify(clearHtml(message.message))), this.onUserNameClick));
     return (
       <Container className={style.MainMessagesText} ref={ref}>
         <MainMessagesMessageBox message={message} onRepliedMessageClicked={onRepliedMessageClicked}
@@ -105,9 +106,11 @@ export default class MainMessagesMessageText extends Component {
                                 isFirstMessage={isFirstMessage} isMessageByMe={isMessageByMe}>
           <MainMessagesMessageBoxHighLighter message={message} highLightMessage={highLightMessage}/>
           <Container userSelect={mobileCheck() ? "none" : "text"} onDoubleClick={e => e.stopPropagation()}>
-            <Text isHTML wordWrap="breakWord" whiteSpace="preWrap" color="text" dark>
-              {mentionify(emailify(decodeEmoji(urlify(clearHtml(message.message))), this.onUserNameClick))}
-            </Text>
+            {text ?
+              <Text isHTML wordWrap="breakWord" whiteSpace="preWrap" color="text" dark>{text}</Text>
+              :
+              <Text bold size="xs" italic color="gray" dark>{strings.unknownMessage} -  {message.id}</Text>
+            }
           </Container>
           <MainMessagesMessageBoxFooter message={message}
                                         mainMessagesMessageRef={this.mainMessagesMessageRef}
