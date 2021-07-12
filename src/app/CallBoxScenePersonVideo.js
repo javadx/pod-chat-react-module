@@ -22,7 +22,7 @@ import style from "../../styles/app/CallBoxSceneVideo.scss";
 import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
 import {
-  CALL_DIV_ID,
+  CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING,
   MOCK_CONTACT,
@@ -87,18 +87,32 @@ export default class CallBoxScenePersonVideo extends Component {
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList} = this.props;
     const {status, call} = chatCallStatus;
+    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     const sideUserFromParticipantList = chatCallParticipantList.find(participant => user.id !== participant.id);
-    return <Container className={style.CallBoxSceneVideo}>
-      <Container className={style.CallBoxSceneVideo__SideCam} ref={this.remoteVideoRef}>
-        <Container className={style.CallBoxSceneVideo__MuteContainer}>
-          {sideUserFromParticipantList && sideUserFromParticipantList.mute &&
-          <MdMicOff size={styleVar.iconSizeXs}
-                    color={styleVar.colorAccent}
-                    style={{margin: "3px 4px"}}/>
-          }
+
+    const classNames = classnames({
+      [style.CallBoxSceneVideo]: true,
+      [style["CallBoxSceneVideo--fullScreen"]]: fullScreenCondition
+    });
+
+    const callBoxSceneCamContainerClassName = classnames({
+      [style.CallBoxSceneVideoCamContainer]: true,
+      [style["CallBoxSceneVideoCamContainer--fullScreen"]]: fullScreenCondition
+    });
+
+    return <Container className={classNames}>
+      <Container className={callBoxSceneCamContainerClassName}>
+        <Container className={style.CallBoxSceneVideo__SideCam} ref={this.remoteVideoRef}>
+          <Container className={style.CallBoxSceneVideo__MuteContainer}>
+            {sideUserFromParticipantList && sideUserFromParticipantList.mute &&
+            <MdMicOff size={styleVar.iconSizeXs}
+                      color={styleVar.colorAccent}
+                      style={{margin: "3px 4px"}}/>
+            }
+          </Container>
         </Container>
+        <Container className={style.CallBoxSceneVideo__MyCam} ref={this.localVideoRef}/>
       </Container>
-      <Container className={style.CallBoxSceneVideo__MyCam} ref={this.localVideoRef}/>
     </Container>
   }
 }

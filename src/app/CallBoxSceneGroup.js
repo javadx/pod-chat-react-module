@@ -8,6 +8,7 @@ import CallBoxSceneGroupVideo from "./CallBoxSceneGroupVideo";
 import CallBoxSceneGroupVoice from "./CallBoxSceneGroupVoice";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
 import {
+  CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING,
   CHAT_CALL_STATUS_STARTED,
@@ -51,6 +52,7 @@ export default class CallBoxSceneGroup extends Component {
     const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const startedCondition = status === CHAT_CALL_STATUS_STARTED;
+    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     const isVideoCallResult = isVideoCall(call);
     const {thread, contact} = chatCallBoxShowing;
 
@@ -75,12 +77,19 @@ export default class CallBoxSceneGroup extends Component {
         <Avatar cssClassNames={avatarClassName} inline={false}>
           <AvatarImage
             size="xlg"
+            customSize={fullScreenCondition ? "150px" : null}
             src={avatarUrlGenerator.apply(this, [thread.image, avatarUrlGenerator.SIZES.SMALL, getMessageMetaData(thread)])}
             text={avatarNameGenerator(thread.title).letter}
             textBg={avatarNameGenerator(thread.title).color}/>
           <Gap y={5}/>
           <AvatarName maxWidth={"110px"} style={{marginRight: "0", maxWidth: "96px"}} size="sm">
-            {thread.title}
+            {fullScreenCondition ?
+              <Text size="xlg" bold invert={!incomingCondition}>
+                {thread.title}
+              </Text>
+              :
+              thread.title
+            }
           </AvatarName>
           {incomingCondition &&
           <AvatarText>

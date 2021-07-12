@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
-import {CALL_DIV_ID, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
+import {CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
 import {getImage, getName} from "./_component/contactList";
 import Gap from "raduikit/src/gap";
 import CallBoxSceneGroupVoiceParticipants from "./CallBoxSceneGroupVoiceParticipants";
@@ -27,6 +27,7 @@ import style from "../../styles/app/CallBoxSceneGroupVideo.scss";
 import styleVar from "../../styles/variables.scss";
 import ReactDOM from "react-dom";
 import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
+import strings from "../constants/localization";
 
 
 @connect(store => {
@@ -149,15 +150,22 @@ export default class CallBoxSceneGroupVideo extends Component {
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList, chatCallGroupSettingsShowing} = this.props;
     const {status, call} = chatCallStatus;
+    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     let {filterParticipants, grid} = this._getGridContacts();
     const classNames = classnames({
       [style.CallBoxSceneGroupVideo]: true,
-      [style["CallBoxSceneGroupVideo--settings"]]: chatCallGroupSettingsShowing
+      [style["CallBoxSceneGroupVideo--settings"]]: chatCallGroupSettingsShowing,
+      [style["CallBoxSceneGroupVideo--fullScreen"]]: fullScreenCondition
+    });
+
+    const gridClassNames = classnames({
+      [style.CallBoxSceneGroupVideo__Grid]: true,
+      [style["CallBoxSceneGroupVideo__Grid--fullScreen"]]: fullScreenCondition
     });
 
     return <Container className={classNames}>
 
-        <Container className={style.CallBoxSceneGroupVideo__Grid} style={{gridTemplate: grid.template}}>
+        <Container className={gridClassNames} style={{gridTemplate: grid.template}}>
           {filterParticipants.map((participant, index) =>
             <Container className={style.CallBoxSceneGroupVideo__CamContainer}
                        key={participant.id}
@@ -175,6 +183,7 @@ export default class CallBoxSceneGroupVideo extends Component {
           )}
         </Container>
       {chatCallGroupSettingsShowing &&
+
       <CallBoxSceneGroupParticipantsControl chatCallParticipantList={chatCallParticipantList}
                                             chatCallBoxShowing={chatCallBoxShowing}
                                             user={user}/>}

@@ -13,6 +13,8 @@ import {
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
+
+import Modal, {ModalBody, ModalHeader, ModalFooter} from "../../../pod-chat-ui-kit/src/modal";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
   MdMic,
@@ -86,7 +88,11 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
     const {thread, contact} = chatCallBoxShowing;
     const isCallOwner = call && call.isOwner || isOwner(thread, user);
     const muteUnmutePermissionCondition = (isOwner(thread, user) || isCallOwner);
-    return <Container className={classNames} topLeft>
+    return <Modal isOpen={true} wrapContent userSelect="none">
+
+      <ModalBody>
+
+    <Container className={classNames}>
       <Container className={style.CallBoxSceneGroupParticipantsControl__Head}>
         <Container className={style.CallBoxSceneGroupParticipantsControl__HeadText}>
           <Text bold
@@ -160,7 +166,10 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
                            contacts={chatCallParticipantList}/>
         )}
       </List>
-    </Container>;
+    </Container>
+      </ModalBody>
+    </Modal>
+        ;
   }
 }
 

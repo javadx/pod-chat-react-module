@@ -21,7 +21,13 @@ import CallBoxToaster from "./CallBoxToaster";
 import style from "../../styles/app/CallBoxSceneAudio.scss";
 import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
-import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
+import {
+  CHAT_CALL_BOX_FULL_SCREEN,
+  CHAT_CALL_STATUS_INCOMING,
+  CHAT_CALL_STATUS_OUTGOING,
+  MOCK_CONTACT,
+  MOCK_USER
+} from "../constants/callModes";
 import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
 import Gap from "raduikit/src/gap"
@@ -38,13 +44,17 @@ export default class CallBoxScenePersonAudio extends Component {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList} = this.props;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
-    const {contact} = chatCallBoxShowing;
+    const {contact, showing: callBoxShowingType} = chatCallBoxShowing;
+    const fullScreenCondition = callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN;
     const avatarContainerClassNames = classnames({
-      [style.CallBoxSceneAudio__AvatarContainer]: !incomingCondition
+      [style.CallBoxSceneAudio__AvatarContainer]: !incomingCondition,
+      [style["CallBoxSceneAudio__AvatarContainer--fullScreen"]]: fullScreenCondition,
+
     });
     const avatarClassName = isSide => classnames({
       [style.CallBoxSceneAudio__Avatar]: true,
-      [style["CallBoxSceneAudio__Avatar--side"]]: isSide
+      [style["CallBoxSceneAudio__Avatar--fullScreen"]]: fullScreenCondition,
+      [style["CallBoxSceneAudio__Avatar--side"]]: isSide && !fullScreenCondition
     });
 
     const AvatarBuilder = ({user, className}) => {
@@ -62,20 +72,34 @@ export default class CallBoxScenePersonAudio extends Component {
           }
           <AvatarImage src={avatarUrlGenerator(getImage(realUser), avatarUrlGenerator.SIZES.XLARGE)}
                        size="xlg"
+                       customSize={fullScreenCondition ? "150px" : null}
                        text={avatarNameGenerator(getName(realUser)).letter}
                        textBg={avatarNameGenerator(getName(realUser)).color}/>
           <Gap y={5}/>
-          <AvatarName maxWidth={"110px"} style={{marginRight: "0", maxWidth: "96px"}} size="sm">
-            {getName(realUser)}
+          <AvatarName maxWidth="110px" style={{marginRight: "0", maxWidth: "150px"}} size={fullScreenCondition ? "xlg" : "sm"}>
+            {fullScreenCondition ?
+              <Text size="xlg" bold invert={!incomingCondition}>
+                {getName(realUser)}
+              </Text>
+              :
+              getName(realUser)
+            }
           </AvatarName>
         </Avatar>
       </Container>
     };
 
-    return <Container className={style.CallBoxSceneAudio}>
+    const classNames = classnames({
+      [style.CallBoxSceneAudio]: true,
+      [style["CallBoxSceneAudio--fullScreen"]]: fullScreenCondition,
 
+    });
+
+    return <Container className={classNames}>
+      {(!fullScreenCondition || incomingCondition) &&
       <AvatarBuilder user={incomingCondition ? contact : user}
                      className={incomingCondition ? "" : avatarClassName()}/>
+      }
       {!incomingCondition &&
       <AvatarBuilder user={contact} className={avatarClassName(true)}/>}
 

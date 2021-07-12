@@ -23,7 +23,7 @@ import style from "../../styles/app/CallBox.scss";
 import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isGroup} from "../utils/helpers";
 import {
-  CHAT_CALL_BOX_COMPACTED,
+  CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_BOX_NORMAL,
   CHAT_CALL_STATUS_INCOMING,
   CHAT_CALL_STATUS_OUTGOING, CHAT_CALL_STATUS_STARTED, DROPPING_INCOMING_TIME_OUT, DROPPING_OUTGOING_TIME_OUT
@@ -105,11 +105,11 @@ export default class CallBox extends Component {
     if (type === CHAT_CALL_STATUS_INCOMING) {
       this.ringtone.currentTime = 0;
       this.ringtone.muted = false;
-      this.ringtone.play();
+      //this.ringtone.play();
     } else if (type === CHAT_CALL_STATUS_OUTGOING) {
       this.callingTone.currentTime = 0;
       this.callingTone.muted = false;
-      this.callingTone.play();
+      //this.callingTone.play();
     }
   }
 
@@ -133,7 +133,8 @@ export default class CallBox extends Component {
     const {thread: currentThread, threadFetching} = threadObject;
     const classNames = classnames({
       [style.CallBox]: true,
-      [style["CallBox--showing"]]: callBoxShowingType === CHAT_CALL_BOX_NORMAL,
+      [style["CallBox--showing"]]: callBoxShowingType === CHAT_CALL_BOX_NORMAL || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN,
+      [style["CallBox--fullScreen"]]: callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN,
       [style["CallBox--noThreadOpened"]]: (!currentThread.id && !threadFetching),
       [style["CallBox--calling"]]: !incomingCondition,
       [style["CallBox--group"]]: thread && isGroup(thread)
@@ -144,9 +145,9 @@ export default class CallBox extends Component {
 
 
       <Container className={style.CallBox__Head} onClick={this.onCallBoxClick}>
-        <CallBoxHead chatCallStatus={chatCallStatus} thread={thread}/>
+        <CallBoxHead chatCallStatus={chatCallStatus} thread={thread} chatCallBoxShowing={chatCallBoxShowing}/>
       </Container>
-      {callBoxShowingType === CHAT_CALL_BOX_NORMAL &&
+      {(callBoxShowingType === CHAT_CALL_BOX_NORMAL  || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN )&&
       <Fragment>
         <Container className={style.CallBox__Scene}>
           {isGroup(thread) ?
