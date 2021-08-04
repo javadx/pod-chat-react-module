@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
+import Cookies from "js-cookie";
 
 
 //actions
@@ -23,6 +24,8 @@ import style from "../../styles/app/CallBox.scss";
 import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isGroup} from "../utils/helpers";
 import {
+  CALL_SETTING_COOKIE_KEY_NAME,
+  CALL_SETTINGS_CHANGE_EVENT,
   CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_BOX_NORMAL,
   CHAT_CALL_STATUS_INCOMING,
@@ -56,6 +59,16 @@ export default class CallBox extends Component {
     this.callingTone = new Audio(callingTone);
     this.callingTone.loop = true;
     this.callingTone.muted = true;
+
+    const currentSettings = JSON.parse(Cookies.get(CALL_SETTING_COOKIE_KEY_NAME) || "{}");
+
+    this.ringToneSound = currentSettings.hasOwnProperty("ringToneSound") ? currentSettings.ringToneSound : true;
+    this.callToneSound = currentSettings.hasOwnProperty("callToneSound") ? currentSettings.callToneSound : true;
+
+    window.addEventListener(CALL_SETTINGS_CHANGE_EVENT, e => {
+      this.ringToneSound = e.detail.ringToneSound;
+      this.callToneSound =  e.detail.callToneSound;
+    })
   }
 
   setTimeoutForDropping(type, timeout) {
@@ -105,11 +118,15 @@ export default class CallBox extends Component {
     if (type === CHAT_CALL_STATUS_INCOMING) {
       this.ringtone.currentTime = 0;
       this.ringtone.muted = false;
-      //this.ringtone.play();
+      if (this.ringToneSound) {
+        this.ringtone.play()
+      }
     } else if (type === CHAT_CALL_STATUS_OUTGOING) {
       this.callingTone.currentTime = 0;
       this.callingTone.muted = false;
-      //this.callingTone.play();
+      if (this.callToneSound) {
+        this.callingTone.play();
+      }
     }
   }
 
@@ -147,7 +164,7 @@ export default class CallBox extends Component {
       <Container className={style.CallBox__Head} onClick={this.onCallBoxClick}>
         <CallBoxHead chatCallStatus={chatCallStatus} thread={thread} chatCallBoxShowing={chatCallBoxShowing}/>
       </Container>
-      {(callBoxShowingType === CHAT_CALL_BOX_NORMAL  || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN )&&
+      {(callBoxShowingType === CHAT_CALL_BOX_NORMAL || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN) &&
       <Fragment>
         <Container className={style.CallBox__Scene}>
           {isGroup(thread) ?

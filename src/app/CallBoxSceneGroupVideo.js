@@ -1,11 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
-import {CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
-import {getImage, getName} from "./_component/contactList";
-import Gap from "raduikit/src/gap";
-import CallBoxSceneGroupVoiceParticipants from "./CallBoxSceneGroupVoiceParticipants";
+import Cookies from "js-cookie";
+import ReactDOM from "react-dom";
+import {
+  CALL_DIV_ID, CALL_SETTING_COOKIE_KEY_NAME,
+  CALL_SETTINGS_CHANGE_EVENT,
+  CHAT_CALL_BOX_FULL_SCREEN,
+  GROUP_VIDEO_CALL_VIEW_MODE
+} from "../constants/callModes";
 
 //actions
 import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
@@ -21,13 +24,14 @@ import {
 } from "react-icons/md";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
 import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
+import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
+
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupVideo.scss";
 import styleVar from "../../styles/variables.scss";
-import ReactDOM from "react-dom";
-import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
-import strings from "../constants/localization";
+import CallBoxSceneGroupVideoThumbnail from "./CallBoxSceneGroupVideoThumbnail";
+
 
 
 @connect(store => {
@@ -41,6 +45,15 @@ export default class CallBoxSceneGroupVideo extends Component {
 
   constructor(props) {
     super(props);
+    const currentSettings = JSON.parse(Cookies.get(CALL_SETTING_COOKIE_KEY_NAME) || "{}");
+    this.state = {
+      groupVideoCallMode: currentSettings.hasOwnProperty("groupVideoCallMode") ? currentSettings.groupVideoCallMode : GROUP_VIDEO_CALL_VIEW_MODE.GRID_VIEW
+    };
+    window.addEventListener(CALL_SETTINGS_CHANGE_EVENT, e => {
+      this.setState({
+        groupVideoCallMode: e.detail.groupVideoCallMode
+      });
+    });
   }
 
   _injectVideo(injectTo, sendTopic, local) {
@@ -149,6 +162,7 @@ export default class CallBoxSceneGroupVideo extends Component {
 
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList, chatCallGroupSettingsShowing} = this.props;
+    const {groupVideoCallMode} = this.state;
     const {status, call} = chatCallStatus;
     const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     let {filterParticipants, grid} = this._getGridContacts();
@@ -164,7 +178,7 @@ export default class CallBoxSceneGroupVideo extends Component {
     });
 
     return <Container className={classNames}>
-
+      {groupVideoCallMode === GROUP_VIDEO_CALL_VIEW_MODE.GRID_VIEW ?
         <Container className={gridClassNames} style={{gridTemplate: grid.template}}>
           {filterParticipants.map((participant, index) =>
             <Container className={style.CallBoxSceneGroupVideo__CamContainer}
@@ -181,7 +195,9 @@ export default class CallBoxSceneGroupVideo extends Component {
               <Container id={participant.sendTopic} className={style.CallBoxSceneGroupVideo__CamVideoContainer}/>
             </Container>
           )}
-        </Container>
+        </Container> :
+        <CallBoxSceneGroupVideoThumbnail/>
+      }
       {chatCallGroupSettingsShowing &&
 
       <CallBoxSceneGroupParticipantsControl chatCallParticipantList={chatCallParticipantList}

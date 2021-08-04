@@ -13,8 +13,9 @@ import {
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {ButtonFloating} from "../../../pod-chat-ui-kit/src/button"
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
+import {ButtonFloating} from "../../../pod-chat-ui-kit/src/button";
+
+import Modal, {ModalBody, ModalHeader, ModalFooter} from "../../../pod-chat-ui-kit/src/modal";
 import {
   MdCall,
   MdMicOff,
@@ -22,7 +23,9 @@ import {
   MdVolumeUp,
   MdMic,
   MdVideocam,
-  MdPlayArrow,
+  MdMoreHoriz,
+  MdViewQuilt,
+  MdViewCarousel,
   MdPause
 } from "react-icons/md";
 
@@ -39,6 +42,8 @@ import {
 } from "../constants/callModes";
 import classnames from "classnames";
 import {getParticipant} from "./ModalThreadInfoPerson";
+import strings from "../constants/localization";
+import CallBoxControlSetMore from "./CallBoxControlSetMore";
 
 
 @connect(store => {
@@ -56,9 +61,11 @@ export default class CallBoxControlSet extends Component {
     this.onAcceptCallClick = this.onAcceptCallClick.bind(this);
     this.onVolumeClick = this.onVolumeClick.bind(this);
     this.onMicClick = this.onMicClick.bind(this);
+    this.onMoreActionClick = this.onMoreActionClick.bind(this);
     this.state = {
       volume: true,
-      mic: true
+      mic: true,
+      moreSettingShow: false
     }
   }
 
@@ -159,9 +166,15 @@ export default class CallBoxControlSet extends Component {
     })
   }
 
+  onMoreActionClick(showing) {
+    this.setState({
+      moreSettingShow: showing
+    })
+  }
+
   render() {
     const {chatCallStatus, buttonSize} = this.props;
-    const {mic, volume} = this.state;
+    const {mic, volume, moreSettingShow} = this.state;
     const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const callDropClassNames = classnames({
@@ -180,6 +193,16 @@ export default class CallBoxControlSet extends Component {
       [style.CallBoxControlSet__Button]: true,
       [style.CallBoxControlSet__Mic]: true
     });
+    const moreActionClassNames = classnames({
+      [style.CallBoxControlSet__Button]: true,
+      [style.CallBoxControlSet__MoreAction]: true
+    });
+
+    const moreControlClassNames = classnames({
+      [style.CallBoxControlSet__MoreControlContainer]: true,
+      [style.CallBoxControlSet__MoreAction]: true
+    });
+
 
     return <Container className={style.CallBoxControlSet}>
       <ButtonFloating onClick={this.onDropCallClick} size={buttonSize || "sm"} className={callDropClassNames}>
@@ -203,7 +226,7 @@ export default class CallBoxControlSet extends Component {
         }
       </ButtonFloating>
       }
-      {!incomingCondition &&
+
       <ButtonFloating onClick={this.onVolumeClick} size={buttonSize || "sm"} className={speakerOnOrOffClassNames}>
 
         {volume ?
@@ -212,7 +235,15 @@ export default class CallBoxControlSet extends Component {
         }
 
       </ButtonFloating>
+
+      {!incomingCondition &&
+      <ButtonFloating onClick={this.onMoreActionClick.bind(this, true)} size={buttonSize || "sm"} className={moreActionClassNames}>
+        <MdMoreHoriz size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+        {moreSettingShow && <CallBoxControlSetMore onMoreActionClick={this.onMoreActionClick.bind(this)}/>}
+      </ButtonFloating>
       }
+
+
     </Container>
   }
 }

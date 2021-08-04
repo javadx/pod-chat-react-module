@@ -288,6 +288,9 @@ let strings = new LocalizedStrings({
     callStarted: "در حال گفتگو",
     call: "تماس",
     maximumNumberOfContactSelected: "حد نصاب تعداد نفرات تماس 5 نفر است",
+    viewModeConfig: "حالت تماس تصویری",
+    ringToneSound:  "آهنگ زنگ",
+    callToneSound: "آهنگ تماس",
     peopleIsTalking: (numberOfPeople) => {
       return `${numberOfPeople} نفر در حال مکالمه`
     },
