@@ -159,10 +159,17 @@ export default class CallBoxSceneGroupVideo extends Component {
     return {grid, filterParticipants}
   }
 
+  onGridSellClick(participant) {
+    this.setState({
+      groupVideoCallMode: GROUP_VIDEO_CALL_VIEW_MODE.THUMBNAIL_VIEW,
+      groupVideoCallThumbnailParticipant: participant
+    })
+  }
+
 
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList, chatCallGroupSettingsShowing} = this.props;
-    const {groupVideoCallMode} = this.state;
+    const {groupVideoCallMode, groupVideoCallThumbnailParticipant} = this.state;
     const {status, call} = chatCallStatus;
     const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     let {filterParticipants, grid} = this._getGridContacts();
@@ -183,6 +190,7 @@ export default class CallBoxSceneGroupVideo extends Component {
           {filterParticipants.map((participant, index) =>
             <Container className={style.CallBoxSceneGroupVideo__CamContainer}
                        key={participant.id}
+                       onClick={this.onGridSellClick.bind(this, participant)}
                        ref={this.remoteVideoRef}
                        style={{gridArea: grid.itemsCell[index].area}}>
               <Container className={style.CallBoxSceneGroupVideo__MuteContainer}>
@@ -196,7 +204,7 @@ export default class CallBoxSceneGroupVideo extends Component {
             </Container>
           )}
         </Container> :
-        <CallBoxSceneGroupVideoThumbnail/>
+        <CallBoxSceneGroupVideoThumbnail participant={groupVideoCallThumbnailParticipant}/>
       }
       {chatCallGroupSettingsShowing &&
 

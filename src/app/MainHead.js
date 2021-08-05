@@ -17,12 +17,12 @@ import {
 import {threadModalThreadInfoShowing, threadCheckedMessageList} from "../actions/threadActions";
 
 //UI components
+import {ContextTrigger} from "../../../pod-chat-ui-kit/src/menu/Context";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
-import {Button} from "../../../pod-chat-ui-kit/src/button";
-import {MdChevronLeft, MdSearch, MdCheck, MdClose, MdPhone} from "react-icons/md";
+import {MdMoreVert, MdClose} from "react-icons/md";
 import MainHeadThreadInfo from "./MainHeadThreadInfo";
 import MainHeadBatchActions from "./MainHeadBatchActions";
 
@@ -40,6 +40,7 @@ import {isChannel, isGroup} from "../utils/helpers";
 import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
 import MainHeadCallButtons from "./MainHeadCallButtons";
+import MainHeadExtraMenu from "./MainHeadExtraMenu";
 
 @connect(store => {
   return {
@@ -57,9 +58,7 @@ class MainHead extends Component {
     super(props);
     this.onShowInfoClick = this.onShowInfoClick.bind(this);
     this.onThreadHide = this.onThreadHide.bind(this);
-    this.onLeftAsideShow = this.onLeftAsideShow.bind(this);
     this.onSelectMessagesHide = this.onSelectMessagesHide.bind(this);
-    this.onSelectMessagesShow = this.onSelectMessagesShow.bind(this);
     this.closeSupportModule = this.closeSupportModule.bind(this);
   }
 
@@ -78,16 +77,6 @@ class MainHead extends Component {
 
   closeSupportModule() {
     this.props.dispatch(chatSupportModuleBadgeShowing(true));
-  }
-
-  onLeftAsideShow(e) {
-    e.stopPropagation();
-    this.props.dispatch(threadLeftAsideShowing(true, THREAD_LEFT_ASIDE_SEARCH));
-  }
-
-  onSelectMessagesShow(e) {
-    e.stopPropagation();
-    this.props.dispatch(threadSelectMessageShowing(true));
   }
 
   onSelectMessagesHide(e) {
@@ -139,29 +128,19 @@ class MainHead extends Component {
 
                 {
                   !threadSelectMessageShowing &&
-                  <Container>
-                    {
-                      !isChannel(thread) && !supportMode && <MainHeadCallButtons participants={participants} thread={thread} user={user} smallVersion={smallVersion}/>
-                    }
-                    {
-                      thread.lastMessageVO && !supportMode &&
-                      <Container className={style.MainHead__SearchContainer} inline onClick={this.onSelectMessagesShow}>
-                        <MdCheck size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
-                      </Container>
-                    }
-                    <Container className={style.MainHead__SearchContainer} inline onClick={this.onLeftAsideShow}>
-                      <MdSearch size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
-                    </Container>
-                    <Container className={style.MainHead__BackContainer} inline
-                               onClick={supportMode ? this.closeSupportModule : this.onThreadHide}>
-                      {supportMode ?
-                        <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
-                        :
-                        <MdChevronLeft size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                    <Fragment>
+                      {
+                        !isChannel(thread) && !supportMode && <MainHeadCallButtons participants={participants} thread={thread} user={user} smallVersion={smallVersion}/>
                       }
+                      <ContextTrigger id="thread-extra-context"
+                                      holdToDisplay={-1}>
+                        <Container className={style.MainHead__SearchContainer} inline>
+                          <MdMoreVert size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                        </Container>
+                      </ContextTrigger>
+                      <MainHeadExtraMenu thread={thread} supportMode={supportMode}/>
+                    </Fragment>
 
-                    </Container>
-                  </Container>
                 }
               </Container>
             </Fragment>

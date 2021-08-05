@@ -49,8 +49,9 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
   }
 
   render() {
-    const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList, chatCallGroupSettingsShowing} = this.props;
+    const {chatCallBoxShowing, user, chatCallParticipantList, participant} = this.props;
     let {sceneParticipant} = this.state;
+    sceneParticipant = sceneParticipant || participant;
     const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     sceneParticipant = chatCallParticipantList.find(partcipant => partcipant.id === sceneParticipant);
     if (!sceneParticipant) {
