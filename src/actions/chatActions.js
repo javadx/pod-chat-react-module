@@ -503,6 +503,21 @@ export const chatCallRemoveParticipants = (callId, userIds) => {
   }
 };
 
+export const chatCallAddParticipants = (callId, usernames, participants) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    if(participants) {
+      chatSDK.addCallParticipants(callId, usernames).then(e => {
+        dispatch({
+          type: CHAT_CALL_PARTICIPANT_JOINED,
+          payload: participants
+        });
+      });
+    }
+  }
+};
+
 export const chatCallGetParticipantList = (callId, payload, direct) => {
   return (dispatch, getState) => {
     if (!callId && !payload) {

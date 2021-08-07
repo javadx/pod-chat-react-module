@@ -1043,5 +1043,16 @@ export default class ChatSDK {
     this.chatAgent.removeCallParticipants(params, function (result) {
       resolve(result)
     });
+  }  
+  
+  @promiseDecorator
+  addCallParticipants (resolve, reject, callId, usernames) {
+    const params = {
+      callId,
+      usernames
+    };
+    this.chatAgent.addCallParticipants(params, function (result) {
+      resolve(result)
+    });
   }
 };

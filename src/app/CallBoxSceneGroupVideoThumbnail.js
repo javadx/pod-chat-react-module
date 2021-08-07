@@ -64,11 +64,6 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
       [style.CallBoxSceneGroupVideoThumbnail]: true,
     });
 
-    const gridClassNames = classnames({
-      [style.CallBoxSceneGroupVideo__Grid]: true,
-      [style["CallBoxSceneGroupVideo__Grid--fullScreen"]]: fullScreenCondition
-    });
-
     return <Container className={classNames}>
       <Container className={style.CallBoxSceneGroupVideoThumbnail__Scene}>
         <Container id={sceneParticipant.sendTopic} className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
