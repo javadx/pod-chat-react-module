@@ -192,6 +192,7 @@ let strings = new LocalizedStrings({
     noContactPleaseAddFirst: "مخاطبی وجود ندارد کسی را اضافه کنید",
     signedOut: "خروج",
     selectMessage: "پیامی را انتخاب کنید",
+    selectMessages: "انتخاب پیامها",
     unBlock: "رفع مسدودی",
     accept: "قبول",
     leave: "ترک",

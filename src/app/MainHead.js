@@ -40,7 +40,7 @@ import {isChannel, isGroup} from "../utils/helpers";
 import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
 import MainHeadCallButtons from "./MainHeadCallButtons";
-import MainHeadExtraMenu from "./MainHeadExtraMenu";
+import MainHeadExtraMenu from "./MainExtraMenu";
 
 @connect(store => {
   return {
@@ -128,18 +128,22 @@ class MainHead extends Component {
 
                 {
                   !threadSelectMessageShowing &&
-                    <Fragment>
-                      {
-                        !isChannel(thread) && !supportMode && <MainHeadCallButtons participants={participants} thread={thread} user={user} smallVersion={smallVersion}/>
-                      }
+                  <Fragment>
+                    {
+                      !isChannel(thread) && !supportMode &&
+                      <MainHeadCallButtons participants={participants} thread={thread} user={user}
+                                           smallVersion={smallVersion}/>
+                    }
+                    <Container className={style.MainHead__SearchContainer} inline>
                       <ContextTrigger id="thread-extra-context"
+                                      mouseButton={0}
                                       holdToDisplay={-1}>
-                        <Container className={style.MainHead__SearchContainer} inline>
-                          <MdMoreVert size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
-                        </Container>
+
+                        <MdMoreVert size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+
                       </ContextTrigger>
-                      <MainHeadExtraMenu thread={thread} supportMode={supportMode}/>
-                    </Fragment>
+                    </Container>
+                  </Fragment>
 
                 }
               </Container>

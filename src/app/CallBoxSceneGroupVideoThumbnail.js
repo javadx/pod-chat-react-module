@@ -52,21 +52,21 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
     const {chatCallBoxShowing, user, chatCallParticipantList, participant} = this.props;
     let {sceneParticipant} = this.state;
     sceneParticipant = sceneParticipant || participant;
-    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
-    sceneParticipant = chatCallParticipantList.find(partcipant => partcipant.id === sceneParticipant);
+    sceneParticipant = sceneParticipant && sceneParticipant.id ? sceneParticipant : chatCallParticipantList.find(partcipant => partcipant.id === sceneParticipant);
     if (!sceneParticipant) {
-      sceneParticipant = filterParticipants && filterParticipants[0];
+      sceneParticipant = chatCallParticipantList && chatCallParticipantList[0];
     }
-    const filterParticipants = chatCallParticipantList.filter(participant => participant.callStatus && participant.callStatus === 6 && participant.id !== sceneParticipant.id);
+    let filterParticipants = chatCallParticipantList.filter(participant => participant.callStatus && participant.callStatus === 6 && participant.id !== sceneParticipant.id);
 
-
+    filterParticipants = [...filterParticipants, ...filterParticipants, ...filterParticipants];
     const classNames = classnames({
       [style.CallBoxSceneGroupVideoThumbnail]: true,
     });
 
     return <Container className={classNames}>
       <Container className={style.CallBoxSceneGroupVideoThumbnail__Scene}>
-        <Container id={sceneParticipant.sendTopic} className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
+        <Container id={sceneParticipant.sendTopic}
+                   className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
       </Container>
       <Container className={style.CallBoxSceneGroupVideoThumbnail__List}>
         {filterParticipants.map((participant, index) =>

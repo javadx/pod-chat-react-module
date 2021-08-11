@@ -25,7 +25,7 @@ import {
   MdCallEnd,
   MdAdd
 } from "react-icons/md";
-import Button from "../../../pod-chat-ui-kit/src/button";
+import {Button} from "../../../pod-chat-ui-kit/src/button";
 import List from "../../../pod-chat-ui-kit/src/List";
 
 //styling
@@ -58,6 +58,7 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
     super(props);
     this.onParticipantMuteClick = this.onParticipantMuteClick.bind(this);
     this.onParticipantRemoveClicked = this.onParticipantRemoveClicked.bind(this);
+    this.onAddMember = this.onAddMember.bind(this);
     this._selectParticipantForCallFooterFragment = this._selectParticipantForCallFooterFragment.bind(this);
     this.hideControl = this.hideControl.bind(this);
     this.state = {}
@@ -85,7 +86,7 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
 
   _selectParticipantForCallFooterFragment({selectedContacts, allContacts}) {
     const {dispatch, user, chatCallParticipantList, chatCallStatus} = this.props;
-    const isMaximumCount = (selectedContacts && (selectedContacts.length + chatCallParticipantList.length) >= MAX_GROUP_CALL_COUNT - 1);
+    const isMaximumCount = (selectedContacts && (selectedContacts.length + chatCallParticipantList.length) >= MAX_GROUP_CALL_COUNT);
     return <Container>
       <Container>
         {(selectedContacts && selectedContacts.length >= 1) &&
@@ -147,14 +148,13 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
               </Text>
             </Container>
 
-            {chatCallParticipantList.length < MAX_GROUP_CALL_COUNT &&
+            {(isCallOwner && chatCallParticipantList.length < MAX_GROUP_CALL_COUNT) &&
             <Container cursor="pointer">
+
               <MdAdd onClick={this.onAddMember}
                      size={styleVar.iconSizeMd}
                      color={styleVar.colorAccentDark}/>
-              <Text bold
-                    size="sm">{strings.addMember}
-              </Text>
+              <Gap x={5}/>
             </Container>
             }
 

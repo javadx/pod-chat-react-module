@@ -968,7 +968,10 @@ export default class ChatSDK {
   @promiseDecorator
   acceptCall(resolve, reject, callId) {
     this.chatAgent.acceptCall({
-      callId
+      callId,
+
+      video: true,
+      mute: false
     }, function (res) {
       resolve(res)
     });

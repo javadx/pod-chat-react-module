@@ -92,7 +92,7 @@ export default class CallBoxControlSetMore extends Component {
       currentSettings = {};
     }
     currentSettings[key] = nextState;
-    Cookies.set(CALL_SETTING_COOKIE_KEY_NAME, currentSettings, {expires: 9999999999});
+    Cookies.set(CALL_SETTING_COOKIE_KEY_NAME, JSON.stringify(currentSettings), {expires: 9999999999});
     this.setState({
       [key]: nextState
     });

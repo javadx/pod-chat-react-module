@@ -1,5 +1,5 @@
-// src/app/MainHeadExtraMenu.js
-import React, {Component, Fragment} from "react";
+// src/app/MainExtraMenu.jsort React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 
@@ -20,8 +20,12 @@ import {mobileCheck} from "../utils/helpers";
 
 //styling
 
-@connect()
-class MainHeadExtraMenu extends Component {
+@connect(store => {
+  return {
+    supportMode: store.chatSupportMode
+  };
+})
+class MainExtraMenu extends Component {
 
   constructor(props) {
     super(props);
@@ -40,9 +44,10 @@ class MainHeadExtraMenu extends Component {
   }
 
   render() {
-    const {thread,supportMode} = this.props;
+    const {thread, supportMode} = this.props;
     return (
-      <Context id="thread-extra-context" preventHideOnScroll={false}>
+      <Context id="thread-extra-context" style={{zIndex: 5000}} >
+
         {
           thread.lastMessageVO && !supportMode &&
           <ContextItem onClick={this.onSelectMessagesShow}>
@@ -57,4 +62,4 @@ class MainHeadExtraMenu extends Component {
   }
 }
 
-export default withRouter(MainHead);
+export default withRouter(MainExtraMenu);

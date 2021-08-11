@@ -1,8 +1,9 @@
 // src/list/BoxScene.jss
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {Route, withRouter} from "react-router-dom";
 import {mobileCheck} from "../utils/helpers";
+import MainExtraMenu from "./MainExtraMenu";
 
 //strings
 import {
@@ -27,6 +28,7 @@ import CallBoxCompacted from "./CallBoxCompacted";
 import style from "../../styles/app/Main.scss";
 import coverImage from "../../styles/images/Main/cover.jpg";
 import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL} from "../constants/callModes";
+
 
 
 @connect(store => {
@@ -78,7 +80,10 @@ class Main extends Component {
                    <Container className={style.Main__Cover} style={{
                      backgroundImage: `url("${coverImage}")`
                    }}/>
-                   <MainHead thread={thread} chatRouterLess={chatRouterLess} history={history}/>
+                   <Fragment>
+                     <MainHead thread={thread} chatRouterLess={chatRouterLess} history={history}/>
+                     <MainExtraMenu thread={thread}/>
+                   </Fragment>
 
                    {
                      chatAudioPlayer &&
