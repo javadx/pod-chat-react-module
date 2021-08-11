@@ -1,18 +1,47 @@
 .CallBoxSceneGroupVideoThumbnail {
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
 
 .CallBoxSceneGroupVideoThumbnail__Scene {
-
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
 }
 
 .CallBoxSceneGroupVideoThumbnail__List {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
   display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  height: 188px;
+  flex-basis: 100px;
+  overflow: hidden;
+}
+
+.CallBoxSceneGroupVideoThumbnail__ListContainer {
+  display: flex;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+.CallBoxSceneGroupVideoThumbnail__ListScroller {
+  display: flex;
+  overflow-x: auto;
+  width: 100%;
 }
 
 .CallBoxSceneGroupVideoThumbnail__ListItem {
-
+  display: flex;
+  overflow: hidden;
+  height: 90px;
+  width: 90px;
+  min-width: 90px;
 }
 
 .CallBoxSceneGroupVideoThumbnail__MuteContainer {
@@ -21,4 +50,6 @@
 
 .CallBoxSceneGroupVideoThumbnail__CamVideoContainer {
   height: 100%;
+  width: 100%;
+  object-fit: cover;
 }

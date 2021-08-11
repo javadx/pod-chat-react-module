@@ -187,6 +187,7 @@ export const chatSetInstance = config => {
         });
       },
       onCallEvents: (call, type) => {
+        console.log(call, type)
         const oldCall = getState().chatCallStatus;
         const user = getState().user.user;
         switch (type) {

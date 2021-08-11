@@ -69,20 +69,25 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
                    className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
       </Container>
       <Container className={style.CallBoxSceneGroupVideoThumbnail__List}>
-        {filterParticipants.map((participant, index) =>
-          <Container className={style.CallBoxSceneGroupVideoThumbnail__ListItem}
-                     key={participant.id}
-                     ref={this.remoteVideoRef}>
-            <Container className={style.CallBoxSceneGroupVideoThumbnail__MuteContainer}>
-              {participant && participant.mute &&
-              <MdMicOff size={styleVar.iconSizeXs}
-                        color={styleVar.colorAccent}
-                        style={{margin: "3px 4px"}}/>
-              }
-            </Container>
-            <Container id={participant.sendTopic} className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
+        <Container className={style.CallBoxSceneGroupVideoThumbnail__ListContainer}>
+          <Container className={style.CallBoxSceneGroupVideoThumbnail__ListScroller}>
+            {filterParticipants.map((participant, index) =>
+              <Container className={style.CallBoxSceneGroupVideoThumbnail__ListItem}
+                         key={participant.id}
+                         ref={this.remoteVideoRef}>
+                <Container className={style.CallBoxSceneGroupVideoThumbnail__MuteContainer}>
+                  {participant && participant.mute &&
+                  <MdMicOff size={styleVar.iconSizeXs}
+                            color={styleVar.colorAccent}
+                            style={{margin: "3px 4px"}}/>
+                  }
+                </Container>
+                <Container id={participant.sendTopic} className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
+              </Container>
+            )}
           </Container>
-        )}
+        </Container>
+
       </Container>
     </Container>
   }
