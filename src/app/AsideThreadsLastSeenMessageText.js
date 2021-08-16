@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {
   decodeEmoji,
   clearHtml,
-  isMessageIsFile, isSystemMessage, messageDatePetrification
+  isMessageIsFile
 } from "../utils/helpers";
 import strings from "../constants/localization";
 import Typing from "./_component/Typing";
@@ -11,11 +11,9 @@ import {sanitizeRule} from "./AsideThreads";
 //UI components
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {MdEdit, MdCallMissed, MdCallEnd} from "react-icons/md";
-import styleVar from "../../styles/variables.scss";
 
 export default function (props) {
-  const {isGroup, isChannel, lastMessageVO, lastMessage, draftMessage, inviter, isTyping, isMessageByMe, thread} = props;
+  const {isGroup, isChannel, lastMessageVO, lastMessage, draftMessage, inviter, isTyping} = props;
   const isFileReal = isMessageIsFile(lastMessageVO);
   const hasLastMessage = lastMessage || lastMessageVO;
   const isTypingReal = isTyping && isTyping.isTyping;
@@ -25,7 +23,7 @@ export default function (props) {
     <Container> {
       isTypingReal ?
         <Typing isGroup={isGroup || isChannel} typing={isTyping}
-                textProps={{size: "sm", color: "yellow", dark: true}}/>
+                        textProps={{size: "sm", color: "yellow", dark: true}}/>
         :
         draftMessage ?
           <Fragment>
@@ -64,7 +62,10 @@ export default function (props) {
               hasLastMessage ? isFileReal ?
                 <Text size="sm" inline color="gray" dark>{strings.sentAFile}</Text>
                 :
-                <Fragment>
+                !lastMessage ?
+                  <Text bold size="xs" italic color="gray" dark>{strings.unknownMessage}</Text>
+                  :
+                  <Fragment>
                   {isSystemMessage(lastMessageVO) ?
 
                     <Fragment>

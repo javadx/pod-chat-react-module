@@ -203,6 +203,7 @@ let strings = new LocalizedStrings({
     mute: "قطع اعلانات",
     unmute: "برقراری اعلانات",
     messageDeleted: "پیام پاک شده است",
+    unknownMessage: "پیام ناشناس",
     forMeOnly: "فقط برای من",
     forMeAndOthers: "برای من و دیگران",
     sendLocation: "فرستادن موقعیت مکانی",
