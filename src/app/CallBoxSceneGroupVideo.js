@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import Cookies from "js-cookie";
-import ReactDOM from "react-dom";
 import {
   CALL_DIV_ID, CALL_SETTING_COOKIE_KEY_NAME,
   CALL_SETTINGS_CHANGE_EVENT,
@@ -16,14 +15,9 @@ import {chatAudioPlayer} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
   MdMicOff,
-  MdPlayArrow,
-  MdPause
 } from "react-icons/md";
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
 
 
@@ -31,7 +25,6 @@ import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipant
 import style from "../../styles/app/CallBoxSceneGroupVideo.scss";
 import styleVar from "../../styles/variables.scss";
 import CallBoxSceneGroupVideoThumbnail from "./CallBoxSceneGroupVideoThumbnail";
-
 
 
 @connect(store => {
@@ -46,6 +39,8 @@ export default class CallBoxSceneGroupVideo extends Component {
   constructor(props) {
     super(props);
     const currentSettings = JSON.parse(Cookies.get(CALL_SETTING_COOKIE_KEY_NAME) || "{}");
+    this._traverseOverContactForInjecting = this._traverseOverContactForInjecting.bind(this);
+    this.resetMediaSourceLocation = this.resetMediaSourceLocation.bind(this);
     this.state = {
       groupVideoCallMode: currentSettings.hasOwnProperty("groupVideoCallMode") ? currentSettings.groupVideoCallMode : GROUP_VIDEO_CALL_VIEW_MODE.GRID_VIEW
     };
@@ -62,16 +57,7 @@ export default class CallBoxSceneGroupVideo extends Component {
       const id = `uiRemoteVideo-Vi-${sendTopic}`;
       const videoTag = local ? call.uiLocalVideo : document.getElementById(id);
       if (!videoTag) {
-        const videoTagSample = <video className={style.CallBoxSceneGroupVideo__CamVideo} disablePictureInPicture
-                                      autoPlay={true}
-                                      loop={true}
-                                      controls=""
-                                      name="media">
-          <source src="https://www.w3schools.com/tags/movie.mp4"
-                  type="video/mp4"/>
-        </video>;
-        ReactDOM.render(videoTagSample, injectTo);
-        return;
+        return injectTo.innerHTML = `<video class="CallBoxSceneGroupVideo__CamVideo" disablepictureinpicture="" autoplay="" loop="" name="media"><source src="https://www.w3schools.com/tags/movie.mp4" type="video/mp4"></video>`;
       }
       videoTag.setAttribute("class", style.CallBoxSceneGroupVideo__CamVideo);
       videoTag.removeAttribute("height");
@@ -95,6 +81,15 @@ export default class CallBoxSceneGroupVideo extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    const {groupVideoCallMode: oldGroupVideoCallMode} = this.state;
+    const {groupVideoCallMode} = nextState;
+    if(oldGroupVideoCallMode !== groupVideoCallMode) {
+      this.resetMediaSourceLocation();
+    }
+    return true;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     this._traverseOverContactForInjecting();
   }
@@ -103,13 +98,17 @@ export default class CallBoxSceneGroupVideo extends Component {
     this._traverseOverContactForInjecting();
   }
 
-  componentWillUnmount() {
+  resetMediaSourceLocation() {
     const {call} = this.props.chatCallStatus;
     if (call.uiRemoteVideo) {
       const callDivTag = document.getElementById(CALL_DIV_ID);
       callDivTag.append(call.uiRemoteVideo);
       callDivTag.append(call.uiLocalVideo);
     }
+  }
+
+  componentWillUnmount() {
+    this.resetMediaSourceLocation();
   }
 
   _getGridContacts() {
@@ -160,6 +159,13 @@ export default class CallBoxSceneGroupVideo extends Component {
   }
 
   onGridSellClick(participant) {
+    let currentSettings = JSON.parse(Cookies.get(CALL_SETTING_COOKIE_KEY_NAME) || "{}");
+    if (currentSettings) {
+      currentSettings.groupVideoCallMode = GROUP_VIDEO_CALL_VIEW_MODE.THUMBNAIL_VIEW;
+    } else {
+      currentSettings = {groupVideoCallMode: GROUP_VIDEO_CALL_VIEW_MODE.THUMBNAIL_VIEW}
+    }
+    Cookies.set(CALL_SETTING_COOKIE_KEY_NAME, JSON.stringify(currentSettings), {expires: 9999999999});
     this.setState({
       groupVideoCallMode: GROUP_VIDEO_CALL_VIEW_MODE.THUMBNAIL_VIEW,
       groupVideoCallThumbnailParticipant: participant
@@ -170,7 +176,6 @@ export default class CallBoxSceneGroupVideo extends Component {
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList, chatCallGroupSettingsShowing} = this.props;
     const {groupVideoCallMode, groupVideoCallThumbnailParticipant} = this.state;
-    const {status, call} = chatCallStatus;
     const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
     let {filterParticipants, grid} = this._getGridContacts();
     const classNames = classnames({
@@ -204,7 +209,10 @@ export default class CallBoxSceneGroupVideo extends Component {
             </Container>
           )}
         </Container> :
-        <CallBoxSceneGroupVideoThumbnail participant={groupVideoCallThumbnailParticipant}/>
+        <CallBoxSceneGroupVideoThumbnail participant={groupVideoCallThumbnailParticipant}
+                                         chatCallSdtatus={chatCallStatus}
+                                         resetMediaSourceLocation={this.resetMediaSourceLocation}
+                                         traverseOverContactForInjecting={this._traverseOverContactForInjecting}/>
       }
       {chatCallGroupSettingsShowing &&
 

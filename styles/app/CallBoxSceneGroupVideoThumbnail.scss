@@ -1,5 +1,6 @@
 .CallBoxSceneGroupVideoThumbnail {
   height: 100%;
+  background-color: $color-dark;
 }
 
 .CallBoxSceneGroupVideoThumbnail__Scene {
@@ -19,7 +20,7 @@
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  height: 188px;
+  height: 200px;
   flex-basis: 100px;
   overflow: hidden;
 }
@@ -53,5 +54,6 @@
 .CallBoxSceneGroupVideoThumbnail__CamVideoContainer {
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  background-color: $color-dark;
+  cursor: pointer;
 }

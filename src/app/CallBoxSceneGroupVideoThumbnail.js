@@ -48,9 +48,33 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let {sceneParticipant} = prevState;
+    let {sceneParticipant: nowSceneParticipant} = this.state;
+    const {traverseOverContactForInjecting, participant, chatCallParticipantList} = this.props;
+    sceneParticipant = sceneParticipant || participant;
+    const goForInjectingCondition = ((sceneParticipant && nowSceneParticipant) && (sceneParticipant.id !== nowSceneParticipant.id)) || !sceneParticipant;
+    if (goForInjectingCondition) {
+      nowSceneParticipant = nowSceneParticipant && nowSceneParticipant.id ? nowSceneParticipant : chatCallParticipantList && chatCallParticipantList[0];
+      if (!nowSceneParticipant) {
+        return;
+      }
+      const tag = document.getElementById(nowSceneParticipant.sendTopic);
+      if (tag) {
+        tag.innerHTML = "";
+        traverseOverContactForInjecting();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.resetMediaSourceLocation();
+  }
+
   onParticipantClick(participant) {
+    this.props.resetMediaSourceLocation();
     this.setState({
-      sceneParticipant: participant.id
+      sceneParticipant: participant
     });
   }
 
@@ -63,7 +87,9 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
       sceneParticipant = chatCallParticipantList && chatCallParticipantList[0];
     }
     let filterParticipants = chatCallParticipantList.filter(participant => participant.callStatus && participant.callStatus === 6 && participant.id !== sceneParticipant.id);
-
+    if (!sceneParticipant) {
+      sceneParticipant = {};
+    }
     const classNames = classnames({
       [style.CallBoxSceneGroupVideoThumbnail]: true,
     });
@@ -79,8 +105,7 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
             {filterParticipants.map((participant, index) =>
               <Container className={style.CallBoxSceneGroupVideoThumbnail__ListItem}
                          key={participant.id}
-                         onClick={this.onParticipantClick.bind(this, participant)}
-                         ref={this.remoteVideoRef}>
+                         onClick={this.onParticipantClick.bind(this, participant)}>
                 <Container className={style.CallBoxSceneGroupVideoThumbnail__MuteContainer}>
                   {participant && participant.mute &&
                   <MdMicOff size={styleVar.iconSizeXs}
@@ -88,16 +113,8 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
                             style={{margin: "3px 4px"}}/>
                   }
                 </Container>
-                <Container id={participant.sendTopic} className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}>
-                  <video className={style.CallBoxSceneGroupVideo__CamVideo} disablePictureInPicture
-                         autoPlay={true}
-                         loop={true}
-                         controls=""
-                         name="media">
-                    <source src="https://www.w3schools.com/tags/movie.mp4"
-                            type="video/mp4"/>
-                  </video>
-                </Container>
+                <Container id={participant.sendTopic}
+                           className={style.CallBoxSceneGroupVideoThumbnail__CamVideoContainer}/>
               </Container>
             )}
           </Container>
