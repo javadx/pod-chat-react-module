@@ -2,6 +2,7 @@
 @import "../mixin/responsive";
 
 .MainHeadThreadInfo {
+  display: flex;
   max-width: calc(100% - 115px);
   overflow: hidden;
   height: 100%;
@@ -14,11 +15,23 @@
   max-height: 59px;
 }
 
+.MainHeadThreadInfo__BackContainer
+{
+  padding: 18px 9px;
+}
+
 @include grid("md") {
 
   .MainHeadThreadInfo:not(.MainHeadThreadInfo--smallVersion) {
     .MainHeadThreadInfo {
       max-width: none;
+    }
+    .MainHeadThreadInfo__BackContainer {
+      display: none;
+    }
+    .MainHeadThreadInfo__BackContainer
+    {
+      padding: 18px;
     }
   }
 

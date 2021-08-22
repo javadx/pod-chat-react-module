@@ -1,5 +1,5 @@
 // src/app/MainHeadThreadInfo
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
@@ -19,16 +19,18 @@ import strings from "../constants/localization";
 import {ROUTE_THREAD_INFO} from "../constants/routes";
 
 //actions
-import {threadModalThreadInfoShowing} from "../actions/threadActions";
+import {threadInit, threadModalThreadInfoShowing} from "../actions/threadActions";
 
 //UI components
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Typing from "./_component/Typing";
+import {MdChevronRight} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainHeadThreadInfo.scss";
+import styleVar from "../../styles/variables.scss";
 
 @connect(store => {
   return {
@@ -44,6 +46,7 @@ class MainHeadThreadInfo extends Component {
   constructor(props) {
     super(props);
     this.onShowInfoClick = this.onShowInfoClick.bind(this);
+    this.onThreadHide = this.onThreadHide.bind(this);
     this.state = {
       avatar: null
     }
@@ -55,6 +58,15 @@ class MainHeadThreadInfo extends Component {
       history.push(ROUTE_THREAD_INFO);
     }
     this.props.dispatch(threadModalThreadInfoShowing(true));
+  }
+
+  onThreadHide(e) {
+    e.stopPropagation();
+    const {dispatch, chatRouterLess, history} = this.props;
+    dispatch(threadInit());
+    if (!chatRouterLess) {
+      history.push("/");
+    }
   }
 
   render() {
@@ -72,6 +84,10 @@ class MainHeadThreadInfo extends Component {
     const typingText = typing && typing.isTyping;
     return (
       <Container className={classNames} onClick={this.onShowInfoClick} relative>
+        <Container className={style.MainHeadThreadInfo__BackContainer} inline
+                   onClick={this.onThreadHide}>
+            <MdChevronRight size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+        </Container>
         <Avatar>
           <AvatarImage
             src={avatarUrlGenerator.apply(this, [thread.image, avatarUrlGenerator.SIZES.SMALL, getMessageMetaData(thread)])}

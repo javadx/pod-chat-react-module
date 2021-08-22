@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {
   decodeEmoji,
   clearHtml,
-  isMessageIsFile
+  isMessageIsFile, isSystemMessage, isMessageByMe
 } from "../utils/helpers";
 import strings from "../constants/localization";
 import Typing from "./_component/Typing";
@@ -71,7 +71,7 @@ export default function (props) {
                     <Fragment>
                       <Container style={{alignItems: "center", alignContent: "center", display: "flex"}}>
                         <Container>
-                          {isMessageByMe ?
+                          {isMessageByMe(lastMessageVO) ?
                             <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm}
                                        style={{marginLeft: "5px"}}/> :
                             <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm}
@@ -79,7 +79,7 @@ export default function (props) {
                         </Container>
                         <Container>
                           <Text isHTML wordWrap="breakWord" size="sm" color="gray" dark>
-                            {!isMessageByMe ? strings.missedCallAt(messageDatePetrification(lastMessageVO.time)) : strings.participantRejectYourCall(thread.title, messageDatePetrification(lastMessageVO.time))}
+                            {!isMessageByMe(lastMessageVO) ? strings.missedCallAt(messageDatePetrification(lastMessageVO.time)) : strings.participantRejectYourCall(thread.title, messageDatePetrification(lastMessageVO.time))}
                           </Text>
                         </Container>
 

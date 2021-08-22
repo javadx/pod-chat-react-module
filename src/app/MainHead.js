@@ -57,22 +57,12 @@ class MainHead extends Component {
   constructor(props) {
     super(props);
     this.onShowInfoClick = this.onShowInfoClick.bind(this);
-    this.onThreadHide = this.onThreadHide.bind(this);
     this.onSelectMessagesHide = this.onSelectMessagesHide.bind(this);
     this.closeSupportModule = this.closeSupportModule.bind(this);
   }
 
   onShowInfoClick() {
     this.props.dispatch(threadModalThreadInfoShowing(true));
-  }
-
-  onThreadHide(e) {
-    e.stopPropagation();
-    const {dispatch, chatRouterLess, history} = this.props;
-    dispatch(threadInit());
-    if (!chatRouterLess) {
-      history.push("/");
-    }
   }
 
   closeSupportModule() {
@@ -143,6 +133,13 @@ class MainHead extends Component {
 
                       </ContextTrigger>
                     </Container>
+                    {supportMode &&
+                    <Container className={style.MainHead__BackContainer} inline
+                               onClick={this.closeSupportModule}>
+                      <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+
+                    </Container>
+                    }
                   </Fragment>
 
                 }
