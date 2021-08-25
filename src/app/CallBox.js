@@ -22,7 +22,7 @@ import CallBoxControlSet from "./CallBoxControlSet";
 //styling
 import style from "../../styles/app/CallBox.scss";
 import styleVar from "../../styles/variables.scss";
-import {getMessageMetaData, isGroup} from "../utils/helpers";
+import {getMessageMetaData, isGroup, mobileCheck} from "../utils/helpers";
 import {
   CALL_SETTING_COOKIE_KEY_NAME,
   CALL_SETTINGS_CHANGE_EVENT,
@@ -151,14 +151,14 @@ export default class CallBox extends Component {
     const classNames = classnames({
       [style.CallBox]: true,
       [style["CallBox--showing"]]: callBoxShowingType === CHAT_CALL_BOX_NORMAL || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN,
-      [style["CallBox--fullScreen"]]: callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN,
+      [style["CallBox--fullScreen"]]: callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN || mobileCheck(),
       [style["CallBox--noThreadOpened"]]: (!currentThread.id && !threadFetching),
       [style["CallBox--calling"]]: !incomingCondition,
       [style["CallBox--group"]]: thread && isGroup(thread)
 
     });
 
-    return <Container className={classNames}>
+    return <Container className={classNames} >
 
 
       <Container className={style.CallBox__Head} onClick={this.onCallBoxClick}>
