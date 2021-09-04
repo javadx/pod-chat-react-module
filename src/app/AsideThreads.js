@@ -37,6 +37,7 @@ import AsideThreadsContact from "./AsideThreadsContact";
 
 //styling
 import style from "../../styles/app/AsideThreads.scss";
+import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_FULL_SCREEN} from "../constants/callModes";
 
 
 
@@ -78,7 +79,8 @@ const statics = {
     chatInstance: store.chatInstance.chatSDK,
     chatRouterLess: store.chatRouterLess,
     chatSearchResult: store.chatSearchResult,
-    user: store.user.user
+    user: store.user.user,
+    chatCallBoxShowing: store.chatCallBoxShowing
   };
 })
 class AsideThreads extends Component {
@@ -148,11 +150,13 @@ class AsideThreads extends Component {
   }
 
   render() {
-    const {threads, threadsFetching, threadsHasNext, threadShowing, chatInstance, chatSearchResult, user, threadsPartialFetching} = this.props;
+    const {threads, threadsFetching, threadsHasNext, threadShowing, chatInstance, chatSearchResult, user, threadsPartialFetching, chatCallBoxShowing} = this.props;
     const {activeThread, isMenuShow} = this.state;
+    const callBoxCompactedCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_COMPACTED;
     const isMobile = mobileCheck();
     const classNames = classnames({
       [style.AsideThreads]: true,
+      [style["AsideThreads--callBoxCompacted"]]: callBoxCompactedCondition,
       [style["AsideThreads--autoZIndex"]]: isIosAndSafari(),
       [style["AsideThreads--hiddenOverflow"]]: isMobile ? false : isMenuShow && true,
       [style["AsideThreads--isThreadShow"]]: threadShowing

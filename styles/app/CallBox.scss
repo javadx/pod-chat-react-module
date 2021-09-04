@@ -93,7 +93,13 @@
 
 
 .CallBox__Head {
+  transition: transform .2s;
+  position: relative;
+  z-index: 3;
+}
 
+.CallBox__Head--hide {
+  transform: translateY(-50px);
 }
 
 .CallBox__Scene {
@@ -101,5 +107,12 @@
 }
 
 .CallBox__ControlSet {
+  transition: transform .2s;
+  position: relative;
+  z-index: 3;
   order: 3;
+}
+
+.CallBox__ControlSet--hide {
+  transform: translateY(62px);
 }

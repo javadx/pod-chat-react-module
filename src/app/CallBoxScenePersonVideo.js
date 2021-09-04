@@ -20,7 +20,7 @@ import CallBoxToaster from "./CallBoxToaster";
 //styling
 import style from "../../styles/app/CallBoxSceneVideo.scss";
 import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
+import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
   CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_STATUS_INCOMING,
@@ -87,7 +87,7 @@ export default class CallBoxScenePersonVideo extends Component {
   render() {
     const {chatCallStatus, chatCallBoxShowing, user, chatCallParticipantList} = this.props;
     const {status, call} = chatCallStatus;
-    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
+    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN || mobileCheck();
     const sideUserFromParticipantList = chatCallParticipantList.find(participant => user.id !== participant.id);
 
     const classNames = classnames({

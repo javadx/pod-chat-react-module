@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 
 //actions
@@ -34,7 +34,7 @@ import style from "../../styles/app/CallBoxControlSet.scss";
 import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
-  CALL_DIV_ID,
+  CALL_DIV_ID, CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_BOX_NORMAL,
   CHAT_CALL_STATUS_DIVS,
   CHAT_CALL_STATUS_INCOMING,
@@ -50,7 +50,8 @@ import CallBoxControlSetMore from "./CallBoxControlSetMore";
   return {
     chatCallStatus: store.chatCallStatus,
     user: store.user.user,
-    chatCallParticipantList: store.chatCallParticipantList.participants
+    chatCallParticipantList: store.chatCallParticipantList.participants,
+    chatCallBoxShowing: store.chatCallBoxShowing
   }
 })
 export default class CallBoxControlSet extends Component {
@@ -166,17 +167,24 @@ export default class CallBoxControlSet extends Component {
     })
   }
 
-  onMoreActionClick(showing) {
+  onMoreActionClick(showing, e) {
+    e && e.stopPropagation();
     this.setState({
       moreSettingShow: showing
     })
   }
 
   render() {
-    const {chatCallStatus, buttonSize} = this.props;
+    const {chatCallStatus, buttonSize, chatCallBoxShowing} = this.props;
     const {mic, volume, moreSettingShow} = this.state;
     const {status, call} = chatCallStatus;
+    const {showing: callBoxShowingType} = chatCallBoxShowing;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
+    const fullScreenCondition = callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN || (mobileCheck() && callBoxShowingType !== CHAT_CALL_BOX_COMPACTED);
+    const classNames = classnames({
+      [style.CallBoxControlSet]: true,
+      [style["CallBoxControlSet--fullScreen"]]: fullScreenCondition
+    });
     const callDropClassNames = classnames({
       [style.CallBoxControlSet__Button]: true,
       [style.CallBoxControlSet__DropCall]: true
@@ -198,13 +206,7 @@ export default class CallBoxControlSet extends Component {
       [style.CallBoxControlSet__MoreAction]: true
     });
 
-    const moreControlClassNames = classnames({
-      [style.CallBoxControlSet__MoreControlContainer]: true,
-      [style.CallBoxControlSet__MoreAction]: true
-    });
-
-
-    return <Container className={style.CallBoxControlSet}>
+    return <Container className={classNames}>
       <ButtonFloating onClick={this.onDropCallClick} size={buttonSize || "sm"} className={callDropClassNames}>
         <MdCall size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
       </ButtonFloating>
@@ -236,11 +238,15 @@ export default class CallBoxControlSet extends Component {
 
       </ButtonFloating>
 
-      {!incomingCondition &&
-      <ButtonFloating onClick={this.onMoreActionClick.bind(this, true)} size={buttonSize || "sm"} className={moreActionClassNames}>
-        <MdMoreHoriz size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+      {!incomingCondition && callBoxShowingType !== CHAT_CALL_BOX_COMPACTED &&
+      <Fragment>
+        <ButtonFloating onClick={this.onMoreActionClick.bind(this, true)} size={buttonSize || "sm"}
+                        className={moreActionClassNames}>
+          <MdMoreHoriz size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+
+        </ButtonFloating>
         {moreSettingShow && <CallBoxControlSetMore onMoreActionClick={this.onMoreActionClick.bind(this)}/>}
-      </ButtonFloating>
+      </Fragment>
       }
 
 

@@ -111,11 +111,11 @@ export default class CallBoxHead extends Component {
     const {status, call} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const callStarted = status === CHAT_CALL_STATUS_STARTED;
-    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN;
+    const fullScreenCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_FULL_SCREEN || mobileCheck();
     const isMobileCondition = mobileCheck();
     const isVideoCallBool = (isVideoCall(call));
     const accentTextColorCondition = isVideoCallBool && callStarted ? "accent" : "";
-    const invertTextColorCondition = (fullScreenCondition && !incomingCondition && !isVideoCallBool) || (isVideoCallBool && fullScreenCondition && !incomingCondition && !callStarted) ;
+    const invertTextColorCondition = (fullScreenCondition && !incomingCondition && !isVideoCallBool) || (isVideoCallBool && fullScreenCondition && !incomingCondition && !callStarted);
     return <Container className={style.CallBoxHead}>
       <Container className={style.CallBoxHead__StatusContainer}>
         <Text bold
@@ -145,11 +145,16 @@ export default class CallBoxHead extends Component {
                       onClick={this.groupSettingView}/>
         </Fragment>
         }
-        {fullScreenCondition && !isMobileCondition ?
-          <MdFullscreenExit size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
-                        onClick={this.onFullScreenClick}/> :
-          <MdFullscreen size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
-                        onClick={this.onFullScreenClick}/>
+        {!isMobileCondition &&
+        <Fragment>
+          {
+            fullScreenCondition ?
+              <MdFullscreenExit size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
+                                onClick={this.onFullScreenClick}/> :
+              <MdFullscreen size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
+                            onClick={this.onFullScreenClick}/>
+          }
+        </Fragment>
         }
 
         <MdExpandLess size={styleVar.iconSizeMd} color={styleVar.colorAccent}

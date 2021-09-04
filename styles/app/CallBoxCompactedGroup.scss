@@ -8,6 +8,9 @@
   display: flex;
   width: 100%;
   cursor: pointer;
+  max-width: calc(100% - 180px);
+  overflow: hidden;
+  overflow-x: auto;
 }
 
 .CallBoxCompactedGroup__Participant {

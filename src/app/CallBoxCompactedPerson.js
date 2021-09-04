@@ -84,7 +84,7 @@ export default class CallBoxCompactedPerson extends Component {
             }
           </AvatarText>
         </AvatarName>
-      </Avatar>;
+      </Avatar>
     </Container>
   }
 }

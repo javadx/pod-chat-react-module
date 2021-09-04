@@ -227,6 +227,7 @@ export default class MainFooterInput extends Component {
 
         }
       }
+      console.log("test")
       Cookies.set(emojiCookieName, JSON.stringify(parsedArray.concat(newArray).sort(((a, b) => b.split('|')[0] - a.split('|')[0]))), {expires: 9999999999});
     }
 

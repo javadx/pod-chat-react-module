@@ -4,6 +4,12 @@
   justify-content: center;
 }
 
+.CallBoxControlSet--fullScreen {
+  .CallBoxControlSet__Button {
+    zoom: 1.3
+  }
+}
+
 .CallBoxControlSet__Button {
   box-shadow: none;
   position: relative;

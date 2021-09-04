@@ -9,6 +9,10 @@
   overflow-y: auto;
 }
 
+.LeftAsideMain--callBoxCompacted {
+  padding-top: 59px;
+}
+
 @include grid("md") {
 
   .LeftAsideMain:not(.LeftAsideMain--smallVersion) {

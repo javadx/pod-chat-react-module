@@ -51,6 +51,7 @@ export default class CallBox extends Component {
     //create notification audio tag
     this.playRingtone = this.playRingtone.bind(this);
     this.stopRingtone = this.stopRingtone.bind(this);
+    this.hideOrShowControls = this.hideOrShowControls.bind(this);
     this.interValId = null;
     this.ringtone = new Audio(ringtoneSound);
     this.ringtone.loop = true;
@@ -65,9 +66,13 @@ export default class CallBox extends Component {
     this.ringToneSound = currentSettings.hasOwnProperty("ringToneSound") ? currentSettings.ringToneSound : true;
     this.callToneSound = currentSettings.hasOwnProperty("callToneSound") ? currentSettings.callToneSound : true;
 
+    this.state = {
+      showControl: true
+    };
+
     window.addEventListener(CALL_SETTINGS_CHANGE_EVENT, e => {
       this.ringToneSound = e.detail.ringToneSound;
-      this.callToneSound =  e.detail.callToneSound;
+      this.callToneSound = e.detail.callToneSound;
     })
   }
 
@@ -108,6 +113,12 @@ export default class CallBox extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.setState({
+
+    })
+  }
+
   onCallBoxClick() {
     const {dispatch, chatCallBoxShowing} = this.props;
     const {thread, contact} = chatCallBoxShowing;
@@ -142,12 +153,20 @@ export default class CallBox extends Component {
     }
   }
 
+  hideOrShowControls() {
+    this.setState({
+      showControl: !this.state.showControl
+    })
+  }
+
   render() {
     const {chatCallStatus, chatCallBoxShowing, threadObject} = this.props;
+    const {showControl} = this.state;
     const {showing: callBoxShowingType, thread} = chatCallBoxShowing;
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const {thread: currentThread, threadFetching} = threadObject;
+    const fullScreenCondition = callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN || mobileCheck();
     const classNames = classnames({
       [style.CallBox]: true,
       [style["CallBox--showing"]]: callBoxShowingType === CHAT_CALL_BOX_NORMAL || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN,
@@ -155,15 +174,23 @@ export default class CallBox extends Component {
       [style["CallBox--noThreadOpened"]]: (!currentThread.id && !threadFetching),
       [style["CallBox--calling"]]: !incomingCondition,
       [style["CallBox--group"]]: thread && isGroup(thread)
-
     });
 
-    return <Container className={classNames} >
+    const callBoxHeadClassNames = classnames({
+      [style.CallBox__Head]: true,
+      [style["CallBox__Head--hide"]]: !showControl && fullScreenCondition
+    });
+    const CallBoxControlSetClassNames = classnames({
+      [style.CallBox__ControlSet]: true,
+      [style["CallBox__ControlSet--hide"]]: !showControl && fullScreenCondition
+    });
 
+    return <Container className={classNames} onClick={fullScreenCondition && this.hideOrShowControls}>
 
-      <Container className={style.CallBox__Head} onClick={this.onCallBoxClick}>
+      <Container className={callBoxHeadClassNames} onClick={this.onCallBoxClick}>
         <CallBoxHead chatCallStatus={chatCallStatus} thread={thread} chatCallBoxShowing={chatCallBoxShowing}/>
       </Container>
+
       {(callBoxShowingType === CHAT_CALL_BOX_NORMAL || callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN) &&
       <Fragment>
         <Container className={style.CallBox__Scene}>
@@ -173,7 +200,7 @@ export default class CallBox extends Component {
             <CallBoxScenePerson chatCallStatus={chatCallStatus} chatCallBoxShowing={chatCallBoxShowing}/>
           }
         </Container>
-        <Container className={style.CallBox__ControlSet}>
+        <Container className={CallBoxControlSetClassNames}>
           <CallBoxControlSet stopRingtone={this.stopRingtone} className={style.CallBox__ControlSet}/>
         </Container>
       </Fragment>

@@ -20,7 +20,7 @@ import CallBoxToaster from "./CallBoxToaster";
 //styling
 import style from "../../styles/app/CallBoxSceneAudio.scss";
 import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
+import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
   CHAT_CALL_BOX_FULL_SCREEN,
   CHAT_CALL_STATUS_INCOMING,
@@ -45,7 +45,7 @@ export default class CallBoxScenePersonAudio extends Component {
     const {status} = chatCallStatus;
     const incomingCondition = status === CHAT_CALL_STATUS_INCOMING;
     const {contact, showing: callBoxShowingType} = chatCallBoxShowing;
-    const fullScreenCondition = callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN;
+    const fullScreenCondition = callBoxShowingType === CHAT_CALL_BOX_FULL_SCREEN || mobileCheck();
     const avatarContainerClassNames = classnames({
       [style.CallBoxSceneAudio__AvatarContainer]: !incomingCondition,
       [style["CallBoxSceneAudio__AvatarContainer--fullScreen"]]: fullScreenCondition,

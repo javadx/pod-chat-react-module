@@ -17,12 +17,14 @@ import style from "../../styles/app/LeftAsideMain.scss";
 import classnames from "classnames";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Scroller from "../../../pod-chat-ui-kit/src/scroller";
+import {CHAT_CALL_BOX_COMPACTED} from "../constants/callModes";
 
 @connect(store => {
   return {
     smallVersion: store.chatSmallVersion,
     thread: store.thread.thread,
-    leftAsideShowing: store.threadLeftAsideShowing
+    leftAsideShowing: store.threadLeftAsideShowing,
+    chatCallBoxShowing: store.chatCallBoxShowing
   }
 })
 export default class LeftAsideMain extends Component {
@@ -40,13 +42,14 @@ export default class LeftAsideMain extends Component {
     }
   }
 
-
   render() {
-    const {leftAsideShowing, smallVersion} = this.props;
+    const {leftAsideShowing, smallVersion, chatCallBoxShowing} = this.props;
+    const callBoxCompactedCondition = chatCallBoxShowing.showing === CHAT_CALL_BOX_COMPACTED;
     const {type, data, isShowing} = leftAsideShowing;
     const commonProps = {data, smallVersion};
     const classNames = classnames({
       [style.LeftAsideMain]: true,
+      [style["LeftAsideMain--callBoxCompacted"]]: callBoxCompactedCondition,
       [style["LeftAsideMain--smallVersion"]]: smallVersion
     });
     return (

@@ -116,7 +116,7 @@ export default class EmojiIcons extends Component {
     super(props);
     this.onScroll = this.onScroll.bind(this);
     if (!Cookies.get(emojiCookieName)) {
-      Cookies.set(emojiCookieName, ["1|😄", "1|😅", "1|😓", "1|😡", "1|😬", "1|😐", "1|😮", "1|😷", "1|🙏", "1|👆", "1|👉", "1|👈", "1|👍", "1|👎", "1|👏", "1|☝", "1|🚌", "1|✅", "1|❎"], {expires: 99999999});
+      Cookies.set(emojiCookieName,JSON.stringify(["1|😄", "1|😅", "1|😓", "1|😡", "1|😬", "1|😐", "1|😮", "1|😷", "1|🙏", "1|👆", "1|👉", "1|👈", "1|👍", "1|👎", "1|👏", "1|☝", "1|🚌", "1|✅", "1|❎"]), {expires: 99999999});
     }
   }
 
