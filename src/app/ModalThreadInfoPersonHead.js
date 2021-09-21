@@ -22,8 +22,6 @@ import Container from "../../../pod-chat-ui-kit/src/container";
 import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
 import date from "../utils/date";
 
-let foo = null;
-
 export default function f(props) {
   let {
     thread,
@@ -72,37 +70,32 @@ export default function f(props) {
     <Fragment>
       <GapFragment/>
       <List>
+        {(participant.username || (contact.linkedUser && contact.linkedUser.username)) &&
+        <ListItem invert>
+
+          <Container userSelect="text">
+            <MdPerson size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+            <Gap x={20}>
+              <Text inline>{participant.username || contact.linkedUser.username}</Text>
+            </Gap>
+          </Container>
+
+        </ListItem>
+        }
         {isMyContact ?
 
           <Fragment>
-            {(contact.cellphoneNumber || (participant.username || (contact.linkedUser && contact.linkedUser.username))) &&
-            <Container userSelect="text">
-
-              {contact.cellphoneNumber &&
+            {(contact.cellphoneNumber &&
               <ListItem invert>
 
-                <Container>
+                <Container userSelect="text">
                   <MdPhone size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
                   <Gap x={20}>
                     <Text inline>{contact.cellphoneNumber}</Text>
                   </Gap>
                 </Container>
 
-              </ListItem>
-              }
-              {(participant.username || (contact.linkedUser && contact.linkedUser.username)) &&
-              <ListItem invert>
-
-                <Container>
-                  <MdPerson size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
-                  <Gap x={20}>
-                    <Text inline>{participant.username || contact.linkedUser.username}</Text>
-                  </Gap>
-                </Container>
-
-              </ListItem>
-              }
-            </Container>
+              </ListItem>)
             }
 
             {

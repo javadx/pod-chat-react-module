@@ -132,6 +132,7 @@ module.exports = (e, argv) => {
         path: false,
         buffer: false,
         tls: false,
+        stream: false
       }
     }
   };

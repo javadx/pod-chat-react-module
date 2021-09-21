@@ -14,9 +14,6 @@ import {ROUTE_THREAD_INFO} from "../constants/routes";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Divider from "../../../pod-chat-ui-kit/src/divider";
-
-//UI components
-
 import {IndexModalMediaFragment} from "./index";
 import ModalThreadInfoGroup from "./ModalThreadInfoGroup";
 import ModalThreadInfoPerson from "./ModalThreadInfoPerson";

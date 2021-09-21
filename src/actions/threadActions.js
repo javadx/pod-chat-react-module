@@ -44,7 +44,11 @@ import {
   THREAD_UNREAD_MENTIONED_MESSAGE_LIST,
   THREAD_UNREAD_MENTIONED_MESSAGE_REMOVE,
   THREAD_DRAFT,
-  THREAD_GET_PARTICIPANT_ROLES, THREAD_TRIM_HISTORY, THREAD_TRIM_DOWN_HISTORY, THREAD_NEW
+  THREAD_GET_PARTICIPANT_ROLES,
+  THREAD_TRIM_HISTORY,
+  THREAD_TRIM_DOWN_HISTORY,
+  THREAD_NEW,
+  THREAD_EXPORT_MESSAGES_SHOWING
 } from "../constants/actionTypes";
 import {stateGeneratorState} from "../utils/storeHelper";
 
@@ -577,6 +581,15 @@ export const threadSelectMessageShowing = isShowing => {
   return dispatch => {
     return dispatch({
       type: THREAD_SELECT_MESSAGE_SHOWING,
+      payload: isShowing
+    });
+  }
+};
+
+export const threadExportMessagesShowing = isShowing => {
+  return dispatch => {
+    return dispatch({
+      type: THREAD_EXPORT_MESSAGES_SHOWING,
       payload: isShowing
     });
   }

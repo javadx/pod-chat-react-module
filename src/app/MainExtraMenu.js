@@ -10,13 +10,14 @@ import {THREAD_LEFT_ASIDE_SEARCH} from "../constants/actionTypes";
 //actions
 import {
   threadLeftAsideShowing,
-  threadSelectMessageShowing
+  threadSelectMessageShowing,
+  threadExportMessagesShowing
 } from "../actions/threadActions";
 
 //UI components
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Context, {ContextItem} from "../../../pod-chat-ui-kit/src/menu/Context";
-import {mobileCheck} from "../utils/helpers";
+import {isChannel, mobileCheck} from "../utils/helpers";
 
 //styling
 
@@ -31,6 +32,7 @@ class MainExtraMenu extends Component {
     super(props);
     this.onLeftAsideShow = this.onLeftAsideShow.bind(this);
     this.onSelectMessagesShow = this.onSelectMessagesShow.bind(this);
+    this.onExportMessagesClick = this.onExportMessagesClick.bind(this);
   }
 
   onLeftAsideShow(e) {
@@ -43,15 +45,26 @@ class MainExtraMenu extends Component {
     this.props.dispatch(threadSelectMessageShowing(true));
   }
 
+  onExportMessagesClick(e) {
+    e.stopPropagation();
+    this.props.dispatch(threadExportMessagesShowing(true));
+  }
+
   render() {
     const {thread, supportMode} = this.props;
     return (
-      <Context id="thread-extra-context" style={{zIndex: 5000}} >
+      <Context id="thread-extra-context" style={{zIndex: 5000}}>
 
         {
           thread.lastMessageVO && !supportMode &&
           <ContextItem onClick={this.onSelectMessagesShow}>
             {strings.selectMessages}
+          </ContextItem>
+        }
+        {
+          !isChannel(thread) &&
+          <ContextItem onClick={this.onExportMessagesClick}>
+            {strings.exportMessages}
           </ContextItem>
         }
         <ContextItem onClick={this.onLeftAsideShow}>

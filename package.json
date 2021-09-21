@@ -59,6 +59,7 @@
     "copy-to-clipboard": "^3.3.1",
     "ifvisible.js": "^2.0.10",
     "jalali-moment": "^3.3.10",
+    "jalali-react-datepicker": "^1.2.1",
     "js-cookie": "latest",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",

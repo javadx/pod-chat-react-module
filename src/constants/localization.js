@@ -291,7 +291,7 @@ let strings = new LocalizedStrings({
     call: "تماس",
     maximumNumberOfContactSelected: "حد نصاب تعداد نفرات تماس 5 نفر است",
     viewModeConfig: "حالت تماس تصویری",
-    ringToneSound:  "آهنگ زنگ",
+    ringToneSound: "آهنگ زنگ",
     callToneSound: "آهنگ تماس",
     peopleIsTalking: (numberOfPeople) => {
       return `${numberOfPeople} نفر در حال مکالمه`
@@ -301,7 +301,13 @@ let strings = new LocalizedStrings({
     },
     participantRejectYourCall: (name, date) => {
       return `رد تماس توسط ${name} در ${date}`
-    }
+    },
+    exportMessages: "استخراج پیام ها",
+    rangeSelectedFromDateToDate: (fromDate, toDate) => {
+      return `انتخاب تاریخ از ${fromDate} تا تاریخ ${toDate}`;
+    },
+    forExportingPleaseEnterDates: "برای استخراج پیام های ابتدا بازه تاریخ را انتخاب نمایید",
+    export: "استخراج"
   },
   it: {}
 });

@@ -51,7 +51,11 @@ import {
   THREAD_UNREAD_MENTIONED_MESSAGE_REMOVE,
   THREAD_MESSAGE_PIN,
   MESSAGE_NEW,
-  THREAD_DRAFT, THREAD_GET_PARTICIPANT_ROLES, THREAD_TRIM_HISTORY, THREAD_TRIM_DOWN_HISTORY
+  THREAD_DRAFT,
+  THREAD_GET_PARTICIPANT_ROLES,
+  THREAD_TRIM_HISTORY,
+  THREAD_TRIM_DOWN_HISTORY,
+  THREAD_EXPORT_MESSAGES_SHOWING
 } from "../constants/actionTypes";
 import {stateGenerator, updateStore, listUpdateStrategyMethods, stateGeneratorState} from "../utils/storeHelper";
 import {getNow, isMessageByMe} from "../utils/helpers";
@@ -220,6 +224,15 @@ export const threadModalImageCaptionShowingReducer = (state = false, action) => 
 export const threadSelectMessageShowingReducer = (state = false, action) => {
   switch (action.type) {
     case THREAD_SELECT_MESSAGE_SHOWING:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const threadExportMessagesShowingReducer = (state = false, action) => {
+  switch (action.type) {
+    case THREAD_EXPORT_MESSAGES_SHOWING:
       return action.payload;
     default:
       return state;

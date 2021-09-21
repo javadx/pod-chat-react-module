@@ -55,6 +55,7 @@ import ModalPrompt from "./ModalPrompt";
 import ModalShare from "./ModalShare";
 import ModalJoin from "./ModalJoin";
 import ModalParticipantList from "./ModalParticipantList";
+import ModalExportMessages from "./ModalExportMessages";
 
 //styling
 import style from "../../styles/app/index.scss";
@@ -87,6 +88,7 @@ class Index extends Component {
     this.modalMediaRef = React.createRef();
     this.modalImageCaptionRef = React.createRef();
     this.modalParticipantListRef = React.createRef();
+    this.modalExportMessages = React.createRef();
     this.CallBoxRef = React.createRef();
     this.firstContactFetching = true;
     this.deletingDatabases = false;
@@ -264,6 +266,7 @@ class Index extends Component {
             <ModalThreadList smallVersion={small} ref={this.modalThreadListRef}/>
             <ModalParticipantList smallVersion={small} ref={this.modalParticipantListRef}/>
             <ModalImageCaption smallVersion={small} ref={this.modalImageCaptionRef}/>
+            <ModalExportMessages smallVersion={small} ref={this.modalImageCaptionRef}/>
             <ModalMedia selector={`.${style.Index__MediaTrigger} a`}
                         ref={this.modalMediaRef}
                         lang="fa"
