@@ -70,7 +70,7 @@ export default class MainHeadCallButtons extends Component {
     this._selectParticipantForCallFooterFragment = this._selectParticipantForCallFooterFragment.bind(this);
   }
 
-  _selectParticipantForCallFooterFragment({selectedContacts, allContacts}) {
+  _selectParticipantForCallFooterFragment(mode, {selectedContacts, allContacts}) {
     const {thread, dispatch, user} = this.props;
     const isMaximumCount = (selectedContacts && selectedContacts.length > MAX_GROUP_CALL_COUNT - 1);
     return <Container>
@@ -86,7 +86,13 @@ export default class MainHeadCallButtons extends Component {
           selectedParticipants.find(e => e.id === user.id) ? null : selectedParticipants.push(user);
           dispatch(chatCallGetParticipantList(null, selectedParticipants));
           const invitess = selectedParticipants.map(e => {
-            return {id: e.username, type: "TO_BE_USER_USERNAME"}
+            return mode === "CONTACT" ?
+              {id: e.id, type: "TO_BE_USER_CONTACT_ID"}
+              :
+              {
+                id: e.id,
+                type: "TO_BE_USER_USER_ID"
+              };
           });
           dispatch(chatStartGroupCall(null, invitess, this._lastGroupCallRequest));
         }}>{strings.call}</Button>
@@ -111,7 +117,8 @@ export default class MainHeadCallButtons extends Component {
           selectiveMode: true,
           headingTitle: strings.forCallPleaseSelectContacts,
           thread,
-          FooterFragment: this._selectParticipantForCallFooterFragment
+          FooterFragment: this._selectParticipantForCallFooterFragment,
+          dualMode: true
         },
       ));
     }
@@ -143,7 +150,7 @@ export default class MainHeadCallButtons extends Component {
   onVoiceCallClick() {
     const {thread} = this.props;
     if (isGroup(thread)) {
-      this._lastGroupCallRequest= "voice";
+      this._lastGroupCallRequest = "voice";
       return this._groupCall("voice");
     }
     this._p2pCall("voice");
@@ -152,7 +159,7 @@ export default class MainHeadCallButtons extends Component {
   onVideoCallClick() {
     const {thread} = this.props;
     if (isGroup(thread)) {
-      this._lastGroupCallRequest= "video";
+      this._lastGroupCallRequest = "video";
       return this._groupCall("video");
     }
     this._p2pCall("video");

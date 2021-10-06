@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
-import {Virtuoso} from 'react-virtuoso'
 
 //strings
 import strings from "../constants/localization";
@@ -203,16 +202,23 @@ class ModalContactList extends Component {
   }
 
   componentDidMount() {
-    const {dispatch, chatInstance, onInitRequest} = this.props;
+    const {dispatch, chatInstance, onInitRequest, setInitRequestFunc} = this.props;
+    if (setInitRequestFunc) {
+      setInitRequestFunc(this.initRequest.bind(this));
+    }
     if (chatInstance) {
       if (onInitRequest) {
-        this._fillRequestData(null, null, null, true);
-        onInitRequest(this._fillRequestData)
+        this.initRequest();
       } else {
         dispatch(contactGetList(null, null, null, true));
         dispatch(contactGetList(0, statics.count));
       }
     }
+  }
+
+  initRequest() {
+    this._fillRequestData(null, null, null, true);
+    this.props.onInitRequest(this._fillRequestData)
   }
 
   _fillRequestData(contacts, nextOffset, hasNext, reset, isConcat) {
@@ -266,7 +272,7 @@ class ModalContactList extends Component {
     const {nextOffset, hasNext} = this.state;
     const {query} = this.state;
     if (onScrollBottomThresholdRequest) {
-      if(hasNext) {
+      if (hasNext) {
         onScrollBottomThresholdRequest(nextOffset, query, (contacts, nextOffset, hasNext) => {
           this._fillRequestData(contacts, nextOffset, hasNext, false, true)
         });
@@ -280,7 +286,7 @@ class ModalContactList extends Component {
     const {
       contacts, isShow, smallVersion, chatInstance, onSelect, onDeselect,
       contactsHasNext, contactsFetching, contactsPartialFetching,
-      FooterFragment, LeftActionFragment,
+      FooterFragment, LeftActionFragment, BodyFragment,
       selectiveMode, activeList, headingTitle, userType,
       onScrollBottomThresholdRequest, outSideAvatarTextFragment
     } = this.props;
@@ -311,7 +317,7 @@ class ModalContactList extends Component {
                    onScrollBottomThresholdCondition={contactsHasNext && !contactsPartialFetching}
                    onScrollBottomThreshold={this.onScrollBottomThreshold}>
 
-
+          {BodyFragment && <BodyFragment/>}
           {contacts.length ?
             <Container relative>
               {selectiveMode ?
@@ -352,7 +358,8 @@ class ModalContactList extends Component {
         </ModalBody>
 
         <ModalFooter>
-          {FooterFragment && <FooterFragment selectedContacts={activeList} allContacts={onScrollBottomThresholdRequest ? outRequestContacts : contacts}/>}
+          {FooterFragment && <FooterFragment selectedContacts={activeList}
+                                             allContacts={onScrollBottomThresholdRequest ? outRequestContacts : contacts}/>}
         </ModalFooter>
 
       </Modal>

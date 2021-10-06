@@ -307,7 +307,8 @@ let strings = new LocalizedStrings({
       return `انتخاب تاریخ از ${fromDate} تا تاریخ ${toDate}`;
     },
     forExportingPleaseEnterDates: "برای استخراج پیام های ابتدا بازه تاریخ را انتخاب نمایید",
-    export: "استخراج"
+    export: "استخراج",
+    threadParticipantList: "لیست اعضا گروه"
   },
   it: {}
 });

@@ -28,13 +28,7 @@ import {MdSearch, MdClose} from "react-icons/md";
 import ModalContactList from "./ModalContactList";
 
 //styling
-import style from "../../styles/app/ModalContactList.scss";
-import styleVar from "../../styles/variables.scss";
-import {ContactList, ContactListSelective} from "./_component/contactList";
-import {ROUTE_ADD_CONTACT} from "../constants/routes";
-import {avatarUrlGenerator} from "../utils/helpers";
-import {statics as modalContactListStatics} from "./ModalContactList";
-
+import style from "../../styles/app/ModalParticipantList.scss";
 
 function AvatarTextFragment({contact}) {
   return <Text size="xs" inline
@@ -42,7 +36,11 @@ function AvatarTextFragment({contact}) {
 }
 
 export const statics = {
-  count: 50
+  count: 50,
+  visualList: {
+    CONTACT: "CONTACT",
+    THREAD_PARTICIPANTS: "THREAD_PARTICIPANTS"
+  }
 };
 
 @connect(store => {
@@ -54,19 +52,25 @@ export default class ModalParticipantList extends Component {
 
   constructor(props) {
     super(props);
-    this.inputRef = React.createRef();
     this.onSelect = this.onSelect.bind(this);
     this.onDeselect = this.onDeselect.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onInitRequest = this.onInitRequest.bind(this);
+    this.setInitRequestFunc = this.setInitRequestFunc.bind(this);
     this.onSearchChangeRequest = this.onSearchChangeRequest.bind(this);
     this.onScrollBottomThresholdRequest = this.onScrollBottomThresholdRequest.bind(this);
     this.state = {
       query: null,
       threadSelectedParticipants: [],
       threadParticipants: [],
-      maximumLimitSelection: false
+      maximumLimitSelection: false,
+      visualList: statics.visualList.CONTACT
     };
+    this.initRequestFunc = null;
+  }
+
+  setInitRequestFunc(func) {
+    this.initRequestFunc = func;
   }
 
   _resetState() {
@@ -82,16 +86,29 @@ export default class ModalParticipantList extends Component {
     const {chatSelectParticipantForCallShowing} = this.props;
     const {showing: oldShowing} = oldChatSelectParticipantForCallShowing;
     const {showing} = chatSelectParticipantForCallShowing;
+    const {visualList: oldVisualList} = prevState;
+    const {visualList} = this.state;
     if (!showing) {
       if (oldShowing) {
         this._resetState();
       }
     }
+    if (oldVisualList !== visualList) {
+      this._resetState();
+      this.initRequestFunc();
+    }
   }
 
   _requestForParticipant(callBack, offset = 0, query = null) {
     const {dispatch, chatSelectParticipantForCallShowing} = this.props;
+    const {visualList} = this.state;
     const {thread} = chatSelectParticipantForCallShowing;
+    if (visualList === statics.visualList.CONTACT) {
+      return dispatch(contactGetList(0, statics.count, query, false, true)).then(data => {
+        const {contacts, hasNext, nextOffset} = data;
+        callBack(contacts, nextOffset, hasNext);
+      });
+    }
     dispatch(threadParticipantList(thread.id, 0, statics.count, query, true)).then(data => {
       const {participants, hasNext, nextOffset} = data;
       callBack(participants, nextOffset, hasNext);
@@ -143,14 +160,37 @@ export default class ModalParticipantList extends Component {
     this._requestForParticipant(callBack, nextOffset, query);
   }
 
+  onDualModeTabSelect(name) {
+    this.setState({
+      visualList: name
+    })
+  }
+
+  renderDualMode() {
+    const {visualList} = this.state;
+    const itemClassNames = name => classnames({
+      [style.ModalParticipantList__DualModeTabItem]: true,
+      [style["ModalParticipantList__DualModeTabItem--selected"]]: name === visualList,
+    });
+    return <Container className={style.ModalParticipantList__DualModeTab}>
+      <Container className={itemClassNames(statics.visualList.CONTACT)}
+                 onClick={this.onDualModeTabSelect.bind(this, statics.visualList.CONTACT)}><Text
+        bold>{strings.contactList}</Text></Container>
+      <Container className={itemClassNames(statics.visualList.THREAD_PARTICIPANTS)}
+                 onClick={this.onDualModeTabSelect.bind(this, statics.visualList.THREAD_PARTICIPANTS)}><Text
+        bold>{strings.threadParticipantList}</Text></Container>
+    </Container>
+  }
+
   render() {
     const {chatSelectParticipantForCallShowing} = this.props;
-    const {showing, headingTitle, selectiveMode, FooterFragment} = chatSelectParticipantForCallShowing;
+    const {showing, headingTitle, selectiveMode, FooterFragment, dualMode} = chatSelectParticipantForCallShowing;
     const {threadSelectedParticipants} = this.state;
     if (!showing) {
       return null;
     }
     return <ModalContactList isShow={showing}
+                             setInitRequestFunc={this.setInitRequestFunc}
                              onInitRequest={this.onInitRequest}
                              outSideAvatarTextFragment={AvatarTextFragment}
                              onSearchChangeRequest={this.onSearchChangeRequest}
@@ -158,7 +198,8 @@ export default class ModalParticipantList extends Component {
                              headingTitle={headingTitle || strings.selectParticipants}
                              selectiveMode={selectiveMode}
                              activeList={threadSelectedParticipants}
-                             FooterFragment={FooterFragment}
+                             FooterFragment={FooterFragment.bind(null, this.state.visualList)}
+                             BodyFragment={dualMode && this.renderDualMode.bind(this)}
                              onClose={this.onClose}
                              onSelect={this.onSelect}
                              onDeselect={this.onDeselect}
