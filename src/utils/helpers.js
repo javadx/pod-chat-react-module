@@ -15,6 +15,7 @@ import {typesCode} from "../constants/messageTypes";
 import checkForPrivilege from "./privilege";
 import {THREAD_ADMIN} from "../constants/privilege";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
+import {ACTUAL_IMAGE_SIZE, LARGE_IMAGE_SIZE, MEDIUM_IMAGE_SIZE, SMALL_IMAGE_SIZE} from "../constants/podspace";
 
 
 export function humanFileSize(bytes, si) {
@@ -154,10 +155,10 @@ export function avatarNameGenerator(firstName, lastName) {
 export function avatarUrlGenerator(url, size, metadata, directCall) {
   if (metadata) {
     const sizes = {
-      SMALL: 1,
-      MEDIUM: 2,
-      LARGE: 3,
-      XLARGE: 3
+      SMALL: SMALL_IMAGE_SIZE,
+      MEDIUM: MEDIUM_IMAGE_SIZE,
+      LARGE: LARGE_IMAGE_SIZE,
+      XLARGE: ACTUAL_IMAGE_SIZE
     };
     if (metadata) {
       const {fileHash} = metadata;

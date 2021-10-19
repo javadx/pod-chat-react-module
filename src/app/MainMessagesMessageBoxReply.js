@@ -15,6 +15,7 @@ import strings from "../constants/localization";
 import style from "../../styles/app/MainMessagesMessageBoxReply.scss";
 
 import React from "react";
+import {SMALL_IMAGE_SIZE} from "../constants/podspace";
 
 export default function ({isMessageByMe, message, onRepliedMessageClicked, maxReplyFragmentWidth: maxWidth}) {
   if (!message.replyInfo) {
@@ -85,7 +86,7 @@ export default function ({isMessageByMe, message, onRepliedMessageClicked, maxRe
             meta.fileHash ?
               <ImageFetcher className={style.MainMessagesMessageBoxReply__ReplyFragmentImage}
                             hashCode={meta.fileHash}
-                            size={1}
+                            size={SMALL_IMAGE_SIZE}
                             setOnBackground/>
               :
               isImage ?

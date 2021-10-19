@@ -11,6 +11,7 @@ import {MdWarning} from "react-icons/md";
 import style from "../../styles/app/ModalThreadInfoMessageTypesImage.scss";
 import oneone from "../../styles/images/_common/oneone.png";
 import styleVar from "../../styles/variables.scss";
+import {LARGE_IMAGE_SIZE} from "../constants/podspace";
 
 function gotoMessage(dispatch, message) {
   dispatch(threadModalThreadInfoShowing());
@@ -30,7 +31,7 @@ export function ModalThreadInfoMessageTypesImage({message, dispatch}) {
   const idMessage = `${message.id}-message-types-picture`;
   let [thumb, setThumb] = useState(null);
   const metaData = getMessageMetaData(message).file;
-  thumb = metaData && thumb !== true && getImage(metaData.fileHash, 3, null, setThumb, dispatch, false, true);
+  thumb = metaData && thumb !== true && getImage(metaData.fileHash, LARGE_IMAGE_SIZE, null, setThumb, dispatch, false, true);
   const isFailed = !metaData;
   const goingNothing = !thumb || thumb === true;
   return (

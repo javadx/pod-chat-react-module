@@ -7,8 +7,17 @@ import {humanFileSize, mobileCheck} from "../utils/helpers";
 import Cookies from "js-cookie";
 import {clearHtml, getCursorMentionMatch} from "./_component/Input"
 
+import OutsideClickHandler from "react-outside-click-handler";
+
 //strings
 import strings from "../constants/localization";
+import {MESSAGE_SHARE, SHOW_CALL_BUTTON} from "../constants/cookieKeys";
+import {
+  CALL_SETTING_COOKIE_KEY_NAME,
+  CALL_SETTINGS_CHANGE_EVENT,
+  SHOW_CALL_BUTTONS_EVENT
+} from "../constants/callModes";
+import {emojiCookieName} from "../constants/emoji";
 
 //actions
 import {
@@ -27,15 +36,18 @@ import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Input from "./_component/Input";
 import {codeEmoji, emojiRegex} from "./_component/EmojiIcons.js";
-import {chatAudioRecorder as chatAudioRecorderAction, startTyping, stopTyping} from "../actions/chatActions";
+import {
+  chatAudioRecorder as chatAudioRecorderAction,
+  chatModalPrompt,
+  startTyping,
+  stopTyping
+} from "../actions/chatActions";
 import ParticipantSuggestion from "./_component/ParticipantSuggestion";
 import {MdClose} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainFooterInput.scss";
-import OutsideClickHandler from "react-outside-click-handler";
-import {emojiCookieName} from "../constants/emoji";
-import {MESSAGE_SHARE} from "../constants/cookie-keys";
+
 import styleVar from "../../styles/variables.scss";
 
 export const constants = {
@@ -227,7 +239,6 @@ export default class MainFooterInput extends Component {
 
         }
       }
-      console.log("test")
       Cookies.set(emojiCookieName, JSON.stringify(parsedArray.concat(newArray).sort(((a, b) => b.split('|')[0] - a.split('|')[0]))), {expires: 9999999999});
     }
 
@@ -428,6 +439,21 @@ export default class MainFooterInput extends Component {
   }
 
   onText(newText) {
+    if (newText) {
+      const isShow = Cookies.get(SHOW_CALL_BUTTON);
+      if (!isShow) {
+        if (newText.toLowerCase().indexOf("callvoila") > -1) {
+          const event = new CustomEvent(SHOW_CALL_BUTTONS_EVENT, {detail: true});
+          window.dispatchEvent(event);
+          Cookies.set(SHOW_CALL_BUTTON, true);
+          const {dispatch} = this.props;
+          dispatch(chatModalPrompt(true, strings.youSuccessfullyShowCallButtons, ()=> dispatch(chatModalPrompt()), null, strings.ok, null, null, null, true));
+          return this.setState({
+            messageText: null
+          });
+        }
+      }
+    }
     this.setState({
       messageText: newText
     });
@@ -479,7 +505,7 @@ export default class MainFooterInput extends Component {
     return (
       <Container className={style.MainFooterInput}>
         <OutsideClickHandler onOutsideClick={this.resetParticipantSuggestion}>
-          {(showParticipant && !chatAudioRecorder ) &&
+          {(showParticipant && !chatAudioRecorder) &&
 
           <Container className={style.MainFooterInput__ParticipantContainer}>
             <Container className={participantsPositionContainerClassNames}>

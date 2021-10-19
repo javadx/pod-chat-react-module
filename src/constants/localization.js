@@ -308,7 +308,9 @@ let strings = new LocalizedStrings({
     },
     forExportingPleaseEnterDates: "برای استخراج پیام های ابتدا بازه تاریخ را انتخاب نمایید",
     export: "استخراج",
-    threadParticipantList: "لیست اعضا گروه"
+    threadParticipantList: "لیست اعضا گروه",
+    ok: "باشه",
+    youSuccessfullyShowCallButtons: "شما دکمه های تماس رو فعال کردی!!!"
   },
   it: {}
 });

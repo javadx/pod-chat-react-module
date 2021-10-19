@@ -22,6 +22,7 @@ import ModalThreadInfoPerson from "./ModalThreadInfoPerson";
 import style from "../../styles/app/ModalThreadInfo.scss";
 import {getMessageMetaData} from "../utils/helpers";
 import {getImage} from "../utils/hashmap";
+import {MEDIUM_IMAGE_SIZE} from "../constants/podspace";
 
 function GapFragment() {
   return (
@@ -42,7 +43,7 @@ function AvatarModalMediaFragment({participant, thread}) {
     if (thread.metadata) {
       const fileHash = getMessageMetaData(thread).fileHash;
       if (fileHash) {
-        image = getImage(fileHash, 2, null, "avatarImage", this);
+        image = getImage(fileHash, MEDIUM_IMAGE_SIZE, null, "avatarImage", this);
       }
     } else {
       image = thread.image;

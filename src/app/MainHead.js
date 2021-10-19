@@ -3,6 +3,7 @@ import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
+import Cookies from "js-cookie";
 
 //strings
 import strings from "../constants/localization";
@@ -37,10 +38,12 @@ import {
   chatSupportModuleBadgeShowing
 } from "../actions/chatActions";
 import {isChannel, isGroup} from "../utils/helpers";
-import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_STARTED} from "../constants/callModes";
+import {SHOW_CALL_BUTTONS_EVENT
+} from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
 import MainHeadCallButtons from "./MainHeadCallButtons";
 import MainHeadExtraMenu from "./MainExtraMenu";
+import {SHOW_CALL_BUTTON} from "../constants/cookieKeys";
 
 @connect(store => {
   return {
@@ -59,6 +62,14 @@ class MainHead extends Component {
     this.onShowInfoClick = this.onShowInfoClick.bind(this);
     this.onSelectMessagesHide = this.onSelectMessagesHide.bind(this);
     this.closeSupportModule = this.closeSupportModule.bind(this);
+    this.state = {
+      showCallButtons: Cookies.get(SHOW_CALL_BUTTON)
+    };
+    window.addEventListener(SHOW_CALL_BUTTONS_EVENT, e => {
+      this.setState({
+        showCallButtons: true
+      });
+    })
   }
 
   onShowInfoClick() {
@@ -78,6 +89,7 @@ class MainHead extends Component {
 
   render() {
     const {thread, smallVersion, threadSelectMessageShowing, threadCheckedMessageList, supportMode, user, participants} = this.props;
+    const {showCallButtons} = this.state;
     const showLoading = !thread.id;
     const classNames = classnames({
       [style.MainHead]: true,
@@ -120,7 +132,7 @@ class MainHead extends Component {
                   !threadSelectMessageShowing &&
                   <Fragment>
                     {
-                      !isChannel(thread) && !supportMode &&
+                      showCallButtons && !isChannel(thread) && !supportMode &&
                       <MainHeadCallButtons participants={participants} thread={thread} user={user}
                                            smallVersion={smallVersion}/>
                     }

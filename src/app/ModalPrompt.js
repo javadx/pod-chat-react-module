@@ -35,7 +35,7 @@ export default class ModalPrompt extends Component {
   }
 
   render() {
-    const {isShowing, smallVersion, message, extraMessage, onApply, confirmText, customBody, noConfirmButton} = this.props.chatModalPrompt;
+    const {isShowing, smallVersion, message, extraMessage, onApply, confirmText, customBody, noConfirmButton, noCancelButton} = this.props.chatModalPrompt;
     return (
       <Modal isOpen={isShowing} onClose={this.onClose.bind(this)} inContainer={smallVersion} fullScreen={smallVersion}
              userSelect="none" wrapContent>
@@ -57,7 +57,9 @@ export default class ModalPrompt extends Component {
           {!noConfirmButton &&
           <Button text onClick={onApply}>{confirmText || strings.remove}</Button>
           }
+          {!noCancelButton &&
           <Button text onClick={this.onClose.bind(this)}>{strings.cancel}</Button>
+          }
         </ModalFooter>
         }
 

@@ -1,2 +1,0 @@
-const MESSAGE_SHARE = "MESSAGE_SHARE";
-export {MESSAGE_SHARE}

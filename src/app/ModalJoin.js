@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 //strings
 import strings from "../constants/localization";
-import {MESSAGE_SHARE} from "../constants/cookie-keys";
+import {MESSAGE_SHARE} from "../constants/cookieKeys";
 
 //actions
 import {chatModalPrompt} from "../actions/chatActions";

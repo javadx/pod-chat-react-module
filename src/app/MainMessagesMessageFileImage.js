@@ -18,15 +18,16 @@ import MainMessagesMessageFileControlIcon from "./MainMessagesMessageFileControl
 import style from "../../styles/app/MainMessagesMessageFileImage.scss";
 import imageFragmentStyle from "../../styles/app/MainMessagesMessageFileImageFragment.scss";
 import mapFake from "../../styles/images/MainMessagesMessageFileImage/map-fake.png";
+import {ACTUAL_IMAGE_SIZE, LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE} from "../constants/podspace";
 
 
 const imageQualities = {
   low: {
-    s: 1,
+    s: SMALL_IMAGE_SIZE,
     q: 0.01
   },
   medium: {
-    s: 3
+    s: LARGE_IMAGE_SIZE
   },
   high: {
     q: meta => {

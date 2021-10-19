@@ -191,17 +191,17 @@ class MainMessagesMessageFile extends Component {
       }
       this.isDownloading = true;
       this.isPlayable = isPlayable;
-      getFile(metaData.file.hashCode, "file", this, false, false, this.state.isVideo ? {responseType: "link"} : {});
+      getFile(metaData.file.hashCode, "file", this, false, false, /*this.state.isVideo ? {responseType: "link"} : */{});
     };
     //TODO: fix it when on new token coming
-    if (isVideo && downloadRef && downloadRef.href) {
-      updateLink(metaData.file.hashCode, this.props.dispatch).then(link => {
-        downloadRef.href = link;
-        pastAction();
-      });
-    } else {
-      pastAction();
-    }
+    /*    if (isVideo && downloadRef && downloadRef.href) {
+          updateLink(metaData.file.hashCode, this.props.dispatch).then(link => {
+            downloadRef.href = link;
+            pastAction();
+          });
+        } else { }*/
+    pastAction();
+
 
   }
 

@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import {THREAD_ADMIN} from "../constants/privilege";
 import {types, typesCode} from "../constants/messageTypes";
 import {CALL_DIV_ID} from "../constants/callModes";
+import {LARGE_IMAGE_SIZE} from "../constants/podspace";
 
 const errorCodes = {
   CLIENT_NOT_AUTH: 21,
@@ -18,9 +19,8 @@ export default class ChatSDK {
       socketAddress: props.config.local ? "ws://172.16.106.26:8003/ws" : "wss://chat-sandbox.pod.ir/ws", // {**REQUIRED**} Socket Address
       ssoHost: props.config.local ? "http://172.16.110.76" : "https://accounts.pod.ir", // {**REQUIRED**} Socket Address
       ssoGrantDevicesAddress: "/oauth2/grants/devices", // {**REQUIRED**} Socket Address
-      platformHost: props.config.local ? "http://172.16.106.26:8080/hamsam" : "https://sandbox.pod.land:8043/srv/basic-platform", // {**REQUIRED**} Platform Core Address
+      platformHost: props.config.local ? "http://172.16.106.26:8080/hamsam" : "https://sandbox.pod.ir/srv/basic-platform", // {**REQUIRED**} Platform Core Address
       fileServer: "https://sandbox.pod.land:8443", // {**REQUIRED**} File Server Address
-      podSpaceFileServer: "https://podspace.podland.ir",
       serverName: "chat-server", // {**REQUIRED**} Server to to register on
       token: null, // {**REQUIRED**} SSO Token Zamani
       wsConnectionWaitTime: 500, // Time out to wait for socket to get ready after open
@@ -510,7 +510,7 @@ export default class ChatSDK {
   }
 
   @promiseDecorator
-  getImageFromPodspace(resolve, reject, hashCode, size = 3, quality = 1, crop = false) {
+  getImageFromPodspace(resolve, reject, hashCode, size = LARGE_IMAGE_SIZE, quality = 1, crop = false) {
     this.chatAgent.getImageFromPodspace({
       hashCode,
       size, // 1: 100×75 , 2: 200×150, 3: 400×300

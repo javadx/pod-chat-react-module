@@ -129,7 +129,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 /*! https://mths.be/punycode v1.3.2 by @mathias */
 
-/*! js-cookie v3.0.0 | MIT */
+/*! js-cookie v3.0.1 | MIT */
 
 /*!***********************!*\
   !*** ./src/drawer.js ***!
