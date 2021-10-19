@@ -21,7 +21,7 @@ import style from "../../styles/app/MainFooterInputEditing.scss";
 import styleVar from "../../styles/variables.scss";
 import utilsStlye from "../../styles/utils/utils.scss";
 import {decodeEmoji} from "./_component/EmojiIcons.js";
-import {getMessageMetaData} from "../utils/helpers";
+import {clearHtml, getMessageMetaData} from "../utils/helpers";
 
 const constants = {
   replying: "REPLYING",
@@ -121,6 +121,7 @@ export default class MainFooterInputEditing extends Component {
     let editObject;
     if (isEditing) {
       editObject = getMessageEditingText(messageEditing.message);
+      const text = editObject.image ? null : decodeEmoji(clearHtml(editObject.text))
       return (
 
         <Paper colorBackgroundLight style={{borderRadius: "20px 20px 0 0"}}>
@@ -144,7 +145,13 @@ export default class MainFooterInputEditing extends Component {
                 </Container>
                 : ""}
               <Container inline>
-                <Text size="sm" isHTML>{decodeEmoji(editObject.text)}</Text>
+
+                {text ?
+                  <Text size="sm" isHTML>{decodeEmoji(clearHtml(editObject.text))}</Text>
+                  :
+                  <Text bold size="xs" italic color="gray" dark>{strings.unknownMessage}</Text>
+                }
+
               </Container>
             </Container>
 
