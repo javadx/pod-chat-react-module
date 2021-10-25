@@ -54,6 +54,7 @@ export default class MainMessagesMessageText extends Component {
       user,
       thread
     } = this.props;
+    const {} = message?.callHistory;
     return (
       <Container className={style.MainMessagesText} ref={ref}>
         <MainMessagesMessageBox message={message}
