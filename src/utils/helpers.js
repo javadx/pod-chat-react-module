@@ -639,7 +639,7 @@ export function showMessageNameOrAvatar(message, messages) {
 }
 
 export function messageSelectedCondition(message, threadCheckedMessageList) {
-  const fileIndex = threadCheckedMessageList.findIndex((msg => msg.uniqueId === message.uniqueId));
+  const fileIndex = threadCheckedMessageList.findIndex((msg => msg.id === message.id));
   return fileIndex >= 0;
 }
 

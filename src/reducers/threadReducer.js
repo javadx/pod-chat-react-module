@@ -812,7 +812,7 @@ export const threadCheckedMessageListReducer = (state = [], action) => {
     case THREAD_CHECKED_MESSAGE_LIST_ADD:
       return updateStore(state, action.payload, {
         method: listUpdateStrategyMethods.UPDATE,
-        by: "uniqueId",
+        by: "id",
         upsert: true
       }).sort((a, b) => a.time - b.time);
     case THREAD_CHECKED_MESSAGE_LIST_REMOVE:
