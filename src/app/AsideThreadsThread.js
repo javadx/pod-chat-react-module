@@ -3,6 +3,7 @@ import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../ut
 import AsideThreadsLastSeenMessage from "./AsideThreadsLastSeenMessage";
 
 import Avatar, {AvatarImage, AvatarName, AvatarText} from "../../../pod-chat-ui-kit/src/avatar";
+import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {ListItem} from "../../../pod-chat-ui-kit/src/list";
 import Shape, {ShapeCircle} from "../../../pod-chat-ui-kit/src/shape";
 import Container from "../../../pod-chat-ui-kit/src/container";
@@ -57,6 +58,7 @@ function AsideThreadsThread({
   const onThreadTouchMove = (thread, e) => {
     touchPosition = `${e.touches[0].pageX}${e.touches[0].pageY}`;
   };
+  const isUnreadCountExceeded = thread.unreadCount > 999;
   return <Fragment>
     <ContextTrigger id="aside-threads-context-menu" holdToDisplay={-1}
                     collect={() => thread}
@@ -120,7 +122,9 @@ function AsideThreadsThread({
                 }
                 {thread.unreadCount ?
                   <Shape color="accent">
-                    <ShapeCircle>{thread.unreadCount}</ShapeCircle>
+                    <ShapeCircle style={isUnreadCountExceeded ? {fontSize: "9px"} : null}>
+                      {isUnreadCountExceeded ? "999+" : thread.unreadCount}
+                    </ShapeCircle>
                   </Shape> :
                   thread.pin ?
                     <AiFillPushpin size={styleVar.iconSizeSm}

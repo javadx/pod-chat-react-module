@@ -228,7 +228,6 @@ export class MainMessagesMessage extends Component {
       highLightMessage,
       supportMode
     };
-
     return (
       <Container id={message.uuid}
                  userSelect="none"

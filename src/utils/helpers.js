@@ -16,6 +16,8 @@ import checkForPrivilege from "./privilege";
 import {THREAD_ADMIN} from "../constants/privilege";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {ACTUAL_IMAGE_SIZE, LARGE_IMAGE_SIZE, MEDIUM_IMAGE_SIZE, SMALL_IMAGE_SIZE} from "../constants/podspace";
+import styleVar from "../../styles/variables.scss";
+import {MdCallMissed, MdCallEnd} from "react-icons/md";
 
 
 export function humanFileSize(bytes, si) {
@@ -250,13 +252,12 @@ export function isMessageIsFile(message) {
       try {
 
         return JSON.parse(message.metadata).file;
-      }catch (e) {
+      } catch (e) {
         return false
       }
     }
   }
 }
-
 
 
 export function isMessageIsNewFile(message) {
@@ -291,7 +292,7 @@ export function isMessageByMe(message, user, thread) {
 }
 
 export function isSystemMessage(message) {
-  return message.messageType === 13;
+  return message.messageType === 13 || message.messageType === 14;
 }
 
 
@@ -717,9 +718,27 @@ export function getImage({link, file}, isFromServer, smallVersion) {
   };
 }
 
-export function messageDatePetrification(time) {
-  const correctTime = time / Math.pow(10, 6);
+export function messageDatePetrification(time, notThatTime) {
+  const correctTime = notThatTime ? time : time / Math.pow(10, 6);
   return date.isToday(correctTime) ? date.format(correctTime, "HH:mm") : date.isWithinAWeek(correctTime) ? date.format(correctTime, "dddd HH:mm") : date.format(correctTime, "YYYY-MM-DD  HH:mm");
+}
+
+export function prettifyElapsedTime(milis) {
+  const secs = Math.floor(milis / 1000);
+  var hours = Math.floor(secs / 3600);
+  var minutes = Math.floor((secs - (hours * 3600)) / 60);
+  var seconds = secs - (hours * 3600) - (minutes * 60);
+
+  if (hours < 10) {
+    hours = "0" + hours;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  return hours + ':' + minutes + ':' + seconds;
 }
 
 export function urlify(text) {
@@ -762,7 +781,7 @@ export function emailify(text) {
 }
 
 export function callParticipantStandardization(arrayOfParticipants) {
-  return arrayOfParticipants.map(participant=>{
+  return arrayOfParticipants.map(participant => {
     const {participantVO} = participant;
     delete participant.participantVO;
     return {
@@ -773,9 +792,75 @@ export function callParticipantStandardization(arrayOfParticipants) {
 }
 
 export function isVideoCall(call) {
-  if(call) {
-    if(call.type === 1) {
+  if (call) {
+    if (call.type === 1) {
       return true
+    }
+  }
+}
+
+export function analyzeCallStatus(props) {
+  const {
+    isMessageByMe,
+    message,
+    thread
+  } = props;
+  const {
+    createTime,
+    startTime,
+    endTime,
+    status
+  } = message?.callHistory;
+  switch (status) {
+
+    case 7: {
+      return {
+        Icon() {
+          return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+        },
+        Text: () => strings.callEnded(messageDatePetrification(createTime, true), endTime ? prettifyElapsedTime(endTime - startTime) : null)
+      };
+    }
+    case 2: {
+      if (isMessageByMe) {
+        return {
+          Icon() {
+            return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+          },
+          Text: () => strings.callEnded(messageDatePetrification(createTime, true), endTime ? prettifyElapsedTime(endTime - startTime) : null)
+        };
+      }
+      return {
+        Icon() {
+          return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+        },
+        Text: () => strings.participantRejectYourCall(thread.title, messageDatePetrification(createTime, true))
+      };
+    }
+    case 3: {
+      return {
+        Icon() {
+          return <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+        },
+        Text() {
+          return strings.missedCallAt(messageDatePetrification(createTime, true));
+        }
+      };
+    }
+    case 4: {
+      if (isMessageByMe) {
+        return {
+          Icon() {
+            return <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+          },
+          Text() {
+            return strings.missedCallAt(messageDatePetrification(createTime, true));
+          }
+        };
+      }
+    }
+    default: {
+      return;
     }
   }
 }

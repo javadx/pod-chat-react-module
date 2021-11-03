@@ -581,7 +581,7 @@ export default class MainMessages extends Component {
     const MainMessagesMessageContainerClassNames = (isMessageByMe, messageType) => classnames({
       [style.MainMessages__MessageContainer]: true,
       [style["MainMessages__MessageContainer--left"]]: !isMessageByMe,
-      [style["MainMessages__MessageContainer--center"]]: messageType === 13
+      [style["MainMessages__MessageContainer--center"]]: messageType === 13 || messageType === 14
     });
 
     if (!thread.id || fetching || threadGetMessageListByMessageIdFetching) {

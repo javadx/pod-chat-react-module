@@ -306,6 +306,13 @@ let strings = new LocalizedStrings({
     rangeSelectedFromDateToDate: (fromDate, toDate) => {
       return `انتخاب تاریخ از ${fromDate} تا تاریخ ${toDate}`;
     },
+    callEnded: (date, elapsed) => {
+      console.log(elapsed)
+      if(elapsed) {
+        return `تماس پایان پذیرفت ${date} - مدت تماس ${elapsed}`;
+      }
+      return `تماس پایان پذیرفت ${date}`
+    },
     forExportingPleaseEnterDates: "برای استخراج پیام های ابتدا بازه تاریخ را انتخاب نمایید",
     export: "استخراج",
     threadParticipantList: "لیست اعضا گروه",

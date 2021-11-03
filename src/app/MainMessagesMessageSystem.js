@@ -9,7 +9,7 @@ import {
   emailify,
   mentionify,
   urlify,
-  messageDatePetrification
+  messageDatePetrification, prettifyElapsedTime, analyzeCallStatus
 } from "../utils/helpers";
 import copyToClipBoard from "copy-to-clipboard";
 
@@ -54,7 +54,10 @@ export default class MainMessagesMessageText extends Component {
       user,
       thread
     } = this.props;
-    const {} = message?.callHistory;
+    const AnalyzeResult = analyzeCallStatus(this.props);
+    if (!AnalyzeResult) {
+      return ""
+    }
     return (
       <Container className={style.MainMessagesText} ref={ref}>
         <MainMessagesMessageBox message={message}
@@ -62,9 +65,14 @@ export default class MainMessagesMessageText extends Component {
                                 isFirstMessage={isFirstMessage} isMessageByMe={isMessageByMe}>
           <MainMessagesMessageBoxHighLighter message={message} highLightMessage={highLightMessage}/>
           <Container userSelect="none" className={systemStyle.MainMessagesMessageSystem__TextContainer}>
-            {isMessageByMe ? <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/> : <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>}
+            <AnalyzeResult.Icon/>
+
+            {/*            {isMessageByMe ?
+              <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/> :
+              <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>}*/}
             <Text isHTML wordWrap="breakWord" whiteSpace="preWrap" color="text" dark size="sm">
-             {!isMessageByMe ? strings.missedCallAt(messageDatePetrification(message.time)) : strings.participantRejectYourCall(thread.title, messageDatePetrification(message.time))}
+              {/*              {!isMessageByMe ? strings.missedCallAt(messageDatePetrification(message.time)) : strings.participantRejectYourCall(thread.title, messageDatePetrification(message.time))}*/}
+              {AnalyzeResult.Text()}
             </Text>
           </Container>
         </MainMessagesMessageBox>

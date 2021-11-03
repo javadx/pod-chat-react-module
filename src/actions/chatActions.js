@@ -174,6 +174,7 @@ export const chatSetInstance = config => {
       },
       onMessageEvents: (message, type) => {
         const {thread} = getState().thread;
+
         if (type === "MESSAGE_NEW") {
           if (thread) {
             if (thread.id !== message.threadId) {
@@ -181,6 +182,7 @@ export const chatSetInstance = config => {
             }
           }
         }
+        (!message.uniqueId && message.id) && (message.uniqueId = message.id);
         dispatch({
           type: type,
           payload: message
@@ -507,7 +509,7 @@ export const chatCallAddParticipants = (callId, usernames, participants) => {
   return (dispatch, getState) => {
     const state = getState();
     const chatSDK = state.chatInstance.chatSDK;
-    if(participants) {
+    if (participants) {
       chatSDK.addCallParticipants(callId, usernames).then(e => {
         dispatch({
           type: CHAT_CALL_PARTICIPANT_JOINED,
