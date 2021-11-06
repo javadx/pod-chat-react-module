@@ -1,58 +1,33 @@
 // src/list/Avatar.scss.js
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
 import classnames from "classnames";
 
 //strings
 import strings from "../constants/localization";
-import {THREAD_LEFT_ASIDE_SEARCH} from "../constants/actionTypes";
 
 //actions
-import {
-  threadLeftAsideShowing,
-  threadSelectMessageShowing,
-  threadInit
-} from "../actions/threadActions";
-import {threadModalThreadInfoShowing, threadCheckedMessageList} from "../actions/threadActions";
 
 //UI components
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import Gap from "../../../pod-chat-ui-kit/src/gap";
-import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
 import {MdVideocam, MdPhone} from "react-icons/md";
-import MainHeadThreadInfo from "./MainHeadThreadInfo";
-import MainHeadBatchActions from "./MainHeadBatchActions";
 
 
 //styling
 import style from "../../styles/app/MainHeadCallButtons.scss";
-import styleVar from "../../styles/variables.scss";
 import {
   chatCallBoxShowing, chatCallGetParticipantList, chatSelectParticipantForCallShowing,
   chatStartCall,
-  chatStartGroupCall,
-  chatSupportModuleBadgeShowing
+  chatStartGroupCall
 } from "../actions/chatActions";
-import {isChannel, isGroup} from "../utils/helpers";
+import {isGroup} from "../utils/helpers";
 import {
-  CHAT_CALL_BOX_COMPACTED,
   CHAT_CALL_BOX_NORMAL,
-  CHAT_CALL_STATUS_STARTED,
   MAX_GROUP_CALL_COUNT
 } from "../constants/callModes";
 import {getParticipant} from "./ModalThreadInfoPerson";
-
-function createInvitees(participants) {
-  return participants.map(participantId => {
-    return {
-      "id": participantId,
-      "idType": "TO_BE_USER_ID"
-    }
-  });
-}
 
 @connect(store => {
   return {
@@ -176,14 +151,14 @@ export default class MainHeadCallButtons extends Component {
       <Container inline>
         <Container className={classNames} onClick={chatCallStatus.status ? e => {
         } : this.onVoiceCallClick}>
-          <MdPhone size={styleVar.iconSizeMd}
-                   color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
+          <MdPhone size={style.iconSizeMd}
+                   color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : style.colorWhite}/>
         </Container>
 
         <Container className={classNames} onClick={chatCallStatus.status ? e => {
         } : this.onVideoCallClick}>
-          <MdVideocam size={styleVar.iconSizeMd}
-                      color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : styleVar.colorWhite}/>
+          <MdVideocam size={style.iconSizeMd}
+                      color={chatCallStatus.status ? "rgb(255 255 255 / 30%)" : style.colorWhite}/>
         </Container>
 
       </Container>

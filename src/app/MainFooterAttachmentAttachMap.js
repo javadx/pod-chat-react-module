@@ -20,8 +20,6 @@ import {MdMyLocation} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainFooterAttachmentAttachMap.scss";
-import styleVar from "../../styles/variables.scss";
-
 
 @connect()
 export default class MainFooterAttachmentAttachMap extends Component {
@@ -84,7 +82,7 @@ export default class MainFooterAttachmentAttachMap extends Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           <Container bottomLeft className={style.MainFooterAttachmentAttachMap__MyLocation}
                      onClick={this.gotoMyLocation}>
-            <MdMyLocation size={styleVar.iconSizeSm} color={styleVar.colorWhite} style={{margin: "5px 7px"}}/>
+            <MdMyLocation size={style.iconSizeSm} color={style.colorWhite} style={{margin: "5px 7px"}}/>
           </Container>
           <Marker position={position}/>
         </MapContainer>

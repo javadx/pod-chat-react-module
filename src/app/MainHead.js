@@ -4,18 +4,17 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
 import Cookies from "js-cookie";
+import {isChannel} from "../utils/helpers";
 
 //strings
 import strings from "../constants/localization";
-import {THREAD_LEFT_ASIDE_SEARCH} from "../constants/actionTypes";
+import {SHOW_CALL_BUTTONS_EVENT} from "../constants/callModes";
+import {SHOW_CALL_BUTTON} from "../constants/cookieKeys";
 
 //actions
-import {
-  threadLeftAsideShowing,
-  threadSelectMessageShowing,
-  threadInit
-} from "../actions/threadActions";
+import {threadSelectMessageShowing} from "../actions/threadActions";
 import {threadModalThreadInfoShowing, threadCheckedMessageList} from "../actions/threadActions";
+import {chatSupportModuleBadgeShowing} from "../actions/chatActions";
 
 //UI components
 import {ContextTrigger} from "../../../pod-chat-ui-kit/src/menu/Context";
@@ -26,24 +25,10 @@ import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
 import {MdMoreVert, MdClose} from "react-icons/md";
 import MainHeadThreadInfo from "./MainHeadThreadInfo";
 import MainHeadBatchActions from "./MainHeadBatchActions";
-
+import MainHeadCallButtons from "./MainHeadCallButtons";
 
 //styling
 import style from "../../styles/app/MainHead.scss";
-import styleVar from "../../styles/variables.scss";
-import {
-  chatCallBoxShowing, chatSelectParticipantForCallShowing,
-  chatStartCall,
-  chatStartGroupCall,
-  chatSupportModuleBadgeShowing
-} from "../actions/chatActions";
-import {isChannel, isGroup} from "../utils/helpers";
-import {SHOW_CALL_BUTTONS_EVENT
-} from "../constants/callModes";
-import {getParticipant} from "./ModalThreadInfoPerson";
-import MainHeadCallButtons from "./MainHeadCallButtons";
-import MainHeadExtraMenu from "./MainExtraMenu";
-import {SHOW_CALL_BUTTON} from "../constants/cookieKeys";
 
 @connect(store => {
   return {
@@ -122,7 +107,7 @@ class MainHead extends Component {
                       <Text color="gray" light>{strings.messagesCount(threadCheckedMessageList.length)}</Text>
                     </Container>
                     <Container className={style.MainHead__SearchContainer} inline onClick={this.onSelectMessagesHide}>
-                      <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                      <MdClose size={style.iconSizeMd} color={style.colorWhite}/>
                     </Container>
 
                   </Container>
@@ -141,14 +126,14 @@ class MainHead extends Component {
                                       mouseButton={0}
                                       holdToDisplay={-1}>
 
-                        <MdMoreVert size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                        <MdMoreVert size={style.iconSizeMd} color={style.colorWhite}/>
 
                       </ContextTrigger>
                     </Container>
                     {supportMode &&
                     <Container className={style.MainHead__BackContainer} inline
                                onClick={this.closeSupportModule}>
-                      <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+                      <MdClose size={style.iconSizeMd} color={style.colorWhite}/>
 
                     </Container>
                     }

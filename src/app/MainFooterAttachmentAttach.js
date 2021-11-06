@@ -3,22 +3,21 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 
 //strings
+import strings from "../constants/localization";
 
 //actions
 import {threadFilesToUpload} from "../actions/threadActions";
+import {chatModalPrompt, stopTyping} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
 import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {MdMap, MdInsertDriveFile, MdClose} from "react-icons/md";
+import MainFooterAttachmentAttachMap from "./MainFooterAttachmentAttachMap";
 
 //styling
 import style from "../../styles/app/MainFooterAttachmentAttach.scss";
-import {chatModalPrompt, stopTyping} from "../actions/chatActions";
-import strings from "../constants/localization";
-import MainFooterAttachmentAttachMap from "./MainFooterAttachmentAttachMap";
-import styleVar from "../../styles/variables.scss";
 
 @connect()
 export default class MainFooterAttachmentAttach extends Component {
@@ -71,7 +70,7 @@ export default class MainFooterAttachmentAttach extends Component {
                     selection={true}
                     invert={true}>
             <Container display="flex">
-              <MdInsertDriveFile size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{margin: "2px 0 0 6px"}}/>
+              <MdInsertDriveFile size={style.iconSizeMd} color={style.colorAccent} style={{margin: "2px 0 0 6px"}}/>
               <Text bold color="accent">
                 {strings.sendFile}
                 <input className={style.MainFooterAttachmentAttach__Input} type="file" onChange={this.onAttachmentChange}
@@ -89,7 +88,7 @@ export default class MainFooterAttachmentAttach extends Component {
                     invert={true}
                     onSelect={this.onMapClick}>
             <Container display="flex">
-              <MdMap size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{margin: "2px 0 0 6px"}}/>
+              <MdMap size={style.iconSizeMd} color={style.colorAccent} style={{margin: "2px 0 0 6px"}}/>
               <Text bold color="accent">{strings.sendLocation}</Text>
             </Container>
 
@@ -101,7 +100,7 @@ export default class MainFooterAttachmentAttach extends Component {
                     invert={true}
                     onSelect={this.onCancel}>
             <Container display="flex">
-              <MdClose size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{margin: "2px 0 0 6px"}}/>
+              <MdClose size={style.iconSizeMd} color={style.colorAccent} style={{margin: "2px 0 0 6px"}}/>
               <Text bold color="accent">{strings.cancel}</Text>
             </Container>
 

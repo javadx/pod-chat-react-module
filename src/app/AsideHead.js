@@ -30,7 +30,6 @@ import Notification from "./Notification";
 
 //styling
 import style from "../../styles/app/AsidHead.scss";
-import styleVar from "../../styles/variables.scss";
 import utilsStlye from "../../styles/utils/utils.scss";
 
 const statics = {
@@ -216,7 +215,7 @@ class AsideHead extends Component {
     const {menuItems, chatState, chatInstance, smallVersion, chatSearchShowing, user} = this.props;
     const {isOpen, reConnecting, timeUntilReconnectTimer} = this.state;
     const {isReconnecting, isConnected, isDisconnected} = socketStatus(chatState);
-    const iconSize = styleVar.iconSizeLg.replace("px", "");
+    const iconSize = style.iconSizeLg.replace("px", "");
     const iconMargin = `${(statics.headMenuSize - iconSize) / 2}px`;
     const firstInit = !chatInstance;
     const classNames = classnames({
@@ -228,7 +227,7 @@ class AsideHead extends Component {
         <Notification/>
         <MdMenu size={iconSize}
                 className={utilsStlye["u-clickable"]}
-                onClick={this.onOpenMenu} style={{color: styleVar.colorWhite, margin: iconMargin}}/>
+                onClick={this.onOpenMenu} style={{color: style.colorWhite, margin: iconMargin}}/>
         <Container centerRight className={style.AsideHead__ConnectionHandlerContainer}>
           <Container inline>
             <Text size="lg" color="gray" light bold>
@@ -254,7 +253,7 @@ class AsideHead extends Component {
             <Gap block x={20} y={20}>
               <Container topLeft>
                 <Gap x={10} y={15} block>
-                  <MdArrowBack size={styleVar.iconSizeMd} color={styleVar.colorBackgroundLight} style={{margin: "7px 0"}} onClick={this.onCloseMenu}/>
+                  <MdArrowBack size={style.iconSizeMd} color={style.colorBackgroundLight} style={{margin: "7px 0"}} onClick={this.onCloseMenu}/>
                 </Gap>
               </Container>
               <Avatar>
@@ -275,11 +274,11 @@ class AsideHead extends Component {
               </Avatar>
               <Text target="_blank" link="https://panel.pod.ir/Users/Info">
                 <ButtonFloating onClick={this.onGotoBottomClicked} size="sm" style={{
-                  backgroundColor: styleVar.colorAccentLight,
+                  backgroundColor: style.colorAccentLight,
                   boxShadow: "none",
                   left: 5,
                   bottom: 5}}>
-                  <MdEdit size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+                  <MdEdit size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
                 </ButtonFloating>
               </Text>
             </Gap>
@@ -291,9 +290,9 @@ class AsideHead extends Component {
         <Container centerLeft>
           <Container inline cursor="pointer" className={style.AsideHead__SearchContainer} onClick={this.onChatSearchToggle}>
             {chatSearchShowing ?
-              <MdClose size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+              <MdClose size={style.iconSizeMd} color={style.colorWhite}/>
               :
-              <MdSearch size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+              <MdSearch size={style.iconSizeMd} color={style.colorWhite}/>
             }
           </Container>
         </Container>

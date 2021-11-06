@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {avatarNameGenerator, avatarUrlGenerator} from "../utils/helpers";
+import date from "../utils/date";
 
 //strings
 import strings from "../constants/localization";
@@ -8,32 +9,22 @@ import strings from "../constants/localization";
 //actions
 import {
   threadAdminAdd,
-  threadAdminList, threadAdminRemove, threadParticipantList
+  threadParticipantList
 } from "../actions/threadActions";
-import {chatUploadImage} from "../actions/chatActions";
 
 //UI components
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {InputText} from "../../../pod-chat-ui-kit/src/input";
 import {PartialLoadingFragment} from "./ModalContactList";
-import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
-import Gap from "../../../pod-chat-ui-kit/src/gap";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {ContactList, getName, getImage} from "./_component/contactList";
 import {ContactSearchFragment} from "./ModalContactList";
-import {messageGetSeenList} from "../actions/messageActions";
-import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
 import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
+import {MdArrowBack} from "react-icons/md";
 
 //styling
-import {MdArrowBack, MdBlock, MdCameraAlt, MdVerifiedUser} from "react-icons/md";
-import styleVar from "../../styles/variables.scss";
 import style from "../../styles/app/ModalThreadInfoGroupSettingsAdminAdd.scss";
-import {LastMessageFragment} from "./AsideThreads";
-import date from "../utils/date";
-
 
 const constants = {
   count: 50,

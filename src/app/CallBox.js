@@ -21,7 +21,6 @@ import CallBoxControlSet from "./CallBoxControlSet";
 
 //styling
 import style from "../../styles/app/CallBox.scss";
-import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isGroup, mobileCheck} from "../utils/helpers";
 import {
   CALL_SETTING_COOKIE_KEY_NAME,

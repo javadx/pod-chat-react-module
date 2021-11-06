@@ -10,7 +10,6 @@ import {threadGoToMessageId, threadModalThreadInfoShowing} from "../actions/thre
 import {MdWarning} from "react-icons/md";
 import style from "../../styles/app/ModalThreadInfoMessageTypesImage.scss";
 import oneone from "../../styles/images/_common/oneone.png";
-import styleVar from "../../styles/variables.scss";
 import {LARGE_IMAGE_SIZE} from "../constants/podspace";
 
 function gotoMessage(dispatch, message) {
@@ -41,7 +40,7 @@ export function ModalThreadInfoMessageTypesImage({message, dispatch}) {
           <Fragment>
             <Text size="xs">{strings.fileHaveProblem}</Text>
             <Container>
-              <MdWarning size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+              <MdWarning size={style.iconSizeMd} color={style.colorGray}/>
             </Container>
           </Fragment>
           :

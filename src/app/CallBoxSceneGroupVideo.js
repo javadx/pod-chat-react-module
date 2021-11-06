@@ -23,7 +23,6 @@ import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipant
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupVideo.scss";
-import styleVar from "../../styles/variables.scss";
 import CallBoxSceneGroupVideoThumbnail from "./CallBoxSceneGroupVideoThumbnail";
 
 
@@ -200,8 +199,8 @@ export default class CallBoxSceneGroupVideo extends Component {
                        style={{gridArea: grid.itemsCell[index].area}}>
               <Container className={style.CallBoxSceneGroupVideo__MuteContainer}>
                 {participant && participant.mute &&
-                <MdMicOff size={styleVar.iconSizeXs}
-                          color={styleVar.colorAccent}
+                <MdMicOff size={style.iconSizeXs}
+                          color={style.colorAccent}
                           style={{margin: "3px 4px"}}/>
                 }
               </Container>

@@ -72,9 +72,9 @@ export default function (props) {
                       <Container style={{alignItems: "center", alignContent: "center", display: "flex"}}>
                         <Container>
                           {isMessageByMe(lastMessageVO) ?
-                            <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm}
+                            <MdCallEnd color={style.colorRed} size={style.iconSizeSm}
                                        style={{marginLeft: "5px"}}/> :
-                            <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm}
+                            <MdCallMissed color={style.colorRed} size={style.iconSizeSm}
                                           style={{marginLeft: "5px"}}/>}
                         </Container>
                         <Container>

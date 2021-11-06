@@ -1,7 +1,6 @@
 import React, {useRef} from "react";
 import {chatAudioPlayer as chatAudioPlayerAction} from "../actions/chatActions";
 import WaveSurfer from "wavesurfer.js";
-import styleVar from "../../styles/variables.scss";
 
 export default function ({message, thread, setPlayTrigger, setPlayAfterDownloadTrigger, setJustMountedTrigger, chatAudioPlayer, dispatch}) {
   let soundPlayer = null;
@@ -41,10 +40,10 @@ export default function ({message, thread, setPlayTrigger, setPlayAfterDownloadT
   function createPlayer(result, playAfterCreation) {
     const wavesurfer = soundPlayer = WaveSurfer.create({
       container: soundRef.current,
-      waveColor: styleVar.colorAccentLight,
-      progressColor: styleVar.colorAccent,
+      waveColor: style.colorAccentLight,
+      progressColor: style.colorAccent,
       normalize: true,
-      cursorColor: styleVar.colorAccentDark,
+      cursorColor: style.colorAccentDark,
       height: 20,
       barWidth: 2,
       barRadius: 2,

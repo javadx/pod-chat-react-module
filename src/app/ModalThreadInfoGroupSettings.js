@@ -3,33 +3,27 @@ import {connect} from "react-redux";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isChannel} from "../utils/helpers";
 
 //strings
+import {THREAD_ADMIN} from "../constants/privilege";
 import strings from "../constants/localization";
 
 //actions
 import {
   threadMetaUpdate
 } from "../actions/threadActions";
-import {chatUploadImage} from "../actions/chatActions";
 
 //UI components
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import Container from "../../../pod-chat-ui-kit/src/container";
-import {InputText} from "../../../pod-chat-ui-kit/src/input";
-
-//styling
-import {MdArrowBack, MdBlock, MdCameraAlt, MdVerifiedUser} from "react-icons/md";
-import styleVar from "../../styles/variables.scss";
-import style from "../../styles/app/ModalThreadInfoGroupSettings.scss";
 import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {ContactList} from "./_component/contactList";
-import ModalThreadInfoGroupSettingsAdminList from "./ModalThreadInfoGroupSettingsAdminList";
-import {ContactSearchFragment} from "./ModalContactList";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
-import ModalFooter from "../../../pod-chat-ui-kit/src/modal/ModalFooter";
-import checkForPrivilege, {isOwner} from "../utils/privilege";
-import {THREAD_ADMIN} from "../constants/privilege";
+import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
+import Container from "../../../pod-chat-ui-kit/src/container";
+import {InputText} from "../../../pod-chat-ui-kit/src/input";
+import {MdArrowBack, MdCameraAlt, MdVerifiedUser} from "react-icons/md";
+
+//styling
+import style from "../../styles/app/ModalThreadInfoGroupSettings.scss";
+import checkForPrivilege from "../utils/privilege";
 
 const statics = {
   ADMIN_MANAGE: "ADMIN_MANGE",
@@ -140,7 +134,7 @@ export default class ModalThreadInfoGroupSettings extends Component {
                          onChange={this.onGroupImageChange}
                          accept="image/*"/>
                   <Container center>
-                    <MdCameraAlt size={styleVar.iconSizeLg} color={styleVar.colorWhite}
+                    <MdCameraAlt size={style.iconSizeLg} color={style.colorWhite}
                                  className={style.ModalThreadInfoGroupSettings__ImageIcon}/>
                   </Container>
                 </Container>
@@ -171,7 +165,7 @@ export default class ModalThreadInfoGroupSettings extends Component {
             <List>
               <ListItem selection invert onSelect={this.onSelectAdminList}>
                 <Container relative display="inline-flex">
-                  <MdVerifiedUser size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                  <MdVerifiedUser size={style.iconSizeMd} color={style.colorGray}/>
                   <Gap x={20}>
                     <Text>{strings.admins}</Text>
                   </Gap>

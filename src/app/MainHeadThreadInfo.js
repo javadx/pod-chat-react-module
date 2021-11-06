@@ -1,5 +1,5 @@
 // src/app/MainHeadThreadInfo
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
@@ -30,7 +30,6 @@ import {MdChevronRight} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainHeadThreadInfo.scss";
-import styleVar from "../../styles/variables.scss";
 
 @connect(store => {
   return {
@@ -86,7 +85,7 @@ class MainHeadThreadInfo extends Component {
       <Container className={classNames} onClick={this.onShowInfoClick} relative>
         <Container className={style.MainHeadThreadInfo__BackContainer} inline
                    onClick={this.onThreadHide}>
-            <MdChevronRight size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+            <MdChevronRight size={style.iconSizeMd} color={style.colorWhite}/>
         </Container>
         <Avatar>
           <AvatarImage

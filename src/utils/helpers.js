@@ -16,7 +16,7 @@ import checkForPrivilege from "./privilege";
 import {THREAD_ADMIN} from "../constants/privilege";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {ACTUAL_IMAGE_SIZE, LARGE_IMAGE_SIZE, MEDIUM_IMAGE_SIZE, SMALL_IMAGE_SIZE} from "../constants/podspace";
-import styleVar from "../../styles/variables.scss";
+import style from "../../styles/utils/ghost.scss";
 import {MdCallMissed, MdCallEnd} from "react-icons/md";
 
 
@@ -816,7 +816,7 @@ export function analyzeCallStatus(props) {
     case 7: {
       return {
         Icon() {
-          return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+          return <MdCallEnd color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
         },
         Text: () => strings.callEnded(messageDatePetrification(createTime, true), endTime ? prettifyElapsedTime(endTime - startTime) : null)
       };
@@ -825,14 +825,14 @@ export function analyzeCallStatus(props) {
       if (isMessageByMe) {
         return {
           Icon() {
-            return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+            return <MdCallEnd color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
           },
-          Text: () => strings.callEnded(messageDatePetrification(createTime, true), endTime ? prettifyElapsedTime(endTime - startTime) : null)
+          Text: () => strings.callEnded(messageDatePetrification(createTime, true))
         };
       }
       return {
         Icon() {
-          return <MdCallEnd color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+          return <MdCallEnd color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
         },
         Text: () => strings.participantRejectYourCall(thread.title, messageDatePetrification(createTime, true))
       };
@@ -840,7 +840,7 @@ export function analyzeCallStatus(props) {
     case 3: {
       return {
         Icon() {
-          return <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+          return <MdCallMissed color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
         },
         Text() {
           return strings.missedCallAt(messageDatePetrification(createTime, true));
@@ -851,7 +851,7 @@ export function analyzeCallStatus(props) {
       if (isMessageByMe) {
         return {
           Icon() {
-            return <MdCallMissed color={styleVar.colorRed} size={styleVar.iconSizeSm} style={{marginLeft: "5px"}}/>;
+            return <MdCallMissed color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
           },
           Text() {
             return strings.missedCallAt(messageDatePetrification(createTime, true));

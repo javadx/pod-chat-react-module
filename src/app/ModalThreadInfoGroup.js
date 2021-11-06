@@ -37,7 +37,7 @@ import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
 //styling
 import {MdGroupAdd, MdArrowBack, MdSettings, MdBlock, MdNotifications, MdPersonAdd} from "react-icons/md";
 import style from "../../styles/app/ModalThreadInfoGroupMain.scss";
-import styleVar from "../../styles/variables.scss";
+
 import utilsStyle from "../../styles/utils/utils.scss";
 import ModalThreadInfoGroupMain from "./ModalThreadInfoGroupMain";
 import ModalThreadInfoGroupSettingsAdminList from "./ModalThreadInfoGroupSettingsAdminList";

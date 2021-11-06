@@ -15,9 +15,7 @@ import {
   isMessageIsVoice,
   mobileCheck
 } from "../utils/helpers";
-
-import {cancelDownload, getFile, getFileDownloading, updateLink} from "../utils/hashmap";
-
+import {cancelDownload, getFile, getFileDownloading} from "../utils/hashmap";
 
 //strings
 import strings from "../constants/localization";
@@ -51,7 +49,7 @@ import MainMessagesMessageBoxSeen from "./MainMessagesMessageBoxSeen";
 
 //styling
 import style from "../../styles/app/MainMessagesMessageFile.scss";
-import styleVar from "../../styles/variables.scss";
+
 
 
 @connect(store => {
@@ -250,7 +248,7 @@ class MainMessagesMessageFile extends Component {
   createContextMenuChildren() {
     return <ContextItem onClick={this.onDownload.bind(this, false)}>
       {mobileCheck() ?
-        <MdArrowDownward color={styleVar.colorAccent} size={styleVar.iconSizeMd}/> : strings.download}
+        <MdArrowDownward color={style.colorAccent} size={style.iconSizeMd}/> : strings.download}
     </ContextItem>
   }
 
@@ -340,7 +338,7 @@ class MainMessagesMessageFile extends Component {
                   }
 
                   {isVoice ?
-                    <MdMic size={styleVar.iconSizeSm} color={styleVar.colorAccent}/>
+                    <MdMic size={style.iconSizeSm} color={style.colorAccent}/>
                     :
                     <Text wordWrap="breakWord" bold>
                       {(metaData.file && metaData.file.originalName) || metaData.name}

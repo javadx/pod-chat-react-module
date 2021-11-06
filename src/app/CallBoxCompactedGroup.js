@@ -13,7 +13,6 @@ import {
 
 //styling
 import style from "../../styles/app/CallBoxCompactedGroup.scss";
-import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator} from "../utils/helpers";
 import {getImage, getName} from "./_component/contactList";
 
@@ -35,8 +34,8 @@ export default class CallBoxCompactedGroup extends Component {
         <Container className={style.CallBoxCompactedGroup__Participant}>
           {participant.mute &&
           <Container className={style.CallBoxCompactedGroup__MicOffContainer}>
-            <MdMicOff size={styleVar.iconSizeXs}
-                      color={styleVar.colorGrayDark}
+            <MdMicOff size={style.iconSizeXs}
+                      color={style.colorGrayDark}
                       style={{margin: "3px 4px"}}/>
           </Container>
           }

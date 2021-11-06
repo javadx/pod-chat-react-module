@@ -1,6 +1,21 @@
 import React, {Fragment, Component} from "react";
 import {isChannel, isGroup, isMessageByMe, mobileCheck} from "../utils/helpers";
+import {connect} from "react-redux";
+import checkForPrivilege from "../utils/privilege";
 
+//Actions
+import {chatModalPrompt} from "../actions/chatActions";
+import {threadLeftAsideShowing, threadModalListShowing} from "../actions/threadActions";
+import {messageEditing} from "../actions/messageActions";
+
+//Strings
+import strings from "../constants/localization";
+import {THREAD_LEFT_ASIDE_SEEN_LIST} from "../constants/actionTypes";
+import {THREAD_ADMIN} from "../constants/privilege";
+
+//Components
+import MainMessagesMessageShare from "./MainMessagesMessageShare";
+import {MessageDeletePrompt, PinMessagePrompt} from "./_component/prompts";
 import Context, {ContextItem} from "../../../pod-chat-ui-kit/src/menu/Context";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {
@@ -17,19 +32,9 @@ import {
   AiFillPushpin
 } from "react-icons/ai";
 
-import style from "../../styles/app/MainMessagesMessageBoxControl.scss";
-import styleVar from "../../styles/variables.scss";
 
-import strings from "../constants/localization";
-import {connect} from "react-redux";
-import {threadLeftAsideShowing, threadModalListShowing} from "../actions/threadActions";
-import {THREAD_LEFT_ASIDE_SEEN_LIST} from "../constants/actionTypes";
-import {chatModalPrompt} from "../actions/chatActions";
-import {MessageDeletePrompt, PinMessagePrompt} from "./_component/prompts";
-import MainMessagesMessageShare from "./MainMessagesMessageShare";
-import {messageEditing} from "../actions/messageActions";
-import checkForPrivilege from "../utils/privilege";
-import {THREAD_ADMIN} from "../constants/privilege";
+//Styling
+import style from "../../styles/app/MainMessagesMessageBoxControl.scss";
 
 @connect(store => {
   return {
@@ -123,14 +128,14 @@ export default class AsideThreadsContextMenu extends Component {
           {
             this.deleteCondition &&
             <ContextItem onClick={this.onDelete}>
-              <MdDelete size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <MdDelete size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
 
           {
             this.forwardCondition &&
             <ContextItem onClick={this.onForward}>
-              <TiArrowForward size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <TiArrowForward size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
 
@@ -138,21 +143,21 @@ export default class AsideThreadsContextMenu extends Component {
           {
             this.replyCondition &&
             <ContextItem onClick={this.onReply}>
-              <MdReply size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <MdReply size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
 
           {
             this.pinToTopCondition &&
             <ContextItem onClick={this.onPin}>
-              <AiFillPushpin size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <AiFillPushpin size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
 
           {
             this.messageInfoCondition &&
             <ContextItem onClick={this.onMessageInfo}>
-              <MdInfoOutline size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <MdInfoOutline size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
 
@@ -163,13 +168,13 @@ export default class AsideThreadsContextMenu extends Component {
           {
             this.shareCondition &&
             <ContextItem onClick={this.onShare}>
-              <MdShare size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <MdShare size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
           }
         </Container>
 
         <ContextItem className={style.MainMessagesMessageBoxControl__MobileMenuBack}>
-          <MdArrowBack size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+          <MdArrowBack size={style.iconSizeMd} color={style.colorAccent}/>
         </ContextItem>
       </Fragment>
     };

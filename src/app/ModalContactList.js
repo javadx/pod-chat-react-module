@@ -2,9 +2,11 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import classnames from "classnames";
+import {avatarUrlGenerator} from "../utils/helpers";
 
 //strings
 import strings from "../constants/localization";
+import {ROUTE_ADD_CONTACT} from "../constants/routes";
 
 //actions
 import {
@@ -13,6 +15,7 @@ import {
 } from "../actions/contactActions";
 
 //UI components
+import {ContactList, ContactListSelective} from "./_component/contactList";
 import Modal, {ModalBody, ModalHeader, ModalFooter} from "../../../pod-chat-ui-kit/src/modal";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
 import {Heading, Text} from "../../../pod-chat-ui-kit/src/typography";
@@ -24,11 +27,6 @@ import {MdSearch, MdClose} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/ModalContactList.scss";
-import styleVar from "../../styles/variables.scss";
-import {ContactList, ContactListSelective} from "./_component/contactList";
-import {ROUTE_ADD_CONTACT} from "../constants/routes";
-import {avatarUrlGenerator} from "../utils/helpers";
-
 
 export const statics = {
   count: 50,
@@ -83,7 +81,7 @@ export function ContactSearchFragment({onSearchInputChange, onSearchChange, quer
   return (
     <Container relative>
       <Container centerRight>
-        <MdSearch size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+        <MdSearch size={style.iconSizeMd} color={style.colorGrayDark}/>
       </Container>
       <InputText className={classNames} onChange={onSearchQueryChange} value={query || ""}
                  placeholder={strings.search} ref={inputRef}/>
@@ -92,8 +90,8 @@ export function ContactSearchFragment({onSearchInputChange, onSearchChange, quer
           {
             query && query.trim() ?
 
-              <MdClose size={styleVar.iconSizeMd}
-                       color={styleVar.colorGrayDark}
+              <MdClose size={style.iconSizeMd}
+                       color={style.colorGrayDark}
                        style={{cursor: "pointer"}}
                        onClick={onSearchQueryChange.bind(null, "")}/>
               : ""

@@ -1,16 +1,13 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {ContactListItemMemoized, getName} from "./_component/contactList";
+import {getName} from "./_component/contactList";
 import ModalContactList, {statics as modalContactListStatics} from "./ModalContactList";
 import checkForPrivilege from "../utils/privilege";
 import {THREAD_ADMIN} from "../constants/privilege";
-import {types} from "../constants/messageTypes";
-import {Virtuoso, VirtuosoGrid} from "./_component/Virtuoso";
 
 //strings
 import strings from "../constants/localization";
-import {avatarUrlGenerator} from "../utils/helpers";
 
 //actions
 import {
@@ -24,25 +21,20 @@ import {
 } from "../actions/threadActions";
 import {chatModalPrompt} from "../actions/chatActions";
 
-//UI components
-import {ContactSearchFragment, PartialLoadingFragment} from "./ModalContactList";
+//components
+import ModalThreadInfoTabSelector from "./ModalThreadInfoMediaScroller";
+import {ContactSearchFragment} from "./ModalContactList";
 import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {ListItem} from "../../../pod-chat-ui-kit/src/list";
 import ModalThreadInfoMessageTypes from "./ModalThreadInfoMessageTypes";
 import ModalThreadInfoGroupMainHead from "./ModalThreadInfoGroupMainHead";
-import ModalThreadInfoMessageTypesImage from "./ModalThreadInfoMessageTypesImage";
-import ModalThreadInfoMessageTypesMedia from "./ModalThreadInfoMessageTypesMedia";
 
 //styling
 import {MdArrowBack, MdPets} from "react-icons/md";
 import style from "../../styles/app/ModalThreadInfoGroupMain.scss";
-import ModalThreadInfoGroup from "./ModalThreadInfoGroup";
-import ModalThreadInfoTabSelector from "./ModalThreadInfoMediaScroller";
-import styleVar from "../../styles/variables.scss";
 
 const constants = {
   count: 50,
@@ -456,7 +448,7 @@ class ModalThreadInfoGroupMain extends Component {
               <Gap y={5}>
                 <Container flex style={{display:"flex", flexDirection: "column", alignItems: "center"}}>
                   <Container>
-                    <MdPets size={styleVar.iconSizeLg} color={styleVar.colorGray}/>
+                    <MdPets size={style.iconSizeLg} color={style.colorGray}/>
                   </Container>
                   <Container>
                     <Text>{strings.noResult}</Text>

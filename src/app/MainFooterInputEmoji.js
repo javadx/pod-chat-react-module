@@ -11,11 +11,10 @@ import {
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
+import {MdSentimentVerySatisfied, MdClose} from "react-icons/md";
 
 //styling
-import {MdSentimentVerySatisfied, MdClose} from "react-icons/md";
 import style from "../../styles/app/MainFooterInputEmoji.scss";
-import styleVar from "../../styles/variables.scss";
 
 @connect(store => {
   return {
@@ -43,12 +42,12 @@ export default class MainFooterAttachment extends Component {
     return (
       <Container inline className={style.MainFooterInputEmoji} relative onClick={this.onClick}>
         {emojiShowing ?
-          <MdClose size={styleVar.iconSizeMd}
-                                    color={styleVar.colorAccentDark}
+          <MdClose size={style.iconSizeMd}
+                                    color={style.colorAccentDark}
                                     style={{margin: "3px 4px"}}/>
           :
-          <MdSentimentVerySatisfied size={styleVar.iconSizeMd}
-                                color={styleVar.colorAccentDark}
+          <MdSentimentVerySatisfied size={style.iconSizeMd}
+                                color={style.colorAccentDark}
                                 style={{margin: "3px 4px"}}/>
         }
       </Container>

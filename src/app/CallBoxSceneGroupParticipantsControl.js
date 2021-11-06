@@ -30,7 +30,6 @@ import List from "../../../pod-chat-ui-kit/src/List";
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupParticipantsControl.scss";
-import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
 import {
   CHAT_CALL_BOX_NORMAL,
@@ -152,16 +151,16 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
             <Container cursor="pointer">
 
               <MdAdd onClick={this.onAddMember}
-                     size={styleVar.iconSizeMd}
-                     color={styleVar.colorAccentDark}/>
+                     size={style.iconSizeMd}
+                     color={style.colorAccentDark}/>
               <Gap x={5}/>
             </Container>
             }
 
             <Container cursor="pointer">
               <MdClose onClick={this.hideControl}
-                       size={styleVar.iconSizeMd}
-                       color={styleVar.colorAccentDark}/>
+                       size={style.iconSizeMd}
+                       color={style.colorAccentDark}/>
             </Container>
           </Container>
           <List style={{overflowY: "auto"}}>
@@ -193,14 +192,14 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
                                        }}
                                        onClick={muteUnmutePermissionCondition && this.onParticipantMuteClick.bind(this, contact)}>
                                        {contact.mute ?
-                                         <MdMicOff size={styleVar.iconSizeSm}
-                                                   color={styleVar.colorGrayDark}
+                                         <MdMicOff size={style.iconSizeSm}
+                                                   color={style.colorGrayDark}
                                                    style={{
                                                      margin: "3px 4px",
                                                    }}/>
                                          :
-                                         <MdMic size={styleVar.iconSizeSm}
-                                                color={styleVar.colorAccentDark}
+                                         <MdMic size={style.iconSizeSm}
+                                                color={style.colorAccentDark}
                                                 style={{
                                                   margin: "3px 4px",
                                                 }}/>}
@@ -209,10 +208,10 @@ export default class CallBoxSceneGroupParticipantsControl extends Component {
                                      {isCallOwner &&
                                      <Container
                                        style={{margin: "3px 0", cursor: "pointer"}}
-                                       color={styleVar.colorRedDark}
+                                       color={style.colorRedDark}
                                        onClick={this.onParticipantRemoveClicked.bind(this, contact)}>
-                                       <MdCallEnd size={styleVar.iconSizeSm}
-                                                  color={styleVar.colorRed}
+                                       <MdCallEnd size={style.iconSizeSm}
+                                                  color={style.colorRed}
                                                   style={{
                                                     margin: "3px 4px"
                                                   }}/>

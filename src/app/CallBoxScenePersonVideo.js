@@ -1,37 +1,25 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import classnames from "classnames";
+import ReactDOM from "react-dom";
+
+//constants
+import {
+  CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN
+} from "../constants/callModes";
 
 //actions
-import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAudioPlayer} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
-  MdMicOff,
-  MdPlayArrow,
-  MdPause
+  MdMicOff
 } from "react-icons/md";
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
-import CallBoxToaster from "./CallBoxToaster";
 
 //styling
 import style from "../../styles/app/CallBoxSceneVideo.scss";
-import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
-import {
-  CALL_DIV_ID, CHAT_CALL_BOX_FULL_SCREEN,
-  CHAT_CALL_STATUS_INCOMING,
-  CHAT_CALL_STATUS_OUTGOING,
-  MOCK_CONTACT,
-  MOCK_USER
-} from "../constants/callModes";
-import {getImage, getName} from "./_component/contactList";
-import classnames from "classnames";
-import Gap from "raduikit/src/gap"
-import ReactDOM from "react-dom";
+import {mobileCheck} from "../utils/helpers";
+
 
 
 @connect()
@@ -105,8 +93,8 @@ export default class CallBoxScenePersonVideo extends Component {
         <Container className={style.CallBoxSceneVideo__SideCam} ref={this.remoteVideoRef}>
           <Container className={style.CallBoxSceneVideo__MuteContainer}>
             {sideUserFromParticipantList && sideUserFromParticipantList.mute &&
-            <MdMicOff size={styleVar.iconSizeXs}
-                      color={styleVar.colorAccent}
+            <MdMicOff size={style.iconSizeXs}
+                      color={style.colorAccent}
                       style={{margin: "3px 4px"}}/>
             }
           </Container>

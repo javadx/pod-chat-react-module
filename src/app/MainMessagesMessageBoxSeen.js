@@ -12,8 +12,6 @@ import {
   MdSchedule
 } from "react-icons/md";
 import style from "../../styles/app/MainMessagesMessageBoxSeen.scss";
-import styleVar from "../../styles/variables.scss";
-
 
 export default function ({isMessageByMe, message, thread, onMessageSeenListClick, onRetry, onCancel, forceSeen, supportMode}) {
   if (!isMessageByMe) {
@@ -38,7 +36,7 @@ export default function ({isMessageByMe, message, thread, onMessageSeenListClick
   }
   const isGroup = thread.group;
   const messageStatusIconSpecs = {
-    color: styleVar.colorGreenTick,
+    color: style.colorGreenTick,
     size: 18,
     style: {margin: "0 5px"}
   };

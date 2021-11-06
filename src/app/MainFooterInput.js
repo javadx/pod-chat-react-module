@@ -2,8 +2,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import sanitizeHTML from "sanitize-html";
-import {humanFileSize, mobileCheck} from "../utils/helpers";
+import {mobileCheck} from "../utils/helpers";
 import Cookies from "js-cookie";
 import {clearHtml, getCursorMentionMatch} from "./_component/Input"
 
@@ -21,6 +20,12 @@ import {emojiCookieName} from "../constants/emoji";
 
 //actions
 import {
+  chatAudioRecorder as chatAudioRecorderAction,
+  chatModalPrompt,
+  startTyping,
+  stopTyping
+} from "../actions/chatActions";
+import {
   messageEdit,
   messageEditing,
   messageForward, messageForwardOnTheFly,
@@ -36,19 +41,11 @@ import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Input from "./_component/Input";
 import {codeEmoji, emojiRegex} from "./_component/EmojiIcons.js";
-import {
-  chatAudioRecorder as chatAudioRecorderAction,
-  chatModalPrompt,
-  startTyping,
-  stopTyping
-} from "../actions/chatActions";
 import ParticipantSuggestion from "./_component/ParticipantSuggestion";
 import {MdClose} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainFooterInput.scss";
-
-import styleVar from "../../styles/variables.scss";
 
 export const constants = {
   replying: "REPLYING",
@@ -447,7 +444,7 @@ export default class MainFooterInput extends Component {
           window.dispatchEvent(event);
           Cookies.set(SHOW_CALL_BUTTON, true);
           const {dispatch} = this.props;
-          dispatch(chatModalPrompt(true, strings.youSuccessfullyShowCallButtons, ()=> dispatch(chatModalPrompt()), null, strings.ok, null, null, null, true));
+          dispatch(chatModalPrompt(true, strings.youSuccessfullyShowCallButtons, () => dispatch(chatModalPrompt()), null, strings.ok, null, null, null, true));
           return this.setState({
             messageText: null
           });
@@ -527,8 +524,8 @@ export default class MainFooterInput extends Component {
                   {new Date(recorderTimer * 1000).toISOString().substr(14, 5)}
                 </Text>
                 <Container className={style.MainFooterInput__RecordingCancel} onClick={this.onRecordingCancel}>
-                  <MdClose size={styleVar.iconSizeMd}
-                           color={styleVar.colorWhite}/>
+                  <MdClose size={style.iconSizeMd}
+                           color={style.colorWhite}/>
                 </Container>
               </Container>
               <Container className={style.MainFooterInput__RecordingTimerText}>

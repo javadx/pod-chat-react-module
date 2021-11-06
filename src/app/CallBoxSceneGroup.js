@@ -33,7 +33,6 @@ import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroup.scss";
-import styleVar from "../../styles/variables.scss";
 
 
 @connect(store => {

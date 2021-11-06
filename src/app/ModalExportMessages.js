@@ -1,32 +1,26 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {connect} from "react-redux";
-import {render} from "react-dom";
 import {RangeDatePicker} from "jalali-react-datepicker/dist/index";
 
 
 //strings
 import strings from "../constants/localization";
-import {MESSAGE_SHARE} from "../constants/cookieKeys";
 
 //actions
-import {chatModalPrompt, chatSupportModuleBadgeShowing} from "../actions/chatActions";
 
 //UI components
-import {ROUTE_ADD_CONTACT, ROUTE_INDEX, ROUTE_SHARE} from "../constants/routes";
 import {withRouter} from "react-router-dom";
-import {threadExportMessagesShowing, threadModalListShowing} from "../actions/threadActions";
+import {threadExportMessagesShowing} from "../actions/threadActions";
 import Text from "../../../pod-chat-ui-kit/src/typography/Text";
 import Heading from "../../../pod-chat-ui-kit/src/typography/Heading";
-import Modal, {ModalBody, ModalHeader, ModalFooter} from "../../../pod-chat-ui-kit/src/modal";
+import Modal, {ModalBody, ModalHeader} from "../../../pod-chat-ui-kit/src/modal";
 import {Button, ButtonFloating} from "../../../pod-chat-ui-kit/src/button";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
-
-import {MdDateRange, MdClose} from "react-icons/md";
+import {MdDateRange} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/ModalExportMessages.scss";
-import styleVar from "../../styles/variables.scss";
 
 @connect(store => {
   return {
@@ -107,7 +101,7 @@ class ModalShare extends Component {
             <Container className={style.ModalExportMessages__DatePicker}>
               <Container className={style.ModalExportMessages__DatePickerIcon} onClick={this.openPicker}>
                 <ButtonFloating className={style.ModalExportMessages__DatePickerIconButton}>
-                  <MdDateRange size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+                  <MdDateRange size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
                 </ButtonFloating>
               </Container>
               <RangeDatePicker ref={this.pickerRef} onClickSubmitButton={this.rangeSelected}/>

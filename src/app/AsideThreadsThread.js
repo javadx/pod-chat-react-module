@@ -20,7 +20,6 @@ import {
 } from "react-icons/ai";
 
 import style from "../../styles/app/AsideThreadsThread.scss";
-import styleVar from "../../styles/variables.scss";
 
 
 function AsideThreadsThread({
@@ -82,7 +81,7 @@ function AsideThreadsThread({
                          style={{zIndex: 1, opacity: +isMenuShow === thread.id ? 1 : 0}}>
                 <Shape color="accent">
                   <ShapeCircle>
-                    <MdCheck size={styleVar.iconSizeSm} color={styleVar.colorWhite}
+                    <MdCheck size={style.iconSizeSm} color={style.colorWhite}
                              style={{marginTop: "3px"}}/>
                   </ShapeCircle>
                 </Shape>
@@ -91,10 +90,10 @@ function AsideThreadsThread({
                 {thread.group &&
                 <Container inline>
                   {thread.type === 8 ?
-                    <MdRecordVoiceOver size={styleVar.iconSizeSm}
-                                       color={styleVar.colorGray}/>
+                    <MdRecordVoiceOver size={style.iconSizeSm}
+                                       color={style.colorGray}/>
                     :
-                    <MdGroup size={styleVar.iconSizeSm} color={styleVar.colorGray}/>
+                    <MdGroup size={style.iconSizeSm} color={style.colorGray}/>
                   }
                   <Gap x={2}/>
                 </Container>
@@ -116,8 +115,8 @@ function AsideThreadsThread({
                     <Gap x={1}/>
                   </Fragment> :
                   thread.mute ?
-                    <MdNotificationsOff size={styleVar.iconSizeSm}
-                                        color={styleVar.colorAccent}
+                    <MdNotificationsOff size={style.iconSizeSm}
+                                        color={style.colorAccent}
                                         style={{verticalAlign: "middle"}}/> : ""
                 }
                 {thread.unreadCount ?
@@ -127,8 +126,8 @@ function AsideThreadsThread({
                     </ShapeCircle>
                   </Shape> :
                   thread.pin ?
-                    <AiFillPushpin size={styleVar.iconSizeSm}
-                                   color={styleVar.colorAccent}
+                    <AiFillPushpin size={style.iconSizeSm}
+                                   color={style.colorAccent}
                                    style={{
                                      marginRight: "3px",
                                      verticalAlign: "middle"

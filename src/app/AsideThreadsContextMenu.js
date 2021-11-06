@@ -33,7 +33,6 @@ import {
 
 //styling
 import style from "../../styles/app/AsideThreadsContextMenu.scss";
-import styleVar from "../../styles/variables.scss";
 
 @connect()
 export default class AsideThreadsContextMenu extends Component {
@@ -104,14 +103,14 @@ export default class AsideThreadsContextMenu extends Component {
           <Fragment>
             <Container className={style.AsideThreadsContextMenu__MenuActionContainer}>
               <ContextItem onClick={this.onLeaveClick}>
-                <MdDelete size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                <MdDelete size={style.iconSizeMd} color={style.colorAccent}/>
               </ContextItem>
 
               <ContextItem onClick={this.onMuteClick}>
                 {
                   thread.mute ?
-                    <MdNotificationsActive size={styleVar.iconSizeMd} color={styleVar.colorAccent}/> :
-                    <MdNotificationsOff size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                    <MdNotificationsActive size={style.iconSizeMd} color={style.colorAccent}/> :
+                    <MdNotificationsOff size={style.iconSizeMd} color={style.colorAccent}/>
                 }
               </ContextItem>
               {
@@ -120,8 +119,8 @@ export default class AsideThreadsContextMenu extends Component {
                   {
                     thread.pin || pinedThread.length >= 5 ?
                       <Container relative><Container className={style.AsideThreadsContextMenu__UnpinLine}/><AiFillPushpin
-                        size={styleVar.iconSizeMd} color={styleVar.colorAccent}/></Container> :
-                      <AiFillPushpin size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                        size={style.iconSizeMd} color={style.colorAccent}/></Container> :
+                      <AiFillPushpin size={style.iconSizeMd} color={style.colorAccent}/>
                   }
                 </ContextItem>
 
@@ -129,7 +128,7 @@ export default class AsideThreadsContextMenu extends Component {
             </Container>
 
             <ContextItem className={style.AsideThreadsContextMenu__MobileMenuBack}>
-              <MdArrowBack size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+              <MdArrowBack size={style.iconSizeMd} color={style.colorAccent}/>
             </ContextItem>
 
           </Fragment> :

@@ -21,7 +21,6 @@ import {MessageDeletePrompt} from "./_component/prompts";
 
 //styling
 import style from "../../styles/app/MainHeadBatchActions.scss";
-import styleVar from "../../styles/variables.scss";
 
 @connect(store => {
   return {
@@ -64,11 +63,11 @@ export default class MainHeadBatchActions extends Component {
 
             {(!isChannel(thread) || isThreadOwner(thread, user)) &&
             <Container className={style.MainHeadBatchActions__DeleteContainer} inline onClick={this.onDelete}>
-              <MdDelete size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+              <MdDelete size={style.iconSizeMd} color={style.colorWhite}/>
             </Container>
             }
             <Container className={style.MainHeadBatchActions__ForwardContainer} inline onClick={this.onForward}>
-              <TiArrowForward size={styleVar.iconSizeMd} color={styleVar.colorWhite}/>
+              <TiArrowForward size={style.iconSizeMd} color={style.colorWhite}/>
             </Container>
 
           </Container> :

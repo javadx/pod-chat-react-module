@@ -4,7 +4,7 @@ import {
   getMessageMetaData,
   humanFileSize
 } from "../utils/helpers";
-import {getFile, getImage, getFileDownloading, updateLink} from "../utils/hashmap";
+import {getFile, getFileDownloading, updateLink} from "../utils/hashmap";
 
 import Text from "../../../pod-chat-ui-kit/src/typography/Text";
 import Container from "../../../pod-chat-ui-kit/src/container";
@@ -99,7 +99,6 @@ function onPlayClick(fileHash, dispatch, setDownloading, idMessage, idMessageTri
   }
 }
 
-import styleVar from "../../styles/variables.scss";
 import style from "../../styles/app/ModalThreadInfoMessageTypesMedia.scss";
 import {threadGoToMessageId, threadModalThreadInfoShowing} from "../actions/threadActions";
 
@@ -160,10 +159,10 @@ export default function ({dispatch, message, type}) {
                 {
                   type === "file" ?
                     <MdArrowDownward style={{cursor: "pointer", marginTop: "8px"}}
-                                     size={styleVar.iconSizeSm}/>
+                                     size={style.iconSizeSm}/>
                     :
                     <MdPlayArrow style={{cursor: "pointer", marginTop: "8px"}}
-                                 size={styleVar.iconSizeSm}/>
+                                 size={style.iconSizeSm}/>
                 }
               </ShapeCircle>
             </Shape>

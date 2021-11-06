@@ -18,7 +18,6 @@ import CallBoxControlSet from "./CallBoxControlSet";
 
 //styling
 import style from "../../styles/app/CallBoxCompacted.scss";
-import styleVar from "../../styles/variables.scss";
 import {chatCallBoxShowingReducer} from "../reducers/chatReducer";
 import {CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_NORMAL, CHAT_CALL_STATUS_INCOMING} from "../constants/callModes";
 import classnames from "classnames";

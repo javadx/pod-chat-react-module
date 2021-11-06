@@ -29,7 +29,6 @@ import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupVideoThumbnail.scss";
-import styleVar from "../../styles/variables.scss";
 
 
 @connect(store => {
@@ -108,8 +107,8 @@ export default class CallBoxSceneGroupVideoThumbnail extends Component {
                          onClick={this.onParticipantClick.bind(this, participant)}>
                 <Container className={style.CallBoxSceneGroupVideoThumbnail__MuteContainer}>
                   {participant && participant.mute &&
-                  <MdMicOff size={styleVar.iconSizeXs}
-                            color={styleVar.colorAccent}
+                  <MdMicOff size={style.iconSizeXs}
+                            color={style.colorAccent}
                             style={{margin: "3px 4px"}}/>
                   }
                 </Container>

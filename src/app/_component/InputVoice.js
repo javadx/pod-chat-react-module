@@ -22,7 +22,6 @@ import InputVoiceRecorder from "./InputVoiceRecorder";
 //styling
 import {MdMic, MdMicOff, MdStop} from "react-icons/md";
 import style from "../../../styles/modules/InputVoiceRecorder.scss";
-import styleVar from "../../../styles/variables.scss";
 
 
 export const constants = {
@@ -157,17 +156,17 @@ export default class InputEmojiTrigger extends Component {
     return (
       <Container inline className={classNames} relative onClick={this.onClick}>
         {chatAudioRecorder ?
-          <MdStop size={styleVar.iconSizeMd}
-                  color={styleVar.colorAccentDark}
+          <MdStop size={style.iconSizeMd}
+                  color={style.colorAccentDark}
                   style={{margin: "3px 4px"}}/>
           :
           mic ?
-            <MdMic size={styleVar.iconSizeMd}
-                   color={styleVar.colorAccentDark}
+            <MdMic size={style.iconSizeMd}
+                   color={style.colorAccentDark}
                    style={{margin: "3px 4px"}}/>
             :
-            <MdMicOff size={styleVar.iconSizeMd}
-                      color={styleVar.colorGrayDark}
+            <MdMicOff size={style.iconSizeMd}
+                      color={style.colorGrayDark}
                       style={{margin: "3px 4px"}}/>
         }
 

@@ -12,7 +12,7 @@ module.exports = (e, argv) => {
 
     devServer: {
       compress: true,
-      public: "chat.fanapsoft.ir",
+      host: "chat.fanapsoft.ir",
       historyApiFallback: true
     },
     module: {
@@ -80,7 +80,7 @@ module.exports = (e, argv) => {
             {
               loader: "sass-loader",
               options: {
-                additionalData: '@import "../variables.scss";',
+                additionalData: '@import "./variables.scss";',
                 sassOptions: {
                   includePaths: [__dirname, "styles"]
                 }

@@ -1,6 +1,7 @@
 // src/list/BoxScene.js
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {clearHtml, getMessageMetaData} from "../utils/helpers";
 
 //strings
 import strings from "../constants/localization";
@@ -13,15 +14,13 @@ import {threadIsSendingMessage} from "../actions/threadActions";
 import Paper from "../../../pod-chat-ui-kit/src/paper";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
+import {decodeEmoji} from "./_component/EmojiIcons.js";
 
 //styling
 import {MdClose, MdEdit, MdReply} from "react-icons/md";
 import {TiArrowForward} from "react-icons/ti";
 import style from "../../styles/app/MainFooterInputEditing.scss";
-import styleVar from "../../styles/variables.scss";
-import utilsStlye from "../../styles/utils/utils.scss";
-import {decodeEmoji} from "./_component/EmojiIcons.js";
-import {clearHtml, getMessageMetaData} from "../utils/helpers";
+import utilsStyle from "../../styles/utils/utils.scss";
 
 const constants = {
   replying: "REPLYING",
@@ -128,12 +127,12 @@ export default class MainFooterInputEditing extends Component {
           <Container inline className={style.MainFooterInputEditing}>
             <Container>
               {messageEditing.type === constants.forwarding ?
-                <TiArrowForward style={{margin: "0 5px"}} size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                <TiArrowForward style={{margin: "0 5px"}} size={style.iconSizeMd} color={style.colorAccent}/>
                 :
                 messageEditing.type === constants.replying ?
-                  <MdReply style={{margin: "0 5px"}} size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                  <MdReply style={{margin: "0 5px"}} size={style.iconSizeMd} color={style.colorAccent}/>
                   :
-                  <MdEdit style={{margin: "0 5px"}} size={styleVar.iconSizeMd} color={styleVar.colorAccent}/>
+                  <MdEdit style={{margin: "0 5px"}} size={style.iconSizeMd} color={style.colorAccent}/>
               }
             </Container>
 
@@ -156,8 +155,8 @@ export default class MainFooterInputEditing extends Component {
             </Container>
 
             <Container>
-              <MdClose size={styleVar.iconSizeSm} color={styleVar.colorTextLight} style={{margin: "0 4px"}}
-                       className={`${utilsStlye["u-clickable"]} ${utilsStlye["u-hoverColorAccent"]}`}
+              <MdClose size={style.iconSizeSm} color={style.colorTextLight} style={{margin: "0 4px"}}
+                       className={`${utilsStyle["u-clickable"]} ${utilsStyle["u-hoverColorAccent"]}`}
                        onClick={this.onCancelEditing}/>
             </Container>
           </Container>

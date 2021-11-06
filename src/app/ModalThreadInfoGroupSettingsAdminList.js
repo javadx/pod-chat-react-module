@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
-import {avatarNameGenerator} from "../utils/helpers";
 
 //strings
 import strings from "../constants/localization";
@@ -9,27 +8,19 @@ import strings from "../constants/localization";
 import {
   threadAdminList, threadAdminRemove
 } from "../actions/threadActions";
-import {chatUploadImage} from "../actions/chatActions";
 
-//UI components
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
+//components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {InputText} from "../../../pod-chat-ui-kit/src/input";
 import {PartialLoadingFragment} from "./ModalContactList";
+import {MdArrowBack} from "react-icons/md";
+import Gap from "../../../pod-chat-ui-kit/src/gap";
+import {ContactList} from "./_component/contactList";
+import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
+import {Button} from "../../../pod-chat-ui-kit/src/button";
 
 
 //styling
-import {MdArrowBack, MdBlock, MdCameraAlt, MdVerifiedUser} from "react-icons/md";
-import styleVar from "../../styles/variables.scss";
 import style from "../../styles/app/ModalThreadInfoGroupSettings.scss";
-import List, {ListItem} from "../../../pod-chat-ui-kit/src/list";
-import Gap from "../../../pod-chat-ui-kit/src/gap";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {ContactList} from "./_component/contactList";
-import {ContactSearchFragment} from "./ModalContactList";
-import {messageGetSeenList} from "../actions/messageActions";
-import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
-import {Button} from "../../../pod-chat-ui-kit/src/button";
 
 
 @connect(store => {

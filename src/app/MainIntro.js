@@ -20,7 +20,7 @@ import Container from "../../../pod-chat-ui-kit/src/container";
 import {MdChat} from "react-icons/md";
 
 //styling
-import styleVar from "../../styles/variables.scss";
+import styleVar from "../../styles/utils/ghost.scss";
 
 @connect()
 export default class MainIntro extends Component {

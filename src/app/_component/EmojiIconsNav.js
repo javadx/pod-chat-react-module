@@ -29,7 +29,7 @@ import {
 
 //styling
 import style from "../../../styles/modules/EmojiIconsNav.scss";
-import styleVar from "../../../styles/variables.scss";
+
 
 
 function haveFrequentlyUsed() {
@@ -90,8 +90,8 @@ export default class EmojiIconsNav extends Component {
       [style.EmojiIconsNav__Item]: true
     });
     const iconsConfig = (nav) => ({
-      size: styleVar.iconSizeMd,
-      color: nav === currentActiveTab ? styleVar.colorAccent : styleVar.colorBackgroundDark
+      size: style.iconSizeMd,
+      color: nav === currentActiveTab ? style.colorAccent : style.colorBackgroundDark
     });
     const correctEmojiCatName = [
       {nav: "people", icon: <FaRegSmileBeam {...iconsConfig("people")}/>},

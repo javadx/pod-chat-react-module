@@ -4,11 +4,20 @@ import classnames from "classnames";
 import checkForPrivilege from "../utils/privilege";
 import {decodeEmoji} from "../utils/helpers";
 
+//strings
+import strings from "../constants/localization";
+import {THREAD_ADMIN} from "../constants/privilege";
+
 //actions
 import {threadMessageUnpin} from "../actions/threadActions";
 import {messageInfo} from "../actions/messageActions";
 
 //components
+import {
+  MdClose,
+  MdVideocam
+} from "react-icons/md";
+import {getMessageEditingText} from "./MainFooterInputEditing";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Loading, {LoadingBlinkDots} from "../../../pod-chat-ui-kit/src/loading";
@@ -17,17 +26,7 @@ import {
 } from "react-icons/ai";
 
 //styling
-import {
-  MdClose,
-  MdVideocam
-} from "react-icons/md";
 import style from "../../styles/app/MainPinMessage.scss";
-import styleVar from "../../styles/variables.scss";
-
-import {getMessageEditingText} from "./MainFooterInputEditing";
-import strings from "../constants/localization";
-import {THREAD_ADMIN} from "../constants/privilege";
-
 
 @connect()
 export default class MainPinMessage extends Component {
@@ -98,7 +97,7 @@ export default class MainPinMessage extends Component {
 
       <Container className={style.MainPinMessage__Message}>
         <Container className={style.MainPinMessage__MessageIcon}>
-          <AiFillPushpin size={styleVar.iconSizeSm} color={styleVar.colorAccent}/>
+          <AiFillPushpin size={style.iconSizeSm} color={style.colorAccent}/>
         </Container>
 
         <Container className={messageDetailsClassNames}>
@@ -115,7 +114,7 @@ export default class MainPinMessage extends Component {
                 }
                 {
                   messageDetails.isVideo &&
-                  <MdVideocam size={styleVar.iconSizeSm} color={styleVar.colorAccent}
+                  <MdVideocam size={style.iconSizeSm} color={style.colorAccent}
                               style={{marginLeft: "5px", marginTop: "3px"}}/>
                 }
                 <Text isHTML color={messageDeleted ? "gray" : null} italic={messageDeleted} dark={messageDeleted}>
@@ -127,7 +126,7 @@ export default class MainPinMessage extends Component {
         </Container>
       </Container>
       {checkForPrivilege(thread, THREAD_ADMIN) && <Container className={style.MainPinMessage__CloseIcon} onClick={this.onUnpinClick}>
-        <MdClose size={styleVar.iconSizeMd} color={styleVar.colorTextLight}/>
+        <MdClose size={style.iconSizeMd} color={style.colorTextLight}/>
       </Container>}
 
     </Container>

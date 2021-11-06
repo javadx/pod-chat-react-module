@@ -24,7 +24,6 @@ import {
 
 //styling
 import style from "../../styles/app/CallBoxHead.scss";
-import styleVar from "../../styles/variables.scss";
 import {
   CHAT_CALL_BOX_COMPACTED,
   CHAT_CALL_BOX_FULL_SCREEN, CHAT_CALL_BOX_NORMAL,
@@ -138,9 +137,9 @@ export default class CallBoxHead extends Component {
       <Container className={style.CallBoxHead__StatusIconContainer}>
         {(isVideoCallBool && callStarted && thread && isGroup(thread)) &&
         <Fragment>
-          {/*          <MdGridOn size={styleVar.iconSizeSm} color={styleVar.colorAccent} style={{marginLeft: "7px", cursor: "pointer"}}
+          {/*          <MdGridOn size={style.iconSizeSm} color={style.colorAccent} style={{marginLeft: "7px", cursor: "pointer"}}
                     onClick={this.switchBetweenView}/>*/}
-          <MdSettings size={styleVar.iconSizeSm} color={styleVar.colorAccent}
+          <MdSettings size={style.iconSizeSm} color={style.colorAccent}
                       style={{marginLeft: "10px", marginBottom: "3px", cursor: "pointer"}}
                       onClick={this.groupSettingView}/>
         </Fragment>
@@ -149,15 +148,15 @@ export default class CallBoxHead extends Component {
         <Fragment>
           {
             fullScreenCondition ?
-              <MdFullscreenExit size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
+              <MdFullscreenExit size={style.iconSizeMd} color={style.colorAccent} style={{marginLeft: "7px"}}
                                 onClick={this.onFullScreenClick}/> :
-              <MdFullscreen size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{marginLeft: "7px"}}
+              <MdFullscreen size={style.iconSizeMd} color={style.colorAccent} style={{marginLeft: "7px"}}
                             onClick={this.onFullScreenClick}/>
           }
         </Fragment>
         }
 
-        <MdExpandLess size={styleVar.iconSizeMd} color={styleVar.colorAccent}
+        <MdExpandLess size={style.iconSizeMd} color={style.colorAccent}
                       onClick={this.onCallBoxClick}/>
 
       </Container>

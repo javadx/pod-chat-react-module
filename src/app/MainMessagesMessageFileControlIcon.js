@@ -10,7 +10,6 @@ import {
 } from "react-icons/md";
 
 import style from "../../styles/app/MainMessagesMessageControlIcon.scss";
-import styleVar from "../../styles/variables.scss";
 
 export default function ({inlineStyle, fixCenter, onClick, isCancel, isMedia, isDownload}) {
 
@@ -22,21 +21,21 @@ export default function ({inlineStyle, fixCenter, onClick, isCancel, isMedia, is
       <ShapeCircle>
         {
           isCancel ?
-            <MdClose style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+            <MdClose style={{marginTop: "8px"}} size={style.iconSizeSm}/>
             :
             <Fragment>
 
               {
                 isMedia === "playing" &&
-                <MdPause style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+                <MdPause style={{marginTop: "8px"}} size={style.iconSizeSm}/>
               }
               {
                 isMedia === "pause" &&
-                <MdPlayArrow style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+                <MdPlayArrow style={{marginTop: "8px"}} size={style.iconSizeSm}/>
               }
               {
                 isDownload &&
-                <MdArrowDownward style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+                <MdArrowDownward style={{marginTop: "8px"}} size={style.iconSizeSm}/>
               }
 
             </Fragment>

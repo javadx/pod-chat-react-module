@@ -18,7 +18,6 @@ import {
 
 //styling
 import style from "../../styles/app/CallBoxCompactedPerson.scss";
-import styleVar from "../../styles/variables.scss";
 import {avatarNameGenerator, avatarUrlGenerator, isVideoCall} from "../utils/helpers";
 import {getImage, getName} from "./_component/contactList";
 import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_STARTED, MOCK_CONTACT} from "../constants/callModes";
@@ -56,8 +55,8 @@ export default class CallBoxCompactedPerson extends Component {
                        textBg={avatarNameGenerator(getName(realUser)).color}/>
           {realUser.mute &&
           <Container className={style.CallBoxCompactedPerson__MicOffContainer}>
-            <MdMicOff size={styleVar.iconSizeXs}
-                      color={styleVar.colorGrayDark}
+            <MdMicOff size={style.iconSizeXs}
+                      color={style.colorGrayDark}
                       style={{margin: "3px 4px"}}/>
           </Container>
           }

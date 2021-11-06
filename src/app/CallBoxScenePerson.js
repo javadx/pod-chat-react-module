@@ -2,29 +2,12 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 
 //actions
-import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAudioPlayer} from "../actions/chatActions";
 
 //components
-import Container from "../../../pod-chat-ui-kit/src/container";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {
-  MdMicOff,
-  MdPlayArrow,
-  MdPause
-} from "react-icons/md";
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
-import CallBoxToaster from "./CallBoxToaster";
 
 //styling
-import style from "../../styles/app/CallBoxScene.scss";
-import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall} from "../utils/helpers";
-import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
-import {getImage, getName} from "./_component/contactList";
-import classnames from "classnames";
-import Gap from "raduikit/src/gap"
+import {isVideoCall} from "../utils/helpers";
+import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING} from "../constants/callModes";
 import CallBoxScenePersonVideo from "./CallBoxScenePersonVideo";
 import CallBoxScenePersonAudio from "./CallBoxScenePersonAudio";
 

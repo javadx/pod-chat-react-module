@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {avatarUrlGenerator} from "../utils/helpers";
 
 //strings
+import {types} from "../constants/messageTypes";
 import strings from "../constants/localization";
 import {ROUTE_ADD_CONTACT} from "../constants/routes";
 
@@ -34,8 +35,7 @@ import ModalThreadInfoPersonHead from "./ModalThreadInfoPersonHead";
 import ModalThreadInfoTabSelector from "./ModalThreadInfoMediaScroller";
 
 //styling
-import {types} from "../constants/messageTypes";
-import styleVar from "../../styles/variables.scss";
+import style from "../../styles/utils/ghost.scss";
 
 
 export function getParticipant(participants, user) {
@@ -312,7 +312,7 @@ export default class ModalThreadInfo extends Component {
                           <Gap y={5}>
                             <Container flex style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                               <Container>
-                                <MdPets size={styleVar.iconSizeLg} color={styleVar.colorGray}/>
+                                <MdPets size={style.iconSizeLg} color={style.colorGray}/>
                               </Container>
                               <Container>
                                 <Text>{strings.noResult}</Text>

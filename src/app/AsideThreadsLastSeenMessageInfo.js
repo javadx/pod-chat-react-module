@@ -9,7 +9,7 @@ import {
   MdDone
 } from "react-icons/md";
 
-import styleVar from "../../styles/variables.scss";
+import styleVar from "../../styles/utils/ghost.scss";
 
 export default function (props) {
   const {isGroup, isChannel, time, lastMessageVO, draftMessage, isMessageByMe} = props;

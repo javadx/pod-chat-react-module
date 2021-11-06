@@ -9,9 +9,8 @@ import {
   MdExpandLess
 } from "react-icons/md";
 
-import styleVar from "../../styles/variables.scss";
-import style from "../../styles/app/MainMessagesMessageBoxFooter.scss";
 
+import style from "../../styles/app/MainMessagesMessageBoxFooter.scss";
 
 export default function ({message, messageTriggerShow, isMessageByMe, mainMessagesMessageRef, children}) {
   const classNames = classnames({
@@ -30,7 +29,7 @@ export default function ({message, messageTriggerShow, isMessageByMe, mainMessag
         <ContextTrigger id={"messages-context-menu"} holdToDisplay={mobileCheck() ? 1000 : -1} mouseButton={0}
                         collect={() => mainMessagesMessageRef}>
 
-          <MdExpandLess size={styleVar.iconSizeMd}
+          <MdExpandLess size={style.iconSizeMd}
                         style={{marginLeft: "10px"}}
                         id={message.id}
                         className={style.MainMessagesMessageBoxFooter__TriggerIcon}/>

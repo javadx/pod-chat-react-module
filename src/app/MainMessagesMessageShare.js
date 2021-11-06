@@ -7,12 +7,6 @@ import {
   isMessageIsFile
 } from "../utils/helpers";
 
-import {showBlock} from "./MainFooterSpam";
-import MainMessagesMessageFile from "./MainMessagesMessageFile";
-import MainMessagesMessageText from "./MainMessagesMessageText";
-import {MessageDeletePrompt, PinMessagePrompt} from "./_component/prompts";
-import checkForPrivilege from "../utils/privilege";
-
 //strings
 import strings from "../constants/localization";
 
@@ -20,6 +14,11 @@ import strings from "../constants/localization";
 import {chatModalPrompt} from "../actions/chatActions";
 
 //components
+import {Button} from "../../../pod-chat-ui-kit/src/button";
+import ListItem from "../../../pod-chat-ui-kit/src/list/ListItem";
+import List from "../../../pod-chat-ui-kit/src/list";
+import Text from "../../../pod-chat-ui-kit/src/typography/Text";
+import Gap from "../../../pod-chat-ui-kit/src/gap";
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {
   FaWhatsapp,
@@ -30,19 +29,11 @@ import {
   FiTwitter
 } from "react-icons/fi";
 
-import {Button} from "../../../pod-chat-ui-kit/src/button";
-import ListItem from "../../../pod-chat-ui-kit/src/list/ListItem";
-import List from "../../../pod-chat-ui-kit/src/list";
-import style from "../../styles/app/MainMessagesMessageShare.scss";
-import styleVar from "../../styles/variables.scss";
-import Text from "../../../pod-chat-ui-kit/src/typography/Text";
-import Gap from "../../../pod-chat-ui-kit/src/gap";
-
-
 //styling
+import style from "../../styles/app/MainMessagesMessageShare.scss";
 const iconsProperties = {
-  size: styleVar.iconSizeMd,
-  color: styleVar.colorAccentDark
+  size: style.iconSizeMd,
+  color: style.colorAccentDark
 };
 
 const socialNetworks = {

@@ -2,31 +2,21 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 
 //actions
-import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAudioPlayer} from "../actions/chatActions";
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
   MdMicOff,
-  MdPlayArrow,
-  MdPause
 } from "react-icons/md";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
-import CallBoxToaster from "./CallBoxToaster";
 
 //styling
 import style from "../../styles/app/CallBoxSceneAudio.scss";
-import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
+import {avatarNameGenerator, avatarUrlGenerator, mobileCheck} from "../utils/helpers";
 import {
   CHAT_CALL_BOX_FULL_SCREEN,
-  CHAT_CALL_STATUS_INCOMING,
-  CHAT_CALL_STATUS_OUTGOING,
-  MOCK_CONTACT,
-  MOCK_USER
+  CHAT_CALL_STATUS_INCOMING
 } from "../constants/callModes";
 import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
@@ -65,8 +55,8 @@ export default class CallBoxScenePersonAudio extends Component {
         <Avatar cssClassNames={className} inline={false}>
           {realUser.mute &&
           <Container className={style.CallBoxSceneAudio__MicOffContainer}>
-            <MdMicOff size={styleVar.iconSizeXs}
-                      color={styleVar.colorGrayDark}
+            <MdMicOff size={style.iconSizeXs}
+                      color={style.colorGrayDark}
                       style={{margin: "3px 4px"}}/>
           </Container>
           }

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import classnames from "classnames";
+import {humanFileSize, mobileCheck} from "../utils/helpers";
 
 //strings
 import strings from "../constants/localization";
@@ -10,6 +11,11 @@ import {threadFilesToUpload, threadModalImageCaptionShowing} from "../actions/th
 import {messageSend} from "../actions/messageActions";
 
 //UI components
+import {codeEmoji} from "./_component/EmojiIcons.js";
+import {clearHtml} from "./_component/Input";
+import Input, {getCursorMentionMatch} from "./_component/Input";
+import EmojiIcons from "./_component/EmojiIcons";
+import Shape, {ShapeCircle} from "../../../pod-chat-ui-kit/src/shape";
 import Modal, {ModalBody, ModalHeader, ModalFooter} from "../../../pod-chat-ui-kit/src/modal";
 import ParticipantSuggestion from "./_component/ParticipantSuggestion";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
@@ -25,13 +31,6 @@ import {
 
 //styling
 import style from "../../styles/app/ModalImageCaption.scss";
-import {codeEmoji} from "./_component/EmojiIcons.js";
-import {clearHtml} from "./_component/Input";
-import {humanFileSize, mobileCheck} from "../utils/helpers";
-import Shape, {ShapeCircle} from "../../../pod-chat-ui-kit/src/shape";
-import styleVar from "../../styles/variables.scss";
-import Input, {getCursorMentionMatch} from "./_component/Input";
-import EmojiIcons from "./_component/EmojiIcons";
 
 @connect(store => {
   return {
@@ -248,7 +247,7 @@ export default class ModalImageCaption extends Component {
                     <Container flex="none">
                       <Shape color="accent" size="lg">
                         <ShapeCircle>
-                          <MdInsertDriveFile size={styleVar.iconSizeSm}/>
+                          <MdInsertDriveFile size={style.iconSizeSm}/>
                         </ShapeCircle>
                       </Shape>
                     </Container>

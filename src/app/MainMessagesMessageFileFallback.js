@@ -13,8 +13,10 @@ import {
   clearHtml
 } from "../utils/helpers";
 import classnames from "classnames";
+import {decodeEmoji} from "./_component/EmojiIcons.js";
 
 //strings
+import strings from "../constants/localization";
 
 //actions
 import {
@@ -34,7 +36,7 @@ import Container from "../../../pod-chat-ui-kit/src/container";
 import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import Shape, {ShapeCircle} from "../../../pod-chat-ui-kit/src/shape";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
-
+import {ContextItem} from "../../../pod-chat-ui-kit/src/menu/Context";
 
 //styling
 import {
@@ -43,11 +45,6 @@ import {
   MdClose
 } from "react-icons/md";
 import style from "../../styles/app/MainMessagesMessageFile.scss";
-import styleVar from "../../styles/variables.scss";
-import {ContextItem} from "../../../pod-chat-ui-kit/src/menu/Context";
-import strings from "../constants/localization";
-import {decodeEmoji} from "./_component/EmojiIcons.js";
-
 
 export function getImage(metaData, isFromServer, smallVersion) {
   let imageLink = metaData.link;
@@ -144,7 +141,7 @@ class MainMessagesMessageFile extends Component {
     let metaData = getMessageMetaData(message).file || {};
     return <ContextItem onClick={this.onDownload.bind(this, metaData)}>
       {mobileCheck() ?
-        <MdArrowDownward color={styleVar.colorAccent} size={styleVar.iconSizeMd}/> : strings.download}
+        <MdArrowDownward color={style.colorAccent} size={style.iconSizeMd}/> : strings.download}
     </ContextItem>
   }
 
@@ -243,14 +240,14 @@ class MainMessagesMessageFile extends Component {
                              onClick={isDownloadable(message) ? this.onDownload.bind(this, metaData, !!isVideo) : this.onCancel.bind(this, message)}>
                         <ShapeCircle>
                           {isUploading(message) || hasError(message) ?
-                            <MdClose style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+                            <MdClose style={{marginTop: "8px"}} size={style.iconSizeSm}/>
                             : isDownloadable(message) ?
                               isVideo ?
                                 <Text link={`#video-${message.id}`} linkClearStyle data-fancybox>
-                                  <MdPlayArrow style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/>
+                                  <MdPlayArrow style={{marginTop: "8px"}} size={style.iconSizeSm}/>
                                 </Text>
                                 :
-                                <MdArrowDownward style={{marginTop: "8px"}} size={styleVar.iconSizeSm}/> : ""
+                                <MdArrowDownward style={{marginTop: "8px"}} size={style.iconSizeSm}/> : ""
                           }
                         </ShapeCircle>
                       </Shape>

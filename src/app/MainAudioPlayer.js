@@ -16,7 +16,6 @@ import {
 
 //styling
 import style from "../../styles/app/MainAudioPlayer.scss";
-import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData} from "../utils/helpers";
 
 
@@ -62,9 +61,9 @@ export default class MainAudioPlayer extends Component {
       <Container className={style.MainAudioPlayer__Message}>
         <Container className={style.MainAudioPlayer__MessageIcon}>
           {playing ?
-            <MdPause size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{margin: "-3px"}} onClick={this.onPausePlayingClick.bind(this, false)}/>
+            <MdPause size={style.iconSizeMd} color={style.colorAccent} style={{margin: "-3px"}} onClick={this.onPausePlayingClick.bind(this, false)}/>
             :
-            <MdPlayArrow size={styleVar.iconSizeMd} color={styleVar.colorAccent} style={{margin: "-3px"}} onClick={this.onPausePlayingClick.bind(this, true)}/>
+            <MdPlayArrow size={style.iconSizeMd} color={style.colorAccent} style={{margin: "-3px"}} onClick={this.onPausePlayingClick.bind(this, true)}/>
           }
         </Container>
         <Container className={style.MainAudioPlayer__MessageDetails}>
@@ -74,7 +73,7 @@ export default class MainAudioPlayer extends Component {
         </Container>
       </Container>
       <Container className={style.MainAudioPlayer__CloseIcon} onClick={this.onStopPlayingClick}>
-        <MdClose size={styleVar.iconSizeMd} color={styleVar.colorTextLight}/>
+        <MdClose size={style.iconSizeMd} color={style.colorTextLight}/>
       </Container>
 
     </Container>

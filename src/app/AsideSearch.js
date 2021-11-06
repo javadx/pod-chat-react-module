@@ -19,7 +19,6 @@ import {MdClose} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/AsidSearch.scss";
-import styleVar from "../../styles/variables.scss";
 import utilsStlye from "../../styles/utils/utils.scss";
 
 @connect(store => {
@@ -102,7 +101,7 @@ class AsideSearch extends Component {
   render() {
     const {chatSearchShow} = this.props;
     const {query} = this.state;
-    const iconSize = styleVar.iconSizeMd.replace("px", "");
+    const iconSize = style.iconSizeMd.replace("px", "");
     const classNames = classnames({
       [style.AsideSearch]: true,
       [style["AsideSearch--show"]]: chatSearchShow
@@ -116,7 +115,7 @@ class AsideSearch extends Component {
           <MdClose size={iconSize}
                    className={utilsStlye["u-clickable"]}
                    onClick={this.onClearSearchClick}
-                   style={{color: styleVar.colorAccent, marginLeft: "20px"}}/>
+                   style={{color: style.colorAccent, marginLeft: "20px"}}/>
         </Container>
 
         }

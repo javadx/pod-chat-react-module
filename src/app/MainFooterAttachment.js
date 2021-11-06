@@ -19,7 +19,6 @@ import {MdAttachFile, MdChevronRight} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/MainFooterAttachment.scss";
-import styleVar from "../../styles/variables.scss";
 import {chatModalPrompt, stopTyping} from "../actions/chatActions";
 import MainFooterAttachmentAttach from "./MainFooterAttachmentAttach";
 
@@ -91,11 +90,11 @@ export default class MainFooterAttachment extends Component {
         {
           isSendingText ?
             <Container>
-              <MdChevronRight size={styleVar.iconSizeMd} color={styleVar.colorAccentDark} style={{margin: "5px 6px"}}/>
+              <MdChevronRight size={style.iconSizeMd} color={style.colorAccentDark} style={{margin: "5px 6px"}}/>
             </Container>
             :
             <Container>
-              <MdAttachFile size={styleVar.iconSizeMd} color={styleVar.colorAccentDark} style={{margin: "5px 6px"}}/>
+              <MdAttachFile size={style.iconSizeMd} color={style.colorAccentDark} style={{margin: "5px 6px"}}/>
             </Container>
         }
       </Container>

@@ -35,7 +35,6 @@ import {
 
 //styling
 import style from "../../styles/app/CallBoxControlSetMore.scss";
-import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
   CALL_DIV_ID, CALL_SETTING_COOKIE_KEY_NAME,
@@ -135,7 +134,7 @@ export default class CallBoxControlSetMore extends Component {
             <Container className={settingItemClassNames}>
 
               <Container className={style.CallBoxControlSetMore__SettingItemText}>
-                <MdFeaturedVideo size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+                <MdFeaturedVideo size={style.iconSizeMd} color={style.colorGrayDark}/>
                 <Gap x={20}>
                   <Text>{strings.viewModeConfig}</Text>
                 </Gap>
@@ -143,9 +142,9 @@ export default class CallBoxControlSetMore extends Component {
 
               <Container className={style.CallBoxControlSetMore__SettingItemStatus}>
                 {groupVideoCallMode === GROUP_VIDEO_CALL_VIEW_MODE.THUMBNAIL_VIEW ?
-                  <MdViewCarousel size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+                  <MdViewCarousel size={style.iconSizeMd} color={style.colorGrayDark}/>
                   :
-                  <MdViewQuilt size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+                  <MdViewQuilt size={style.iconSizeMd} color={style.colorGrayDark}/>
                 }
 
               </Container>
@@ -158,7 +157,7 @@ export default class CallBoxControlSetMore extends Component {
             <Container className={settingItemClassNames}>
 
               <Container className={style.CallBoxControlSetMore__SettingItemText}>
-                <MdRingVolume size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+                <MdRingVolume size={style.iconSizeMd} color={style.colorGrayDark}/>
                 <Gap x={20}>
                   <Text>{strings.ringToneSound}</Text>
                 </Gap>
@@ -176,7 +175,7 @@ export default class CallBoxControlSetMore extends Component {
             <Container className={settingItemClassNames}>
 
               <Container className={style.CallBoxControlSetMore__SettingItemText}>
-                <MdVolumeUp size={styleVar.iconSizeMd} color={styleVar.colorGrayDark}/>
+                <MdVolumeUp size={style.iconSizeMd} color={style.colorGrayDark}/>
                 <Gap x={20}>
                   <Text>{strings.callToneSound}</Text>
                 </Gap>

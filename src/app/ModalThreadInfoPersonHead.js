@@ -1,9 +1,7 @@
-import React, {Component, Fragment, useState} from "react";
-import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData, isChannel} from "../utils/helpers";
+import React, {Fragment} from "react";
+import {avatarNameGenerator, avatarUrlGenerator} from "../utils/helpers";
 import strings from "../constants/localization";
-import styleVar from "../../styles/variables.scss";
+import style from "../../styles/utils/ghost.scss";
 import Gap from "../../../pod-chat-ui-kit/src/gap";
 import {Heading, Text} from "../../../pod-chat-ui-kit/src/typography";
 import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
@@ -63,7 +61,7 @@ export default function f(props) {
       </Container>
 
       <Container bottomLeft>
-        <MdPerson size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+        <MdPerson size={style.iconSizeMd} color={style.colorGray}/>
       </Container>
 
     </Container>
@@ -74,7 +72,7 @@ export default function f(props) {
         <ListItem invert>
 
           <Container userSelect="text">
-            <MdPerson size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+            <MdPerson size={style.iconSizeMd} color={style.colorGray}/>
             <Gap x={20}>
               <Text inline>{participant.username || contact.linkedUser.username}</Text>
             </Gap>
@@ -89,7 +87,7 @@ export default function f(props) {
               <ListItem invert>
 
                 <Container userSelect="text">
-                  <MdPhone size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                  <MdPhone size={style.iconSizeMd} color={style.colorGray}/>
                   <Gap x={20}>
                     <Text inline>{contact.cellphoneNumber}</Text>
                   </Gap>
@@ -101,7 +99,7 @@ export default function f(props) {
             {
               <ListItem selection invert onSelect={onEdit.bind($this, participant, contact)}>
                 <Container relative>
-                  <MdEdit size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                  <MdEdit size={style.iconSizeMd} color={style.colorGray}/>
                   <Gap x={20}>
                     <Text>{strings.edit}</Text>
                   </Gap>
@@ -112,7 +110,7 @@ export default function f(props) {
             {
               <ListItem selection invert onSelect={onRemove.bind($this, participant)}>
                 <Container relative>
-                  <MdDelete size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                  <MdDelete size={style.iconSizeMd} color={style.colorGray}/>
                   <Gap x={20}>
                     <Text>{strings.remove}</Text>
                   </Gap>
@@ -124,7 +122,7 @@ export default function f(props) {
           :
           <ListItem selection invert onSelect={onAddContact.bind($this, participant)}>
             <Container relative>
-              <MdPersonAdd size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+              <MdPersonAdd size={style.iconSizeMd} color={style.colorGray}/>
               <Gap x={20}>
                 <Text>{strings.addToContact}</Text>
               </Gap>
@@ -144,7 +142,7 @@ export default function f(props) {
             {
               <ListItem selection invert onSelect={onRemoveThread.bind($this, participant)}>
                 <Container relative>
-                  <MdDeleteForever size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                  <MdDeleteForever size={style.iconSizeMd} color={style.colorGray}/>
                   <Gap x={20}>
                     <Text>{strings.removeThread}</Text>
                   </Gap>
@@ -154,7 +152,7 @@ export default function f(props) {
 
             <ListItem selection invert onSelect={onBlockSelect.bind($this, thread.id, participant.blocked)}>
               <Container relative>
-                <MdBlock size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                <MdBlock size={style.iconSizeMd} color={style.colorGray}/>
                 <Gap x={20}>
                   <Text>{strings.block}</Text>
                 </Gap>
@@ -176,7 +174,7 @@ export default function f(props) {
             <ListItem selection invert onSelect={onNotificationSelect.bind(this, thread)}>
 
               <Container relative>
-                <MdNotifications size={styleVar.iconSizeMd} color={styleVar.colorGray}/>
+                <MdNotifications size={style.iconSizeMd} color={style.colorGray}/>
                 <Gap x={20}>
                   <Text>{strings.notification}</Text>
                 </Gap>

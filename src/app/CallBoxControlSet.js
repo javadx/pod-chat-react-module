@@ -31,7 +31,6 @@ import {
 
 //styling
 import style from "../../styles/app/CallBoxControlSet.scss";
-import styleVar from "../../styles/variables.scss";
 import {getMessageMetaData, isVideoCall, mobileCheck} from "../utils/helpers";
 import {
   CALL_DIV_ID, CHAT_CALL_BOX_COMPACTED, CHAT_CALL_BOX_FULL_SCREEN,
@@ -208,14 +207,14 @@ export default class CallBoxControlSet extends Component {
 
     return <Container className={classNames}>
       <ButtonFloating onClick={this.onDropCallClick} size={buttonSize || "sm"} className={callDropClassNames}>
-        <MdCall size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+        <MdCall size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
       </ButtonFloating>
       {incomingCondition &&
       <ButtonFloating onClick={this.onAcceptCallClick} size={buttonSize || "sm"} className={callAcceptClassNames}>
         {isVideoCall(call) ?
-          <MdVideocam size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          <MdVideocam size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
           :
-          <MdCall size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          <MdCall size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
         }
       </ButtonFloating>
       }
@@ -223,8 +222,8 @@ export default class CallBoxControlSet extends Component {
       <ButtonFloating onClick={this.onMicClick} size={buttonSize || "sm"} className={micOffOrOnClassNames}>
 
         {mic ?
-          <MdMic size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/> :
-          <MdMicOff size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          <MdMic size={style.iconSizeMd} style={{margin: "7px 5px"}}/> :
+          <MdMicOff size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
         }
       </ButtonFloating>
       }
@@ -232,8 +231,8 @@ export default class CallBoxControlSet extends Component {
       <ButtonFloating onClick={this.onVolumeClick} size={buttonSize || "sm"} className={speakerOnOrOffClassNames}>
 
         {volume ?
-          <MdVolumeUp size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/> :
-          <MdVolumeOff size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          <MdVolumeUp size={style.iconSizeMd} style={{margin: "7px 5px"}}/> :
+          <MdVolumeOff size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
         }
 
       </ButtonFloating>
@@ -242,7 +241,7 @@ export default class CallBoxControlSet extends Component {
       <Fragment>
         <ButtonFloating onClick={this.onMoreActionClick.bind(this, true)} size={buttonSize || "sm"}
                         className={moreActionClassNames}>
-          <MdMoreHoriz size={styleVar.iconSizeMd} style={{margin: "7px 5px"}}/>
+          <MdMoreHoriz size={style.iconSizeMd} style={{margin: "7px 5px"}}/>
 
         </ButtonFloating>
         {moreSettingShow && <CallBoxControlSetMore onMoreActionClick={this.onMoreActionClick.bind(this)}/>}

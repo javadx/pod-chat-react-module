@@ -1,6 +1,5 @@
 import style from "../../styles/app/MainMessagesMessage.scss";
 import strings from "../constants/localization";
-import styleVar from "../../styles/variables.scss";
 import React from "react";
 
 export default function SeenFragment({isMessageByMe, message, thread, onMessageSeenListClick, onRetry, onCancel, forceSeen}) {
@@ -26,7 +25,7 @@ export default function SeenFragment({isMessageByMe, message, thread, onMessageS
   }
   const isGroup = thread.group;
   const messageStatusIconSpecs = {
-    color: styleVar.colorGreenTick,
+    color: style.colorGreenTick,
     size: 18,
     style: {margin: "0 5px"}
   };

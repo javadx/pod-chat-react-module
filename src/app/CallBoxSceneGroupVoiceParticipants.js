@@ -7,26 +7,17 @@ import {chatAudioPlayer, chatCallGroupSettingsShowing} from "../actions/chatActi
 
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
 import {
   MdMicOff,
-  MdPlayArrow,
-  MdPause
 } from "react-icons/md";
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
+import Avatar, {AvatarImage} from "../../../pod-chat-ui-kit/src/avatar";
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupParticipants.scss";
-import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
-import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
+import {avatarNameGenerator, avatarUrlGenerator} from "../utils/helpers";
 import {getImage, getName} from "./_component/contactList";
 import classnames from "classnames";
-import Gap from "raduikit/src/gap";
-import strings from "../constants/localization";
 import CallBoxSceneGroupParticipantsControl from "./CallBoxSceneGroupParticipantsControl";
-import {chatCallGroupSettingsShowingReducer} from "../reducers/chatReducer";
 
 
 @connect(store => {
@@ -71,8 +62,8 @@ export default class CallBoxSceneGroup extends Component {
         <Container className={style.CallBoxSceneGroupParticipants__Participant}>
           {participant.mute &&
           <Container className={style.CallBoxSceneGroupParticipants__MicOffContainer} topLeft>
-            <MdMicOff size={styleVar.iconSizeXs}
-                      color={styleVar.colorGrayDark}
+            <MdMicOff size={style.iconSizeXs}
+                      color={style.colorGrayDark}
                       style={{margin: "3px 4px"}}/>
           </Container>
           }

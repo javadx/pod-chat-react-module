@@ -24,8 +24,6 @@ import MainMessagesMessageBoxFooter from "./MainMessagesMessageBoxFooter";
 
 //styling
 import style from "../../styles/app/MainMessagesText.scss";
-import styleVar from "../../styles/variables.scss";
-
 
 @connect()
 export default class MainMessagesMessageText extends Component {
@@ -66,13 +64,13 @@ export default class MainMessagesMessageText extends Component {
         {
           message.editable &&
           <ContextItem onClick={this.onEdit.bind(this, message)}>
-            {mobileCheck() ? <MdEdit size={styleVar.iconSizeMd} color={styleVar.colorAccent}/> : strings.edit}
+            {mobileCheck() ? <MdEdit size={style.iconSizeMd} color={style.colorAccent}/> : strings.edit}
           </ContextItem>
         }
         {
           <ContextItem onClick={this.onCopy.bind(this, message)}>
             {mobileCheck() ?
-              <MdContentCopy size={styleVar.iconSizeMd} color={styleVar.colorAccent}/> : strings.copyText}
+              <MdContentCopy size={style.iconSizeMd} color={style.colorAccent}/> : strings.copyText}
           </ContextItem>
         }
       </Fragment>

@@ -2,29 +2,11 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {ToastContainer, toast} from 'react-toastify';
 
-//actions
-import {threadCreateWithExistThread, threadGoToMessageId} from "../actions/threadActions";
-import {chatAudioPlayer} from "../actions/chatActions";
-
 //components
 import Container from "../../../pod-chat-ui-kit/src/container";
-import {Text} from "../../../pod-chat-ui-kit/src/typography";
-import {
-  MdMicOff,
-  MdPlayArrow,
-  MdPause
-} from "react-icons/md";
-import Avatar, {AvatarImage, AvatarName} from "../../../pod-chat-ui-kit/src/avatar";
-import AvatarText from "../../../pod-chat-ui-kit/src/avatar/AvatarText";
 
 //styling
 import style from "../../styles/app/CallBoxScene.scss";
-import styleVar from "../../styles/variables.scss";
-import {avatarNameGenerator, avatarUrlGenerator, getMessageMetaData} from "../utils/helpers";
-import {CHAT_CALL_STATUS_INCOMING, CHAT_CALL_STATUS_OUTGOING, MOCK_CONTACT, MOCK_USER} from "../constants/callModes";
-import {getImage, getName} from "./_component/contactList";
-import classnames from "classnames";
-
 
 @connect(store => {
   return {
