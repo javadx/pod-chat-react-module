@@ -21,6 +21,7 @@ import {MdDateRange} from "react-icons/md";
 
 //styling
 import style from "../../styles/app/ModalExportMessages.scss";
+import {messageExport} from "../actions/messageActions";
 
 @connect(store => {
   return {
@@ -68,9 +69,17 @@ class ModalShare extends Component {
   }
 
   onExport() {
+    const {rangeSelected} = this.state;
     this.setState({
       rangeSelected: null
     });
+    const {dispatch, thread} = this.props;
+    dispatch(messageExport(thread.id, {
+      fromTime: rangeSelected.start._d.getTime(),
+      toTime: rangeSelected.end._d.getTime()
+    })).then(e => {
+      console.log(e)
+    })
   }
 
   render() {
@@ -87,7 +96,8 @@ class ModalShare extends Component {
           <>
             <Container centerTextAlign>
               <Gap y={10}>
-                <Text bold>{strings.rangeSelectedFromDateToDate(rangeSelected.start._d.toLocaleDateString('fa'), rangeSelected.end._d.toLocaleDateString('fa'))}</Text>
+                <Text
+                  bold>{strings.rangeSelectedFromDateToDate(rangeSelected.start._d.toLocaleDateString('fa'), rangeSelected.end._d.toLocaleDateString('fa'))}</Text>
               </Gap>
             </Container>
             <Button text onClick={this.onExport.bind(this)}>{strings.export}</Button>

@@ -296,7 +296,6 @@ class ModalThreadInfoGroupMain extends Component {
       mediaListLoading: loading,
       mediaList: partialLoading || loading ? this.state.mediaList : messages
     })
-    //console.log(arguments)
   }
 
   onTabSelect(tab) {

@@ -1058,4 +1058,15 @@ export default class ChatSDK {
       resolve(result)
     });
   }
+
+  @promiseDecorator
+  exportMessages(resolve, reject, threadId, options = {}) {
+    const params = {
+      threadId,
+      ...options
+    };
+    this.chatAgent.exportChat(params, function (result) {
+      resolve(result)
+    });
+  }
 };

@@ -9,11 +9,13 @@ module.exports = (e, argv) => {
   const mode = argv.mode;
   const define = argv.define;
   let base = {
-
     devServer: {
       compress: true,
       host: "chat.fanapsoft.ir",
-      historyApiFallback: true
+      historyApiFallback: true,
+      client: {
+        overlay: false,
+      }
     },
     module: {
       rules: [

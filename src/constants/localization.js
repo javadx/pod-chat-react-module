@@ -307,7 +307,6 @@ let strings = new LocalizedStrings({
       return `انتخاب تاریخ از ${fromDate} تا تاریخ ${toDate}`;
     },
     callEnded: (date, elapsed) => {
-      console.log(elapsed)
       if(elapsed) {
         return `تماس پایان پذیرفت ${date} - مدت تماس ${elapsed}`;
       }

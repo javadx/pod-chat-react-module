@@ -297,3 +297,11 @@ export const messageGetSeenList = (messageId) => {
     return chatSDK.getMessageSeenList(messageId);
   }
 };
+
+export const messageExport = (threadId, options) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const chatSDK = state.chatInstance.chatSDK;
+    return chatSDK.exportMessages(threadId, options);
+  }
+};

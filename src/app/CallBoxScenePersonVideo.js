@@ -33,19 +33,22 @@ export default class CallBoxScenePersonVideo extends Component {
 
   _injectVideos() {
     const {call} = this.props.chatCallStatus;
-    if (call.uiRemoteVideo) {
+    if (call.uiRemoteElements) {
       const remoteVideoTag = ReactDOM.findDOMNode(this.remoteVideoRef.current);
       const localVideoTag = ReactDOM.findDOMNode(this.localVideoRef.current);
-      call.uiRemoteVideo.setAttribute("class", style.CallBoxSceneVideo__SideCamVideo);
-      call.uiLocalVideo.setAttribute("class", style.CallBoxSceneVideo__MyCamVideo);
-      call.uiRemoteVideo.removeAttribute("height");
-      call.uiRemoteVideo.removeAttribute("width");
-      call.uiLocalVideo.removeAttribute("height");
-      call.uiLocalVideo.removeAttribute("width");
-      call.uiLocalVideo.disablePictureInPicture = true;
-      call.uiRemoteVideo.disablePictureInPicture = true;
-      remoteVideoTag.append(call.uiRemoteVideo);
-      localVideoTag.append(call.uiLocalVideo);
+      const uiRemoteElements = call.uiRemoteElements[0];
+      const {uiRemoteAudio, uiRemoteVideo} = uiRemoteElements;
+      const {uiLocalVideo} = call;
+      uiRemoteVideo.setAttribute("class", style.CallBoxSceneVideo__SideCamVideo);
+      uiRemoteVideo.removeAttribute("height");
+      uiRemoteVideo.removeAttribute("width");
+      uiLocalVideo.setAttribute("class", style.CallBoxSceneVideo__MyCamVideo);
+      uiLocalVideo.removeAttribute("height");
+      uiLocalVideo.removeAttribute("width");
+      uiLocalVideo.disablePictureInPicture = true;
+      uiRemoteVideo.disablePictureInPicture = true;
+      remoteVideoTag.append(uiRemoteVideo);
+      localVideoTag.append(uiLocalVideo);
     }
   }
 
@@ -55,9 +58,11 @@ export default class CallBoxScenePersonVideo extends Component {
 
   componentWillUnmount() {
     const {call} = this.props.chatCallStatus;
-    if (call.uiRemoteVideo) {
+    if (call.uiRemoteElements) {
+      const uiRemoteElements = call.uiRemoteElements[0];
+      const {uiRemoteVideo} = uiRemoteElements;
       const callDivTag = document.getElementById(CALL_DIV_ID);
-      callDivTag.append(call.uiRemoteVideo);
+      callDivTag.append(uiRemoteVideo);
       callDivTag.append(call.uiLocalVideo);
     }
   }
@@ -66,7 +71,7 @@ export default class CallBoxScenePersonVideo extends Component {
     const {call: oldCall} = prevProps.chatCallStatus;
     const {call} = this.props.chatCallStatus;
     if (oldCall) {
-      if (!oldCall.uiRemoteVideo) {
+      if (!oldCall.uiRemoteElements) {
         this._injectVideos();
       }
     }

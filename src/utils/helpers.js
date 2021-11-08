@@ -799,12 +799,8 @@ export function isVideoCall(call) {
   }
 }
 
-export function analyzeCallStatus(props) {
-  const {
-    isMessageByMe,
-    message,
-    thread
-  } = props;
+export function analyzeCallStatus(message, thread) {
+  const isMessageByMeBool = isMessageByMe(message);
   const {
     createTime,
     startTime,
@@ -822,7 +818,7 @@ export function analyzeCallStatus(props) {
       };
     }
     case 2: {
-      if (isMessageByMe) {
+      if (isMessageByMeBool) {
         return {
           Icon() {
             return <MdCallEnd color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;
@@ -848,7 +844,7 @@ export function analyzeCallStatus(props) {
       };
     }
     case 4: {
-      if (isMessageByMe) {
+      if (isMessageByMeBool) {
         return {
           Icon() {
             return <MdCallMissed color={style.colorRed} size={style.iconSizeSm} style={{marginLeft: "5px"}}/>;

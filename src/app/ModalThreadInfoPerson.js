@@ -220,7 +220,6 @@ export default class ModalThreadInfo extends Component {
       mediaListPartialLoading: partialLoading,
       mediaList: partialLoading ? this.state.mediaList : messages
     })
-    //console.log(arguments)
   }
 
   onAddContact(participant) {

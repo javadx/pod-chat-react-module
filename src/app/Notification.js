@@ -1,6 +1,6 @@
 // src/list/BoxScene.js
 import React, {Component, Fragment} from "react";
-import {isChannel, isGroup, isMessageIsFile, isMessageByMe} from "../utils/helpers";
+import {isChannel, isGroup, isMessageIsFile, isMessageByMe, isSystemMessage, analyzeCallStatus} from "../utils/helpers";
 import {connect} from "react-redux";
 import "moment/locale/fa";
 import Push from "push.js";
@@ -93,9 +93,15 @@ export default class Notification extends Component {
     if (messageToNotify instanceof Array) {
       notificationMessage = strings.batchMessageSentToThread(messageToNotify.length, isGroup(thread), isChannel(thread))
     } else {
+      const isSystemMessageBool = isSystemMessage(messageToNotify);
+      if(isSystemMessageBool) {
+        if(!analyzeCallStatus(messageToNotify, thread)?.Text()) {
+          return;
+        }
+      }
       const isMessageFile = isMessageIsFile(messageToNotify);
       const tag = document.createElement("div");
-      tag.innerHTML = messageToNotify.message;
+      tag.innerHTML = isSystemMessageBool ? analyzeCallStatus(messageToNotify, thread)?.Text() : messageToNotify.message;
       const newMessageText = messageToNotify.message;
       const personName = `${thread.group ? `${messageToNotify.participant && (messageToNotify.participant.contactName || messageToNotify.participant.name)}: ` : ""}`;
       notificationMessage = `${personName}${isMessageFile ? newMessageText ? newMessageText : strings.sentAFile : tag.innerText}`;
@@ -167,7 +173,7 @@ export default class Notification extends Component {
       return;
     }
     let messageToNotify = this.pinNotify ? messagePinned : messageNew;
-    if (this.pinNotify || !isMessageByMe(messageToNotify, user)) {
+    if (this.pinNotify || !isMessageByMe(messageToNotify, user) || isSystemMessage(messageToNotify)) {
       if (chatInstance) {
         if (this.pinNotify || !window.document.hasFocus()) {
           let foundThread = threads.find(e => messageToNotify.threadId === e.id);

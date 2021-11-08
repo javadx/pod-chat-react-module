@@ -94,11 +94,13 @@ function resetChatCall(dispatch, call) {
   dispatch(chatCallGroupSettingsShowing(false));
   if (call) {
     if (call.uiLocalVideo) {
-      const {uiRemoteVideo, uiLocalVideo, uiRemoteAudio, uiLocalAudio} = call;
-      uiRemoteVideo.remove();
+      const {uiLocalVideo, uiLocalAudio} = call;
       uiLocalVideo.remove();
-      uiRemoteAudio.remove();
       uiLocalAudio.remove();
+      for(const remoteTag of call?.uiRemoteElements) {
+        remoteTag.uiRemoteAudio.remove();
+        remoteTag.uiRemoteVideo.remove();
+      }
     }
   }
   document.getElementById(CALL_DIV_ID).innerHTML = "";
@@ -191,6 +193,7 @@ export const chatSetInstance = config => {
       onCallEvents: (call, type) => {
         const oldCall = getState().chatCallStatus;
         const user = getState().user.user;
+        console.log(type)
         switch (type) {
           case "CALL_SESSION_CREATED":
             call.isOwner = true;
