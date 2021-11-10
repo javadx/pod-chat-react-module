@@ -26,7 +26,7 @@ import {
   MdAdd
 } from "react-icons/md";
 import {Button} from "../../../pod-chat-ui-kit/src/button";
-import List from "../../../pod-chat-ui-kit/src/List";
+import List from "../../../pod-chat-ui-kit/src/list";
 
 //styling
 import style from "../../styles/app/CallBoxSceneGroupParticipantsControl.scss";

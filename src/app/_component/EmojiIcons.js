@@ -15,7 +15,7 @@ export function emojiRegex() {
 //actions
 
 //components
-import Scroller from "../../../../pod-chat-ui-kit/src/Scroller";
+import Scroller from "../../../../pod-chat-ui-kit/src/scroller";
 import Container from "../../../../pod-chat-ui-kit/src/container";
 
 //styling

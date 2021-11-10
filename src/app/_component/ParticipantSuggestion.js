@@ -10,7 +10,7 @@ import {
 //components
 import Container from "../../../../pod-chat-ui-kit/src/container";
 import Scroller from "../../../../pod-chat-ui-kit/src/scroller";
-import List from "../../../../pod-chat-ui-kit/src/List";
+import List from "../../../../pod-chat-ui-kit/src/list";
 import {Text} from "../../../../pod-chat-ui-kit/src/typography";
 import {ContactListItem} from "./contactList";
 import Loading, {LoadingBlinkDots} from "../../../../pod-chat-ui-kit/src/loading";
